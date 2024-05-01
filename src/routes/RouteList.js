@@ -6,6 +6,7 @@ import { Error404 } from "../pages/errors/Error404";
 import { Login } from "../pages//user/auth/Login";
 import { Register } from "../pages/user/auth/Register";
 import { Otp } from "../pages/user/auth/Otp";
+import { VerifyAccount } from "../pages/user/auth/VerifyAccount";
 
 export const RouteList = () => {
   return (
@@ -18,6 +19,7 @@ export const RouteList = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/otp" element={<Otp />} />
+        <Route path="/verify-account" element={<VerifyAccount />} />
       </Routes>
     </BrowserRouter>
   );
