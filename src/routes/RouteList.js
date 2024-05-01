@@ -7,6 +7,7 @@ import { Login } from "../pages//user/auth/Login";
 import { Register } from "../pages/user/auth/Register";
 import { Otp } from "../pages/user/auth/Otp";
 import { VerifyAccount } from "../pages/user/auth/VerifyAccount";
+import { ForgetPassword } from "../pages/user/auth/ForgetPassword";
 
 export const RouteList = () => {
   return (
@@ -20,6 +21,7 @@ export const RouteList = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/otp" element={<Otp />} />
         <Route path="/verify-account" element={<VerifyAccount />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
       </Routes>
     </BrowserRouter>
   );
