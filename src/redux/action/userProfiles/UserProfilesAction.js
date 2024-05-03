@@ -6,10 +6,22 @@ import {
   endLoading,
 } from "../../reducer/userProfiles/UserProfilesSlice";
 
-export const putUpdateProfile = (formData) => async (dispatch) => {
+export const putUpdateUserProfile = (formData) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxUpdateUserProfile(formData);
+    const { fullName, address, phoneNumber, city, country, image } = formData;
+
+    const formDataObject = new FormData();
+    formDataObject.append("fullName", fullName);
+    formDataObject.append("address", address);
+    formDataObject.append("phoneNumber", phoneNumber);
+    formDataObject.append("city", city);
+    formDataObject.append("country", country);
+    formDataObject.append("image", image || "");
+
+    console.log(formDataObject);
+
+    await reduxUpdateUserProfile(formDataObject);
     return true;
   } catch (err) {
     if (err.response.status >= 400 && err.response.status <= 500) {
