@@ -21,35 +21,35 @@ export default combineReducers({
   userProfiles: UserProfilesSlice,
 
   // Notifications
-  Notifications: NotificationsSlice,
+  notifications: NotificationsSlice,
 
   // Categories
-  Categories: CategoriesSlice,
+  categories: CategoriesSlice,
 
   // Promotions
-  Promotions: PromotionsSlice,
+  promotions: PromotionsSlice,
 
   // Products
-  Products: ProductsSlice,
+  products: ProductsSlice,
 
   // Sizes
-  Sizes: SizesSlice,
+  sizes: SizesSlice,
 
   // Colors
-  Colors: ColorsSlice,
+  colors: ColorsSlice,
 
   // Carts
-  Carts: CartsSlice,
+  carts: CartsSlice,
 
   // Payments
-  Payments: PaymentsSlice,
+  payments: PaymentsSlice,
 
   // Reviews
-  Reviews: ReviewsSlice,
+  reviews: ReviewsSlice,
 
   // Discussions
-  Discussions: DiscussionsSlice,
+  discussions: DiscussionsSlice,
 
   // Replies
-  Replies: RepliesSlice,
+  replies: RepliesSlice,
 });
