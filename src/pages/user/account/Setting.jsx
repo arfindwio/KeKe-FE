@@ -27,7 +27,7 @@ import { FiEyeOff } from "react-icons/fi";
 import { FaCheck } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
-const Setting = () => {
+export const Setting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const Setting = () => {
     newPasswordConfirmation: "",
   });
 
-  const isMobile = useMediaQuery({ maxDeviceWidth: 639 });
+  const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
 
   useEffect(() => {
     const token = CookieStorage.get(CookiesKeys.AuthToken);
@@ -144,14 +144,14 @@ const Setting = () => {
   return (
     <>
       <Navbar />
-      <div className="px-6 pb-16 pt-4 sm:px-10 sm:pb-8 sm:pt-24 lg:px-20">
+      <div className="px-6 pb-24 pt-4 sm:px-10 sm:pb-8 sm:pt-24 lg:px-20">
         <div className="flex w-full flex-col justify-between overflow-hidden rounded-xl border-2 border-neutral-2">
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Account Setting
           </h3>
-          <div className="flex w-full gap-6 bg-slate-100 p-10 ">
+          <div className="flex w-full gap-6 bg-slate-100 p-5 sm:p-10 ">
             {!isMobile && (
-              <div className="flex w-[40%] flex-col gap-6">
+              <div className="flex flex-col gap-6 sm:w-[40%]">
                 <SidebarAccount />
               </div>
             )}
@@ -160,7 +160,7 @@ const Setting = () => {
                 className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]"
                 onKeyDown={handleChangePassword}
               >
-                <h4 className="mb-3 text-center text-2xl font-bold">
+                <h4 className="w-full text-center text-xl font-bold sm:mb-3 sm:text-2xl">
                   Change Password
                 </h4>
                 <div className="flex w-full flex-col">
@@ -330,5 +330,3 @@ const Setting = () => {
     </>
   );
 };
-
-export default Setting;
