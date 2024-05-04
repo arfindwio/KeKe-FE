@@ -28,23 +28,23 @@ export const SidebarAccount = () => {
         to={"/account-profile"}
         className={`${
           currentPath === "/account-profile"
-            ? "border-neutral-2 font-bold text-neutral-2"
-            : "group font-normal hover:border-neutral-2 hover:text-neutral-2"
-        } flex gap-6 border-b-2 border-neutral-4 pb-3 `}
+            ? "border-neutral-2 text-lg font-bold text-neutral-2"
+            : "group border-neutral-4 text-base font-normal hover:border-neutral-2 hover:text-neutral-2"
+        } flex gap-6 border-b-2 pb-3 `}
       >
         <FiEdit3 size={25} className="text-neutral-2" />
-        <p className="text-base group-hover:font-semibold">Edit Profile</p>
+        <p className="group-hover:font-semibold">Profile</p>
       </Link>
       <Link
         to={"/account-setting"}
         className={`${
           currentPath === "/account-setting"
-            ? "border-neutral-2 font-bold text-neutral-2"
-            : "group font-normal hover:border-neutral-2 hover:text-neutral-2"
-        } flex gap-6 border-b-2 border-neutral-4 pb-3 `}
+            ? "border-neutral-2 text-lg font-bold text-neutral-2"
+            : "group border-neutral-4 text-base font-normal hover:border-neutral-2 hover:text-neutral-2"
+        } flex gap-6 border-b-2 pb-3 `}
       >
         <TbSettings size={25} className="text-neutral-2" />
-        <p className="text-base group-hover:font-semibold">Setting</p>
+        <p className="group-hover:font-semibold">Setting</p>
       </Link>
       <button
         className="group flex gap-6 border-b-2 border-neutral-4 pb-3 hover:border-neutral-2 hover:text-neutral-2"
