@@ -11,5 +11,5 @@ export const reduxPostCreateNotification = async (input) => {
 };
 
 export const reduxPutMarkAsReadNotifications = async () => {
-  return await http.post(`${API_ENDPOINT.NOTIFICATIONS}/markAsRead`);
+  return await http.put(`${API_ENDPOINT.NOTIFICATIONS}/markAsRead`);
 };
