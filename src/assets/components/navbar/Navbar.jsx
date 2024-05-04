@@ -21,7 +21,7 @@ export const Navbar = () => {
   const queryParams = new URLSearchParams(location.search);
   const googleTokenValue = queryParams.get("googleToken");
 
-  const isMobile = useMediaQuery({ maxDeviceWidth: 639 });
+  const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
 
   useEffect(() => {
     if (googleTokenValue) {

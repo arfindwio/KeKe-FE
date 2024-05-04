@@ -43,7 +43,7 @@ export const Profile = () => {
 
   const userData = useSelector((state) => state.users.userAuthenticate);
 
-  const isMobile = useMediaQuery({ maxDeviceWidth: 639 });
+  const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
 
   useEffect(() => {
     const token = CookieStorage.get(CookiesKeys.AuthToken);
@@ -126,14 +126,14 @@ export const Profile = () => {
   return (
     <>
       <Navbar />
-      <div className="px-6 pb-16 pt-4 sm:px-10 sm:pb-8 sm:pt-24 lg:px-20">
+      <div className="px-6 pb-24 pt-4 sm:px-10 sm:pb-8 sm:pt-24 lg:px-20">
         <div className="flex w-full flex-col justify-between overflow-hidden rounded-xl border-2 border-neutral-2">
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Account Profile
           </h3>
-          <div className="flex w-full gap-6 bg-slate-100 p-10 ">
+          <div className="flex w-full gap-6 bg-slate-100 p-5 sm:p-10 ">
             {!isMobile && (
-              <div className="flex w-[40%] flex-col gap-6">
+              <div className="flex flex-col gap-6 sm:w-[40%]">
                 <SidebarAccount />
               </div>
             )}
@@ -197,7 +197,7 @@ export const Profile = () => {
                   <input
                     type="email"
                     id="email"
-                    className="rounded-2xl border-2 px-4 py-2 text-neutral-3 outline-none focus:border-neutral-2"
+                    className="rounded-2xl border-2 bg-slate-50 px-4 py-2 text-neutral-3 outline-none focus:border-neutral-2"
                     value={inputUserProfile.email}
                     disabled
                   />
