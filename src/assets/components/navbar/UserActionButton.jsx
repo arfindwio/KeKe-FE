@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -40,14 +40,18 @@ export const UserActionButton = () => {
         <div className="flex items-center gap-6">
           <Link
             to={"/history"}
-            className={`${currentPath === "/history" ? "text-neutral-2" : ""}`}
+            className={`${
+              currentPath === "/history" ? "text-neutral-1" : "text-neutral-3"
+            }`}
           >
             <IoList size={25} />
           </Link>
           <Link
             to={"/notification"}
             className={`${
-              currentPath === "/notification" ? "text-neutral-2" : ""
+              currentPath === "/notification"
+                ? "text-neutral-1"
+                : "text-neutral-3"
             }`}
           >
             <FiBell size={23} />
@@ -57,8 +61,8 @@ export const UserActionButton = () => {
             className={`${
               currentPath === "/account-profile" ||
               currentPath === "/account-setting"
-                ? "text-neutral-2"
-                : ""
+                ? "text-neutral-1"
+                : "text-neutral-3"
             }`}
           >
             <LuUser size={25} />

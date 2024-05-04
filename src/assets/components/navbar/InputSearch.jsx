@@ -1,11 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // Icons
 import { LuSearch } from "react-icons/lu";
 
 export const InputSearch = () => {
-  const searchRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -15,31 +14,30 @@ export const InputSearch = () => {
   const searchValue = queryParams.get("search");
 
   const handleSearch = (event) => {
-    const keyword = searchRef.current?.value;
+    const keyword = event.target.value.trim();
 
-    if (!keyword || keyword.trim() === "") return;
+    if (!keyword) return;
 
     if (event.key === "Enter" || event.type === "click") {
       event.preventDefault();
-      if (currentPath === "/flight") {
+      if (currentPath === "/product") {
         if (queryParams) {
           if (searchValue) {
-            const newQueryParams = queryParams.replace(
-              /search=([^&]*)/,
-              `search=${keyword}`,
-            );
-            navigate(`/flight?${newQueryParams}`);
+            const newQueryParams = queryParams
+              .toString()
+              .replace(/search=([^&]*)/, `search=${keyword}`);
+            navigate(`/product?${newQueryParams}`);
           } else {
             const newQueryParams = decodeURIComponent(
-              queryParams.replace(/\+/g, "%20"),
+              queryParams.toString().replace(/\+/g, "%20"),
             );
-            navigate(`/flight?${newQueryParams}&search=${keyword}`);
+            navigate(`/product?${newQueryParams}&search=${keyword}`);
           }
         } else {
-          navigate(`/flight?search=${keyword}`);
+          navigate(`/product?search=${keyword}`);
         }
       } else {
-        navigate(`/flight?search=${keyword}`);
+        navigate(`/product?search=${keyword}`);
       }
     }
   };
@@ -50,7 +48,6 @@ export const InputSearch = () => {
         type="text"
         className="w-[100%] rounded-2xl border bg-slate-100 py-2 pl-4 pr-10 outline-none"
         placeholder="Search..."
-        ref={searchRef}
         onKeyDown={handleSearch}
       />
       <LuSearch

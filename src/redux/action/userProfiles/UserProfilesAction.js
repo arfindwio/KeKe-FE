@@ -19,8 +19,6 @@ export const putUpdateUserProfile = (formData) => async (dispatch) => {
     formDataObject.append("country", country);
     formDataObject.append("image", image || "");
 
-    console.log(formDataObject);
-
     await reduxUpdateUserProfile(formDataObject);
     return true;
   } catch (err) {

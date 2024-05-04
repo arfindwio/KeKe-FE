@@ -10,6 +10,7 @@ import { VerifyAccount } from "../pages/user/auth/VerifyAccount";
 import { ForgetPassword } from "../pages/user/auth/ForgetPassword";
 import { UpdatePassword } from "../pages/user/auth/UpdatePassword";
 import { Profile } from "../pages/user/account/Profile";
+import Setting from "../pages/user/account/Setting";
 
 export const RouteList = () => {
   return (
@@ -28,6 +29,7 @@ export const RouteList = () => {
 
         {/* Account */}
         <Route path="/account-profile" element={<Profile />} />
+        <Route path="/account-setting" element={<Setting />} />
       </Routes>
     </BrowserRouter>
   );

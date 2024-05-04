@@ -52,20 +52,25 @@ export const Profile = () => {
   }, [navigate]);
 
   useEffect(() => {
-    const user = dispatch(getUserAuthenticateAction());
-    if (user && userData) {
-      setDataImage(userData.userProfile.profilePicture || "");
-      setInputUserProfile({
-        image: null,
-        fullName: userData.userProfile.fullName,
-        phoneNumber: userData.userProfile.phoneNumber,
-        email: userData.email,
-        city: userData.userProfile.city || "",
-        address: userData.userProfile.address || "",
-        country: userData.userProfile.country || "",
-      });
-    }
+    const fetchData = async () => {
+      await dispatch(getUserAuthenticateAction());
+    };
+
+    fetchData();
   }, [dispatch]);
+
+  useEffect(() => {
+    setDataImage(userData.userProfile.profilePicture || "");
+    setInputUserProfile({
+      image: null,
+      fullName: userData.userProfile.fullName,
+      phoneNumber: userData.userProfile.phoneNumber,
+      email: userData.email,
+      city: userData.userProfile.city || "",
+      address: userData.userProfile.address || "",
+      country: userData.userProfile.country || "",
+    });
+  }, [userData]);
 
   const handleInputChange = (e, field) => {
     if (field === "image") {
@@ -121,7 +126,7 @@ export const Profile = () => {
   return (
     <>
       <Navbar />
-      <div className="px-6 pb-16 pt-4 sm:px-10 sm:pb-8 sm:pt-20 lg:px-20">
+      <div className="px-6 pb-16 pt-4 sm:px-10 sm:pb-8 sm:pt-24 lg:px-20">
         <div className="flex w-full flex-col justify-between overflow-hidden rounded-xl border-2 border-neutral-2">
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Account Profile
