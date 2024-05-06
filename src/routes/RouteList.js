@@ -12,6 +12,7 @@ import { UpdatePassword } from "../pages/user/auth/UpdatePassword";
 import { Profile } from "../pages/user/account/Profile";
 import { Setting } from "../pages/user/account/Setting";
 import { Notification } from "../pages/user/account/Notification";
+import { History } from "../pages/user/account/History";
 
 export const RouteList = () => {
   return (
@@ -32,6 +33,7 @@ export const RouteList = () => {
         <Route path="/account-profile" element={<Profile />} />
         <Route path="/account-setting" element={<Setting />} />
         <Route path="/notification" element={<Notification />} />
+        <Route path="/history" element={<History />} />
       </Routes>
     </BrowserRouter>
   );

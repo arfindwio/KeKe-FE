@@ -28,7 +28,7 @@ export const Notification = () => {
   useEffect(() => {
     const token = CookieStorage.get(CookiesKeys.AuthToken);
 
-    if (!token) navigate("/");
+    if (!token) return navigate("/");
   }, [navigate]);
 
   useEffect(() => {
