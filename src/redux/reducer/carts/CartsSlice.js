@@ -16,6 +16,7 @@ const CartsSlice = createSlice({
     setCart: (state, action) => {
       state.cart = action.payload;
     },
+    resetCart: () => initialState,
     startLoading: (state) => {
       state.loading = true;
     },
@@ -25,7 +26,7 @@ const CartsSlice = createSlice({
   },
 });
 
-export const { setCarts, setCart, startLoading, endLoading } =
+export const { setCarts, setCart, resetCart, startLoading, endLoading } =
   CartsSlice.actions;
 
 export default CartsSlice.reducer;

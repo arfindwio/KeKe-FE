@@ -6,8 +6,8 @@ import {
   reduxDeleteCartById,
 } from "../../../services/carts/Carts";
 import {
-  setCategories,
-  setCategory,
+  setCarts,
+  setCart,
   startLoading,
   endLoading,
 } from "../../reducer/carts/CartsSlice";
@@ -16,7 +16,7 @@ export const getAllCartsByAuthAction = () => async (dispatch) => {
   try {
     dispatch(startLoading());
     const result = await reduxGetAllCartsByAuth();
-    dispatch(setCategories(result.data.data.carts));
+    dispatch(setCarts(result.data.data.carts));
     return true;
   } catch (err) {
     if (err.response) {
@@ -50,10 +50,10 @@ export const postCreateCartByProductIdAction =
     }
   };
 
-export const putEditCartByIdAction = (input, productId) => async (dispatch) => {
+export const putEditCartByIdAction = (input, cartId) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxPutEditCartById(input, productId);
+    await reduxPutEditCartById(input, cartId);
     return true;
   } catch (err) {
     if (err.response) {

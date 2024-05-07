@@ -16,6 +16,9 @@ const UsersSlice = createSlice({
     setUserAuthenticate: (state, action) => {
       state.userAuthenticate = action.payload;
     },
+    resetUserAuth: (state) => {
+      state.userAuthenticate = [];
+    },
     startLoading: (state) => {
       state.loading = true;
     },
@@ -25,7 +28,12 @@ const UsersSlice = createSlice({
   },
 });
 
-export const { setUsers, setUserAuthenticate, startLoading, endLoading } =
-  UsersSlice.actions;
+export const {
+  setUsers,
+  setUserAuthenticate,
+  resetUserAuth,
+  startLoading,
+  endLoading,
+} = UsersSlice.actions;
 
 export default UsersSlice.reducer;

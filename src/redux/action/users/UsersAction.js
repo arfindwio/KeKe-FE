@@ -12,9 +12,12 @@ import {
 import {
   setUsers,
   setUserAuthenticate,
+  resetUserAuth,
   startLoading,
   endLoading,
 } from "../../reducer/users/UsersSlice";
+import { resetCart } from "../../reducer/carts/CartsSlice";
+import { resetNotification } from "../../reducer/notifications/NotificationsSlice";
 import { showErrorToast } from "../../../helper/ToastHelper";
 import { CookiesKeys, CookieStorage } from "../../../utils/cookie";
 
@@ -55,8 +58,11 @@ export const postLoginUserAction = (input) => async (dispatch) => {
   }
 };
 
-export const logoutUserAction = () => () => {
+export const logoutUserAction = () => (dispatch) => {
   try {
+    dispatch(resetUserAuth());
+    dispatch(resetNotification());
+    dispatch(resetCart());
     CookieStorage.remove(CookiesKeys.AuthToken);
   } catch (err) {
     if (err.response) {

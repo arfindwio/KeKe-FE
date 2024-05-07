@@ -13,6 +13,7 @@ import { Profile } from "../pages/user/account/Profile";
 import { Setting } from "../pages/user/account/Setting";
 import { Notification } from "../pages/user/account/Notification";
 import { History } from "../pages/user/account/History";
+import { Cart } from "../pages/user/account/Cart";
 
 export const RouteList = () => {
   return (
@@ -34,6 +35,7 @@ export const RouteList = () => {
         <Route path="/account-setting" element={<Setting />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/history" element={<History />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </BrowserRouter>
   );

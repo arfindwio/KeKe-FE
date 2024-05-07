@@ -16,9 +16,6 @@ export const History = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const notificationData = useSelector(
-    (state) => state.notifications.notifications,
-  );
   const paymentHistoryData = useSelector(
     (state) => state.payments.paymentsHistory,
   );

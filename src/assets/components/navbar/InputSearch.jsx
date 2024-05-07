@@ -43,7 +43,7 @@ export const InputSearch = () => {
   };
 
   return (
-    <div className="relative pl-10">
+    <div className="relative sm:pl-2 md:pl-10">
       <input
         type="text"
         className="w-[100%] rounded-2xl border bg-slate-100 py-2 pl-4 pr-10 outline-none"

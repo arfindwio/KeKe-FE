@@ -16,6 +16,7 @@ const NotificationsSlice = createSlice({
     setNotification: (state, action) => {
       state.notification = action.payload;
     },
+    resetNotification: () => initialState,
     startLoading: (state) => {
       state.loading = true;
     },
@@ -25,7 +26,12 @@ const NotificationsSlice = createSlice({
   },
 });
 
-export const { setNotifications, setNotification, startLoading, endLoading } =
-  NotificationsSlice.actions;
+export const {
+  setNotifications,
+  setNotification,
+  resetNotification,
+  startLoading,
+  endLoading,
+} = NotificationsSlice.actions;
 
 export default NotificationsSlice.reducer;
