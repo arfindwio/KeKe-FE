@@ -32,12 +32,11 @@ export const Notification = () => {
   }, [navigate]);
 
   useEffect(() => {
-    const fetchNotificationData = async () => {
-      await dispatch(getAllNotificationsAction());
+    const delayFetch = setTimeout(async () => {
       await dispatch(putMarkAsReadNotificationAction());
-    };
+    }, 1000);
 
-    fetchNotificationData();
+    return () => clearTimeout(delayFetch);
   }, [dispatch]);
 
   const handleClick = async () => {
