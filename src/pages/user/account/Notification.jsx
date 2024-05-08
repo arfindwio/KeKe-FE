@@ -47,7 +47,7 @@ export const Notification = () => {
   return (
     <>
       <Navbar />
-      <div className="px-6 pb-20 pt-4 sm:px-10 sm:pb-4 sm:pt-24 lg:px-20">
+      <div className="px-4 pb-20 pt-24 sm:px-10 md:pb-4 lg:px-20">
         <div className="flex min-h-[70vh] w-full flex-col overflow-hidden rounded-xl border-2 border-neutral-2 bg-slate-50 sm:min-h-[60vh]">
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Notification

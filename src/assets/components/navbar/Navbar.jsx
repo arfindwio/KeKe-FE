@@ -28,7 +28,7 @@ export const Navbar = () => {
   const googleTokenValue = queryParams.get("googleToken");
   const token = CookieStorage.get(CookiesKeys.AuthToken);
 
-  const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
+  const isMobile = useMediaQuery({ maxDeviceWidth: 719 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,25 +53,24 @@ export const Navbar = () => {
 
   return (
     <>
-      {isMobile ? (
-        <NavbarMobile />
-      ) : (
-        <header className="fixed z-50 flex w-full items-center justify-between border-b bg-neutral-5 px-10 py-2 shadow-md print:hidden lg:px-20">
-          <div className="flex w-fit items-center justify-between">
-            <Link to={"/"}>
-              <img
-                src={Logo}
-                alt="Travelesia Logo"
-                width={1}
-                height={1}
-                className="w-[5.3rem]"
-              />
-            </Link>
-            <InputSearch />
-          </div>
+      <header className="fixed z-50 flex w-full items-center justify-between border-b bg-neutral-5 px-4 py-2 shadow-md print:hidden sm:px-10 lg:px-20">
+        <div className="flex w-full items-center justify-between md:w-fit">
+          <Link to={"/"}>
+            <img
+              src={Logo}
+              alt="Travelesia Logo"
+              width={1}
+              height={1}
+              className="w-[5.3rem]"
+            />
+          </Link>
+          <InputSearch />
+        </div>
+        <div className="hidden md:flex">
           <UserActionButton />
-        </header>
-      )}
+        </div>
+      </header>
+      {isMobile && <NavbarMobile />}
     </>
   );
 };

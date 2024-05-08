@@ -126,7 +126,7 @@ export const Profile = () => {
   return (
     <>
       <Navbar />
-      <div className="px-6 pb-24 pt-4 sm:px-10 sm:pb-8 sm:pt-24 lg:px-20">
+      <div className="px-4 pb-20 pt-24 sm:px-10 md:pb-4 lg:px-20">
         <div className="flex w-full flex-col justify-between overflow-hidden rounded-xl border-2 border-neutral-2">
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Account Profile
