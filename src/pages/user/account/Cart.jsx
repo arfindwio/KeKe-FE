@@ -49,7 +49,7 @@ export const Cart = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-[100vh] bg-slate-100 px-4 pb-48 pt-4 sm:px-10 sm:pb-4 sm:pt-24 lg:px-20">
+      <div className="min-h-[100vh] bg-slate-100 px-4 pb-48 pt-24 sm:px-10 sm:pb-52 md:pb-36 lg:px-20 lg:pb-4">
         <h1 className="mb-3 text-2xl font-bold text-neutral-1">
           Shopping Cart
         </h1>
@@ -77,12 +77,9 @@ export const Cart = () => {
                   </Link>
                 </div>
               </div>
-              //   <p className="m-auto text-2xl font-bold italic text-neutral-4">
-              //     - No carts found -
-              //   </p>
             )}
           </div>
-          <div className="fixed bottom-14 left-0 flex w-full flex-col gap-1 rounded-md border border-neutral-4 bg-neutral-5 px-3 pb-4 pt-2 shadow-sm sm:bottom-0 lg:sticky lg:top-20 lg:h-fit lg:w-[30%] lg:gap-3 lg:py-4">
+          <div className="fixed bottom-14 left-0 flex w-full flex-col gap-1 rounded-md border border-neutral-4 bg-neutral-5 px-4 pb-4 pt-2 shadow-sm sm:px-10 md:bottom-0 lg:sticky lg:top-20 lg:h-fit lg:w-[30%] lg:gap-3 lg:px-3 lg:py-4 lg:pb-4 lg:pt-2">
             <button
               className="mx-auto flex w-fit items-center justify-center gap-1 text-neutral-1 hover:font-semibold lg:hidden"
               onClick={() => setShowDetail(!showDetail)}
