@@ -75,9 +75,9 @@ export const NavbarMobile = () => {
                 currentPath === "/cart" ? "text-neutral-1" : "text-neutral-3"
               } ${
                 token ? " w-[24.5%]" : "w-[33%]"
-              } flex flex-col items-center justify-center gap-1 break-all text-center`}
+              } flex flex-col items-center justify-center`}
             >
-              <div className="relative w-fit">
+              <div className="relative flex h-full w-fit flex-col gap-1 break-all text-center">
                 <MdOutlineShoppingCart size={25} />
                 <p className="text-xs font-medium">Cart</p>
                 {cartData.length > 0 && (
@@ -100,7 +100,10 @@ export const NavbarMobile = () => {
         ) : (
           <button
             className={`${
-              currentPath === "/account/profile"
+              currentPath === "/account-profile" ||
+              currentPath === "/account-setting" ||
+              currentPath === "/notification" ||
+              currentPath === "/history"
                 ? "text-neutral-1"
                 : "text-neutral-3"
             } flex w-[24.5%] flex-col items-center justify-center gap-1 break-all text-center`}
