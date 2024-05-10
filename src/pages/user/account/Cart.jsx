@@ -9,6 +9,7 @@ import { getAllCartsByAuthAction } from "../../../redux/action/carts/CartsAction
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { CartCard } from "../../../assets/components/card/CartCard";
+import { Footer } from "../../../assets/components/footer/Footer";
 
 // Icons
 import { BsBasketFill } from "react-icons/bs";
@@ -49,7 +50,7 @@ export const Cart = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-[100vh] bg-slate-100 px-4 pb-48 pt-24 sm:px-10 sm:pb-52 md:pb-36 lg:px-20 lg:pb-4">
+      <div className="min-h-[30vh] bg-slate-100 px-4 pb-10 pt-24 sm:px-10 lg:px-20">
         <h1 className="mb-3 text-2xl font-bold text-neutral-1">
           Shopping Cart
         </h1>
@@ -138,6 +139,7 @@ export const Cart = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

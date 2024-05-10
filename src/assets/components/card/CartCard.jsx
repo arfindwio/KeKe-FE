@@ -208,7 +208,7 @@ export const CartCard = ({ cart }) => {
           {isFocused && (
             <button
               type="button"
-              className="absolute right-0 border-2 border-neutral-1 bg-neutral-5 px-2 py-[1px] text-sm hover:bg-neutral-1 hover:text-neutral-5"
+              className="absolute right-0 rounded-md border-2 border-neutral-1 bg-neutral-5 px-2 py-[1px] text-sm hover:bg-neutral-1 hover:text-neutral-5"
               onClick={handleNoteSubmit}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
