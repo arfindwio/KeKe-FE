@@ -9,7 +9,7 @@ import { getUserAuthenticateAction } from "../../../redux/action/users/UsersActi
 import { getAllNotificationsAction } from "../../../redux/action/notifications/NotificationsAction";
 
 // Image
-import Logo from "../../img/TravelesiaLogo.svg";
+import Logo from "../../img/Logo1.svg";
 
 // Components
 import { InputSearch } from "./InputSearch";
@@ -58,10 +58,10 @@ export const Navbar = () => {
           <Link to={"/"}>
             <img
               src={Logo}
-              alt="Travelesia Logo"
+              alt="KeKe Logo"
               width={1}
               height={1}
-              className="w-[5.3rem]"
+              className="w-[2.8rem]"
             />
           </Link>
           <InputSearch />

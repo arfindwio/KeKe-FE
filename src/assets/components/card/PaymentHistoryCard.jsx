@@ -51,14 +51,14 @@ export const PaymentHistoryCard = ({ payment }) => {
           <div className="flex w-full flex-col gap-2 border-neutral-4 sm:w-[78%] sm:border-r-2">
             {displayedItems.map((cart, index) => (
               <div
-                className="flex w-full items-center justify-between"
+                className="flex w-full justify-between sm:items-center"
                 key={index}
               >
-                <div className="w-[32%] sm:w-[25%] md:w-[20%] lg:w-[10%]">
+                <div className="w-[32%] rounded-md sm:w-[25%] md:w-[20%] lg:w-[10%]">
                   <img
                     src={cart.product?.productImage}
                     alt="Product"
-                    className="min-w-full max-w-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 </div>
                 <div className="flex w-[66%] flex-col sm:w-[73%] md:w-[78%] lg:w-[88%]">

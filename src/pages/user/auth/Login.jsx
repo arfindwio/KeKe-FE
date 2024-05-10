@@ -11,7 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import { postLoginUserAction } from "../../../redux/action/users/UsersAction";
 
 // Image
-import Logo from "../../../assets/img/TravelesiaLogo.svg";
+import Logo from "../../../assets/img/Logo2.svg";
 
 // Helper
 import {
@@ -61,17 +61,14 @@ export const Login = () => {
   return (
     <>
       <div className="flex min-h-screen">
-        <div className="hidden min-h-screen items-center justify-center gap-2 bg-slate-700 bg-gradient-to-b from-15% via-65% md:flex md:w-1/2 md:flex-col">
+        <div className="hidden min-h-screen items-center justify-center gap-2 bg-neutral-3 bg-gradient-to-b from-15% via-65% md:flex md:w-1/2 md:flex-col">
           <img
             src={Logo}
-            alt="Travelesia Logo"
+            alt="KeKe Logo"
             width={1}
             height={1}
             className="w-1/3"
           />
-          <h1 className="text-neutral-5 font-sans md:text-5xl lg:text-6xl">
-            Travelesia
-          </h1>
         </div>
         <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
           <div className="flex w-full flex-col gap-4">
@@ -135,19 +132,19 @@ export const Login = () => {
                 </div>
               </div>
               <button
-                className="text-neutral-5 bg-neutral-1 mt-3 w-full rounded-2xl py-4 text-base font-medium hover:bg-opacity-80"
+                className="mt-3 w-full rounded-2xl bg-neutral-1 py-4 text-base font-medium text-neutral-5 hover:bg-opacity-80"
                 onClick={handleLogin}
               >
                 Login
               </button>
             </form>
             <div className="mx-auto flex w-full items-center justify-between">
-              <span className="border-neutral-4 w-[45%] border-t-2"></span>
-              <p className="text-neutral-4 text-lg font-medium italic">OR</p>
-              <span className="border-neutral-4 w-[45%] border-t-2"></span>
+              <span className="w-[45%] border-t-2 border-neutral-4"></span>
+              <p className="text-lg font-medium italic text-neutral-4">OR</p>
+              <span className="w-[45%] border-t-2 border-neutral-4"></span>
             </div>
             <button
-              className="bg-neutral-5 hover:bg-neutral-1 border-neutral-1 group flex w-full items-center justify-center gap-3 rounded-2xl border-2  py-3 text-base font-medium"
+              className="group flex w-full items-center justify-center gap-3 rounded-2xl border-2 border-neutral-1 bg-neutral-5 py-3  text-base font-medium hover:bg-neutral-1"
               onClick={() =>
                 (window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/google`)
               }

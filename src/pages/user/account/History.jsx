@@ -8,6 +8,7 @@ import { getPaymentsHistoryAction } from "../../../redux/action/payments/Payment
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { PaymentHistoryCard } from "../../../assets/components/card/PaymentHistoryCard";
+import { Footer } from "../../../assets/components/footer/Footer";
 
 // Cookies
 import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
@@ -37,7 +38,7 @@ export const History = () => {
   return (
     <>
       <Navbar />
-      <div className="px-4 pb-20 pt-24 sm:px-10 md:pb-4 lg:px-20">
+      <div className="px-4 pb-20 pt-24 sm:px-10 md:pb-10 lg:px-20">
         <div className="flex min-h-[70vh] w-full flex-col overflow-hidden rounded-xl border-2 border-neutral-2 bg-slate-50 sm:min-h-[80vh]">
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Payment History
@@ -55,6 +56,7 @@ export const History = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

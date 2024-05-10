@@ -14,7 +14,7 @@ import {
 import { postForgetPassAction } from "../../../redux/action/users/UsersAction";
 
 // Image
-import Logo from "../../../assets/img/TravelesiaLogo.svg";
+import Logo from "../../../assets/img/Logo2.svg";
 
 // Icons
 import { IoArrowBack } from "react-icons/io5";
@@ -65,17 +65,14 @@ export const ForgetPassword = () => {
 
   return (
     <div className="flex min-h-screen">
-      <div className="hidden min-h-screen items-center justify-center gap-2 bg-slate-700 md:flex md:w-1/2 md:flex-col">
+      <div className="hidden min-h-screen items-center justify-center gap-2 bg-neutral-3 md:flex md:w-1/2 md:flex-col">
         <img
           src={Logo}
-          alt="Travelesia Logo"
+          alt="KeKe Logo"
           width={1}
           height={1}
           className="w-1/3"
         />
-        <h1 className="text-neutral-5 font-sans md:text-5xl lg:text-6xl">
-          Travelesia
-        </h1>
       </div>
       <div className="flex w-full items-center px-[10%] md:w-1/2 md:px-10 lg:px-20 xl:px-[10%]">
         <form
@@ -106,21 +103,21 @@ export const ForgetPassword = () => {
             />
             {validateEmail ? (
               <>
-                <div className="border-alert-red bg-neutral-5 absolute right-4 top-9 rounded-full border-2 p-1">
+                <div className="absolute right-4 top-9 rounded-full border-2 border-alert-red bg-neutral-5 p-1">
                   <IoClose size={15} className="text-alert-red" />
                 </div>
-                <p className="text-alert-red ms-3 text-sm">{validateEmail}</p>
+                <p className="ms-3 text-sm text-alert-red">{validateEmail}</p>
               </>
             ) : (
               inputEmail && (
-                <div className="border-alert-green bg-alert-green absolute right-4 top-9 rounded-full border-2 p-1">
+                <div className="absolute right-4 top-9 rounded-full border-2 border-alert-green bg-alert-green p-1">
                   <FaCheck size={15} className="text-neutral-5" />
                 </div>
               )
             )}
           </div>
           <button
-            className="bg-neutral-1 text-neutral-5 mt-3 w-full rounded-2xl py-3 text-sm hover:bg-opacity-80"
+            className="mt-3 w-full rounded-2xl bg-neutral-1 py-3 text-sm text-neutral-5 hover:bg-opacity-80"
             onClick={handleForgetPassword}
           >
             Submit
