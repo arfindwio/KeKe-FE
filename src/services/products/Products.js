@@ -21,3 +21,11 @@ export const reduxPutEditProductById = async (input, productId) => {
 export const reduxDeleteProductById = async (productId) => {
   return await http.delete(`${API_ENDPOINT.PRODUCTS}/${productId}`);
 };
+
+export const reduxGetProductsRecommendation = async () => {
+  return await http.get(`${API_ENDPOINT.PRODUCTS}/featured/recommendation`);
+};
+
+export const reduxGetSpecialOfferProduct = async () => {
+  return await http.get(`${API_ENDPOINT.PRODUCTS}/featured/specialOffer`);
+};
