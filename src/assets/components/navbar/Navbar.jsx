@@ -5,7 +5,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 // Redux Actions
-import { getUserAuthenticateAction } from "../../../redux/action/users/UsersAction";
+import {
+  getUserAuthenticateAction,
+  logoutUserAction,
+} from "../../../redux/action/users/UsersAction";
 import { getAllNotificationsAction } from "../../../redux/action/notifications/NotificationsAction";
 
 // Image
@@ -36,7 +39,7 @@ export const Navbar = () => {
         await dispatch(getAllNotificationsAction());
         const user = await dispatch(getUserAuthenticateAction());
         if (!user) {
-          CookieStorage.remove(CookiesKeys.AuthToken);
+          await dispatch(logoutUserAction());
         }
       }
     };
