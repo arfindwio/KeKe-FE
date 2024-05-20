@@ -16,6 +16,12 @@ export const SpecialOfferCard = () => {
     (state) => state.products.specialOfferProduct,
   );
 
+  const soldPercent = `w-[${Math.round(
+    (specialOfferData?.soldCount /
+      (specialOfferData?.soldCount + specialOfferData?.stock)) *
+      100,
+  )}%]`;
+
   useEffect(() => {
     const interval = setInterval(() => {
       const currentDate = new Date();
@@ -45,11 +51,15 @@ export const SpecialOfferCard = () => {
   }, []);
 
   const averageRating = (reviews) => {
-    const totalRating = reviews.reduce((acc, curr) => acc + curr.userRating, 0);
-    const average = totalRating / reviews.length;
+    const totalRating = reviews?.reduce(
+      (acc, curr) => acc + curr.userRating,
+      0,
+    );
+    const average = totalRating / reviews?.length;
 
     return average;
   };
+
   return (
     <>
       <div className="flex flex-col gap-4 border-b border-neutral-4 pb-4">
@@ -65,7 +75,7 @@ export const SpecialOfferCard = () => {
               <div className="flex items-center gap-1">
                 <FaStar size={20} className="text-alert-yellow" />
                 <p className="text-sm font-semibold text-neutral-2">
-                  {averageRating(specialOfferData.product.review)}
+                  {averageRating(specialOfferData.review)}
                 </p>
               </div>
             )}
@@ -106,11 +116,9 @@ export const SpecialOfferCard = () => {
             </div>
             <div className="w-full overflow-hidden rounded-full bg-neutral-4 px-[2px] py-[2px]">
               <div
-                className={`h-full ${`w-[${Math.round(
-                  (specialOfferData.soldCount /
-                    (specialOfferData.soldCount + specialOfferData.stock)) *
-                    100,
-                )}%]`} rounded-full border border-neutral-5 bg-neutral-1 py-1`}
+                className={`${
+                  soldPercent ? soldPercent : `w-0`
+                } h-full rounded-full border border-neutral-5 bg-neutral-1 py-1`}
               ></div>
             </div>
             <p className="text-sm font-medium">HURRY UP! OFFER ENDS IN:</p>

@@ -54,7 +54,7 @@ export const CategoryHomeCard = () => {
                   </p>
                 </div>
                 <Link
-                  to={"/"}
+                  to={`/product?c=${category.categoryName}`}
                   className="mt-auto w-fit rounded-md bg-neutral-1 px-2 py-1 text-xs text-neutral-5 hover:bg-opacity-80"
                 >
                   Show All

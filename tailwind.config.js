@@ -14,6 +14,9 @@ module.exports = withMT({
         sans: ["Poppins", "sans-serif"],
       },
       colors: {
+        primary: {
+          1: "#950000",
+        },
         neutral: {
           1: "#151515",
           2: "#3C3C3C",

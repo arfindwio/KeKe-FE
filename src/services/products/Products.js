@@ -2,8 +2,8 @@
 import { API_ENDPOINT } from "../../utils/api-endpoint";
 import http from "../../utils/http";
 
-export const reduxGetAllProducts = async () => {
-  return await http.get(`${API_ENDPOINT.PRODUCTS}`);
+export const reduxGetAllProducts = async (query) => {
+  return await http.get(`${API_ENDPOINT.PRODUCTS}${query}`);
 };
 
 export const reduxPostCreateProduct = async (input) => {
