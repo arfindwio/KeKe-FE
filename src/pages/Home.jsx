@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // Import Swiper React components
@@ -30,15 +30,21 @@ import { Footer } from "../assets/components/footer/Footer";
 
 export const Home = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const productData = useSelector((state) => state.products.products);
   const specialOfferData = useSelector(
     (state) => state.products.specialOfferProduct,
   );
+  const categoryData = useSelector((state) => state.categories.categories);
+
+  const queryParams = new URLSearchParams(location.search);
+  const categoryValue = queryParams.get("c");
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getAllProductsAction());
+      await dispatch(getAllProductsAction(""));
       await dispatch(getRecommendationProductsAction());
       await dispatch(getAllCategoriesAction());
       await dispatch(getSpecialOfferProductAction());
@@ -46,6 +52,12 @@ export const Home = () => {
 
     fetchData();
   }, []);
+
+  const handleFilter = async (categoryName) => {
+    let value = categoryName ? `?c=${categoryName}` : "";
+    navigate(value);
+    await dispatch(getAllProductsAction(value));
+  };
 
   const averageRating = (reviews) => {
     const totalRating = reviews.reduce((acc, curr) => acc + curr.userRating, 0);
@@ -57,7 +69,7 @@ export const Home = () => {
     <>
       <Navbar />
       <div className=" bg-slate-100 px-4 pb-10 pt-24 sm:px-10 md:pb-10 lg:px-20">
-        <div className="flex flex-col gap-5 md:gap-10">
+        <div className="flex flex-col gap-5">
           <BannerCard />
 
           <CategoryHomeCard />
@@ -82,15 +94,29 @@ export const Home = () => {
               modules={[Mousewheel, Keyboard]}
               className="w-full cursor-grab text-center lg:cursor-default"
             >
-              <SwiperSlide className="w-fit cursor-pointer rounded-full border border-neutral-3 bg-neutral-1 px-2 py-1 text-neutral-5">
+              <SwiperSlide
+                className={`${
+                  !categoryValue
+                    ? "bg-neutral-1 text-neutral-5"
+                    : "border-neutral-3 bg-neutral-4 hover:bg-neutral-1 hover:text-neutral-5"
+                } w-fit cursor-pointer break-all rounded-full border  px-2 py-1`}
+                onClick={() => handleFilter("")}
+              >
                 Show All
               </SwiperSlide>
-              <SwiperSlide className="w-fit cursor-pointer break-all rounded-full border border-neutral-3 bg-neutral-4 px-2 py-1 hover:bg-neutral-1 hover:text-neutral-5">
-                Categories
-              </SwiperSlide>
-              <SwiperSlide className="w-fit cursor-pointer break-all rounded-full border border-neutral-3 bg-neutral-4 px-2 py-1 hover:bg-neutral-1 hover:text-neutral-5">
-                Categories
-              </SwiperSlide>
+              {categoryData.map((category, index) => (
+                <SwiperSlide
+                  className={`${
+                    categoryValue === category.categoryName
+                      ? "bg-neutral-1 text-neutral-5"
+                      : "border-neutral-3 bg-neutral-4 hover:bg-neutral-1 hover:text-neutral-5"
+                  } w-fit cursor-pointer break-all rounded-full border  px-2 py-1`}
+                  key={index}
+                  onClick={() => handleFilter(category.categoryName)}
+                >
+                  {category.categoryName}
+                </SwiperSlide>
+              ))}
             </Swiper>
             <Swiper
               spaceBetween={10}
@@ -116,10 +142,10 @@ export const Home = () => {
               modules={[Mousewheel, Keyboard]}
               className="w-full cursor-grab lg:cursor-default"
             >
-              {productData.map((product) => (
+              {productData.map((product, index) => (
                 <SwiperSlide
                   className={`flex flex-col overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5`}
-                  key={product.id}
+                  key={index}
                 >
                   <img
                     src={product.productImage}
@@ -133,15 +159,24 @@ export const Home = () => {
                       "pb-8"
                     } flex flex-col gap-2 p-3`}
                   >
-                    <p className="text-sm font-semibold text-neutral-2">
+                    <p className="text-primary-1 text-sm font-semibold">
                       {product.category?.categoryName}
                     </p>
                     <p className="text-sm text-neutral-3">
                       {product.productName}
                     </p>
-                    <p className="text-base font-bold text-neutral-1">
-                      IDR {product.price.toLocaleString()}
-                    </p>
+                    <div
+                      className={`flex items-center gap-2 break-all text-base font-bold`}
+                    >
+                      <p className={`${product.promotion && "text-alert-red"}`}>
+                        IDR {product.price.toLocaleString()}
+                      </p>
+                      {product.promotion && (
+                        <p className="font-normal text-neutral-3 line-through">
+                          IDR {product.price / (1 - product.promotion.discount)}
+                        </p>
+                      )}
+                    </div>
                     <div className="flex items-center gap-2">
                       {product.review.length > 0 && (
                         <>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Images
 import Alfamart from "../../img/Alfamart.webp";
@@ -24,6 +25,8 @@ import { MdOutlineEmail } from "react-icons/md";
 export const Footer = () => {
   const location = useLocation();
 
+  const categoryData = useSelector((state) => state.categories.categories);
+
   const currentPath = location.pathname;
 
   return (
@@ -36,18 +39,18 @@ export const Footer = () => {
         <div className="flex w-full flex-col justify-between gap-6 pb-10 md:flex-row md:gap-0">
           <div className="flex w-full flex-col gap-4 md:w-[33%] md:gap-8">
             <h5 className="w-fit border-b pb-2 text-lg font-medium text-neutral-5">
-              Populer Categories
+              Popular Categories
             </h5>
             <div className="flex w-fit flex-col gap-2 text-sm">
-              <Link to={"/"} className="text-neutral-3 hover:text-neutral-5">
-                Categories
-              </Link>
-              <Link to={"/"} className="text-neutral-3 hover:text-neutral-5">
-                Categories
-              </Link>
-              <Link to={"/"} className="text-neutral-3 hover:text-neutral-5">
-                Categories
-              </Link>
+              {categoryData.map((category, index) => (
+                <Link
+                  to={`/product?${category.categoryName}`}
+                  className="text-neutral-3 hover:text-neutral-5"
+                  key={index}
+                >
+                  {category.categoryName}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex w-full flex-col gap-4 md:w-[33%] md:gap-8">

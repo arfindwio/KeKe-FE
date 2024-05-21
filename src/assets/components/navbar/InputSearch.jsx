@@ -10,8 +10,8 @@ export const InputSearch = () => {
 
   const currentPath = location.pathname;
 
-  const queryParams = new URLSearchParams(location.search);
-  const searchValue = queryParams.get("search");
+  const queryParams = location.search;
+  const searchValue = new URLSearchParams(queryParams).get("search");
 
   const handleSearch = (event) => {
     const keyword = event.target.value.trim();
@@ -26,7 +26,7 @@ export const InputSearch = () => {
             const newQueryParams = queryParams
               .toString()
               .replace(/search=([^&]*)/, `search=${keyword}`);
-            navigate(`/product?${newQueryParams}`);
+            navigate(`/product${newQueryParams}`);
           } else {
             const newQueryParams = decodeURIComponent(
               queryParams.toString().replace(/\+/g, "%20"),
