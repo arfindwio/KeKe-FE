@@ -146,7 +146,7 @@ export const Login = () => {
             <button
               className="group flex w-full items-center justify-center gap-3 rounded-2xl border-2 border-neutral-1 bg-neutral-5 py-3  text-base font-medium hover:bg-neutral-1"
               onClick={() =>
-                (window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/google`)
+                (window.location.href = `${process.env.REACT_APP_SERVER}/users/google`)
               }
             >
               <FcGoogle size={30} />

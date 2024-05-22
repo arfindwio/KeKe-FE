@@ -17,10 +17,10 @@ import {
   endLoading,
 } from "../../reducer/products/ProductsSlice";
 
-export const getAllProductsAction = () => async (dispatch) => {
+export const getAllProductsAction = (query) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetAllProducts();
+    const result = await reduxGetAllProducts(query);
     dispatch(setProducts(result.data.data.products));
     return true;
   } catch (err) {
