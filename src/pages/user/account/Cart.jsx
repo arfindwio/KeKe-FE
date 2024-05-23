@@ -9,6 +9,7 @@ import { getAllCartsByAuthAction } from "../../../redux/action/carts/CartsAction
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { CartCard } from "../../../assets/components/card/CartCard";
+import { ProductCard } from "../../../assets/components/card/ProductCard";
 import { Footer } from "../../../assets/components/footer/Footer";
 
 // Icons
@@ -26,6 +27,9 @@ export const Cart = () => {
   const [showDetail, setShowDetail] = useState(false);
 
   const cartData = useSelector((state) => state.carts.carts);
+  const recommendationProductData = useSelector(
+    (state) => state.products.recommendationProducts,
+  );
 
   const minWidth = useMediaQuery({ minDeviceWidth: 960 });
 
@@ -50,11 +54,9 @@ export const Cart = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-[30vh] bg-slate-100 px-4 pb-10 pt-24 sm:px-10 lg:px-20">
-        <h1 className="mb-3 text-2xl font-bold text-neutral-1">
-          Shopping Cart
-        </h1>
-        <div className="flex w-full flex-col justify-between lg:flex-row">
+      <div className="flex min-h-[30vh] flex-col gap-4 bg-slate-100 px-4 pb-10 pt-24 sm:px-10 lg:px-20">
+        <h1 className="text-2xl font-bold text-neutral-1">Shopping Cart</h1>
+        <div className="mb-4 flex w-full flex-col justify-between lg:flex-row">
           <div className="flex h-fit w-full flex-col gap-3 rounded-md border border-neutral-4 bg-neutral-5 px-2 py-3 shadow-sm sm:px-6 lg:w-[68%]">
             {cartData.length ? (
               cartData.map((cart) => <CartCard key={cart.id} cart={cart} />)
@@ -80,7 +82,7 @@ export const Cart = () => {
               </div>
             )}
           </div>
-          <div className="fixed bottom-14 left-0 flex w-full flex-col gap-1 rounded-md border border-neutral-4 bg-neutral-5 px-4 pb-4 pt-2 shadow-sm sm:px-10 md:bottom-0 lg:sticky lg:top-20 lg:h-fit lg:w-[30%] lg:gap-3 lg:px-3 lg:py-4 lg:pb-4 lg:pt-2">
+          <div className="fixed bottom-14 left-0 z-[1] flex w-full flex-col gap-1 rounded-md border border-neutral-4 bg-neutral-5 px-4 pb-4 pt-2 shadow-sm sm:px-10 md:bottom-0 lg:sticky lg:top-20 lg:h-fit lg:w-[30%] lg:gap-3 lg:px-3 lg:py-4 lg:pb-4 lg:pt-2">
             <button
               className="mx-auto flex w-fit items-center justify-center gap-1 text-neutral-1 hover:font-semibold lg:hidden"
               onClick={() => setShowDetail(!showDetail)}
@@ -136,6 +138,20 @@ export const Cart = () => {
             >
               Pay Items
             </Link>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 border-t-2 border-neutral-4 pt-8">
+          <h1 className="text-xl font-semibold text-neutral-1">
+            Recommended For You
+          </h1>
+          <div className="grid h-fit w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            {recommendationProductData.map((product, index) => (
+              <>
+                <ProductCard product={product} key={index} />
+                <ProductCard product={product} key={index} />
+              </>
+            ))}
           </div>
         </div>
       </div>

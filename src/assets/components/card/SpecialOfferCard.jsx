@@ -16,11 +16,11 @@ export const SpecialOfferCard = () => {
     (state) => state.products.specialOfferProduct,
   );
 
-  const soldPercent = `w-[${Math.round(
-    (specialOfferData?.soldCount /
-      (specialOfferData?.soldCount + specialOfferData?.stock)) *
+  const soldPercentage = Math.round(
+    (specialOfferData.soldCount /
+      (specialOfferData.soldCount + specialOfferData.stock)) *
       100,
-  )}%]`;
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -62,9 +62,11 @@ export const SpecialOfferCard = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 border-b border-neutral-4 pb-4">
-        <h1 className="w-full text-xl font-bold">Special Offer</h1>
-        <div className="flex flex-col justify-between gap-4 rounded-md border border-neutral-4 bg-neutral-5 p-4 md:flex-row md:gap-0">
+      <div className="flex flex-col gap-4 rounded-md bg-slate-500 p-4">
+        <h1 className="w-full text-center text-xl font-bold text-neutral-5">
+          Special Offer
+        </h1>
+        <div className="flex flex-col justify-between gap-4 rounded-md border border-neutral-4 bg-slate-100 p-4 md:flex-row md:gap-0">
           <img
             src={specialOfferData.productImage}
             alt="Product"
@@ -77,6 +79,9 @@ export const SpecialOfferCard = () => {
                 <p className="text-sm font-semibold text-neutral-2">
                   {averageRating(specialOfferData.review)}
                 </p>
+                <p className="text-sm font-light text-neutral-3 opacity-80">
+                  ({specialOfferData.review.length})
+                </p>
               </div>
             )}
             <h5 className="text-base font-bold ">
@@ -86,14 +91,19 @@ export const SpecialOfferCard = () => {
               {specialOfferData.description}
             </p>
             <div className="flex gap-3">
-              <h4 className="text-lg font-bold text-alert-red">
+              <h4 className="text-lg font-bold text-neutral-1">
                 IDR {specialOfferData.price}
               </h4>
-              <h4 className="text-lg font-normal text-neutral-3 line-through">
-                IDR{" "}
-                {specialOfferData.price /
-                  (1 - specialOfferData.promotion.discount)}
-              </h4>
+              <div className="flex items-center gap-1 text-base">
+                <h4 className="font-normal text-neutral-3 line-through">
+                  IDR{" "}
+                  {specialOfferData.price /
+                    (1 - specialOfferData.promotion.discount)}
+                </h4>
+                <p className="font-semibold text-alert-red">
+                  {specialOfferData.promotion.discount * 100}%
+                </p>
+              </div>
             </div>
             <button className="w-fit rounded-lg bg-neutral-1 px-3 py-2 text-neutral-5 hover:bg-opacity-80">
               ADD TO CART
@@ -116,9 +126,8 @@ export const SpecialOfferCard = () => {
             </div>
             <div className="w-full overflow-hidden rounded-full bg-neutral-4 px-[2px] py-[2px]">
               <div
-                className={`${
-                  soldPercent ? soldPercent : `w-0`
-                } h-full rounded-full border border-neutral-5 bg-neutral-1 py-1`}
+                className={`h-full rounded-full border border-neutral-5 bg-neutral-1 py-1`}
+                style={{ width: `${soldPercentage}%` }}
               ></div>
             </div>
             <p className="text-sm font-medium">HURRY UP! OFFER ENDS IN:</p>
