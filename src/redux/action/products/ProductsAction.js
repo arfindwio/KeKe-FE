@@ -6,6 +6,7 @@ import {
   reduxPutEditProductById,
   reduxDeleteProductById,
   reduxGetProductsRecommendation,
+  reduxGetProductsRecommendationUser,
   reduxGetSpecialOfferProduct,
 } from "../../../services/products/Products";
 import {
@@ -128,6 +129,26 @@ export const getRecommendationProductsAction = () => async (dispatch) => {
     dispatch(endLoading());
   }
 };
+
+export const getRecommendationProductsUserAction = () => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+    const result = await reduxGetProductsRecommendationUser();
+    dispatch(setRecommendationProducts(result.data.data.products));
+    return true;
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status >= 400 && err.response.status <= 500) {
+        showErrorToast(err.response.data.message);
+      } else {
+        console.error("unexpected Error", err);
+      }
+    }
+  } finally {
+    dispatch(endLoading());
+  }
+};
+
 export const getSpecialOfferProductAction = () => async (dispatch) => {
   try {
     dispatch(startLoading());

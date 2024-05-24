@@ -1,5 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,13 +9,28 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
+// Redux Actions
+import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
+
 // Icons
 import { FaStar } from "react-icons/fa";
 
-export const RecommendedCard = () => {
-  const recommendationProductData = useSelector(
-    (state) => state.products.recommendationProducts,
-  );
+export const ProductsHomeCard = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const productData = useSelector((state) => state.products.products);
+  const categoryData = useSelector((state) => state.categories.categories);
+
+  const queryParams = new URLSearchParams(location.search);
+  const categoryValue = queryParams.get("c");
+
+  const handleFilter = async (categoryName) => {
+    let value = categoryName ? `?c=${categoryName}` : "";
+    navigate(value);
+    await dispatch(getAllProductsAction(value));
+  };
 
   const averageRating = (reviews) => {
     const totalRating = reviews.reduce((acc, curr) => acc + curr.userRating, 0);
@@ -23,8 +39,44 @@ export const RecommendedCard = () => {
     return average;
   };
   return (
-    <>
-      <h1 className="w-full text-xl font-bold">Recommended For You</h1>
+    <div className="flex flex-col gap-4">
+      <h1 className="w-full text-xl font-bold">New Products</h1>
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={1.5}
+        breakpoints={{
+          450: {
+            slidesPerView: 3.5,
+            spaceBetween: 10,
+          },
+        }}
+        modules={[Mousewheel, Keyboard]}
+        className="w-full cursor-grab text-center lg:cursor-default"
+      >
+        <SwiperSlide
+          className={`${
+            !categoryValue
+              ? "bg-neutral-1 text-neutral-5"
+              : "border-neutral-3 bg-neutral-4 hover:bg-neutral-1 hover:text-neutral-5"
+          } w-fit cursor-pointer break-all rounded-full border  px-2 py-1`}
+          onClick={() => handleFilter("")}
+        >
+          Show All
+        </SwiperSlide>
+        {categoryData.map((category, index) => (
+          <SwiperSlide
+            className={`${
+              categoryValue === category.categoryName
+                ? "bg-neutral-1 text-neutral-5"
+                : "border-neutral-3 bg-neutral-4 hover:bg-neutral-1 hover:text-neutral-5"
+            } w-fit cursor-pointer break-all rounded-full border  px-2 py-1`}
+            key={index}
+            onClick={() => handleFilter(category.categoryName)}
+          >
+            {category.categoryName}
+          </SwiperSlide>
+        ))}
+      </Swiper>
       <Swiper
         spaceBetween={10}
         slidesPerView={1}
@@ -33,7 +85,7 @@ export const RecommendedCard = () => {
             slidesPerView: 2,
             spaceBetween: 10,
           },
-          540: {
+          580: {
             slidesPerView: 3,
             spaceBetween: 10,
           },
@@ -49,9 +101,9 @@ export const RecommendedCard = () => {
         modules={[Mousewheel, Keyboard]}
         className="h-[20.5rem] w-full cursor-grab lg:cursor-default"
       >
-        {recommendationProductData.slice(0, 5).map((product, index) => (
+        {productData.map((product, index) => (
           <SwiperSlide
-            className="flex flex-col overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5"
+            className={`flex min-h-full flex-col overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5`}
             key={index}
           >
             <img
@@ -64,8 +116,8 @@ export const RecommendedCard = () => {
                 product.review.length === 0 && product.soldCount === 0 && "pb-8"
               } flex h-[45%] flex-col gap-2 p-3`}
             >
-              <p className="text-sm font-semibold text-neutral-2">
-                {product.category.categoryName}
+              <p className="text-primary-1 text-sm font-semibold">
+                {product.category?.categoryName}
               </p>
               <p className="truncate text-sm text-neutral-3">
                 {product.productName}
@@ -109,6 +161,6 @@ export const RecommendedCard = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 };

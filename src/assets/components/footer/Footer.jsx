@@ -75,22 +75,22 @@ export const Footer = () => {
             </h5>
             <ul className="flex w-full flex-col gap-3 text-sm">
               <li className="flex items-start justify-between text-neutral-3">
-                <IoLocationOutline size={25} className="w-[10%]" />
-                <p className="w-[88%]">
+                <IoLocationOutline size={25} className="w-[6%]" />
+                <p className="w-[92%]">
                   Jalan Kalisari Raya No.03, RT.4/RW.11, Kalisari, Ps. Rebo
                   District, East Jakarta City, Special Capital Region of Jakarta
                   13790
                 </p>
               </li>
               <li className="flex items-center justify-between text-neutral-3">
-                <LuPhone size={25} className="w-[10%]" />
-                <p className="w-[88%]">
+                <LuPhone size={25} className="w-[6%]" />
+                <p className="w-[92%]">
                   <span className="text-neutral-4">(+62)</span> 812-8645-4930
                 </p>
               </li>
               <li className="flex items-center justify-between text-neutral-3">
-                <MdOutlineEmail size={25} className="w-[10%]" />
-                <p className="w-[88%] break-all">onlinekekebusana@gmail.com</p>
+                <MdOutlineEmail size={25} className="w-[6%]" />
+                <p className="w-[92%] break-all">onlinekekebusana@gmail.com</p>
               </li>
             </ul>
           </div>
