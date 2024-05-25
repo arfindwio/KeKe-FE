@@ -81,13 +81,20 @@ export const UserActionButton = () => {
           </Link>
         </div>
       ) : (
-        <Link
-          to={"/login"}
-          className="relative flex rounded-xl bg-neutral-1 px-6 py-3 text-neutral-5 hover:bg-opacity-80"
-        >
-          <MdLogin size={20} className="absolute left-4" />
-          <p className="pl-5 text-sm">Login</p>
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            to={"/login"}
+            className="relative flex rounded-lg border border-neutral-1 bg-neutral-5 px-4 py-3 font-semibold text-neutral-1 hover:bg-neutral-1 hover:text-neutral-5"
+          >
+            <p className="text-sm">Login</p>
+          </Link>
+          <Link
+            to={"/login"}
+            className="relative flex rounded-lg border border-neutral-5 bg-neutral-1 px-4 py-3 font-semibold text-neutral-5 hover:border-neutral-1 hover:bg-neutral-5 hover:text-neutral-1"
+          >
+            <p className="text-sm">Register</p>
+          </Link>
+        </div>
       )}
     </>
   );

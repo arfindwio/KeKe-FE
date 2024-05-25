@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // Icons
 import { FaStar } from "react-icons/fa";
@@ -13,8 +14,9 @@ export const ProductCard = ({ product }) => {
 
   return (
     <>
-      <div
-        className={`h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5`}
+      <Link
+        to={`/product/${product.id}`}
+        className={`h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md`}
       >
         <img
           src={product.productImage}
@@ -74,7 +76,7 @@ export const ProductCard = ({ product }) => {
             )}
           </div>
         </div>
-      </div>
+      </Link>
     </>
   );
 };

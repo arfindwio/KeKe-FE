@@ -6,8 +6,8 @@ export const reduxGetAllCartsByAuth = async () => {
   return await http.get(`${API_ENDPOINT.CARTS}`);
 };
 
-export const reduxPostCreateCartByProductId = async (productId) => {
-  return await http.post(`${API_ENDPOINT.CARTS}/${productId}`);
+export const reduxPostCreateCartByProductId = async (input, productId) => {
+  return await http.post(`${API_ENDPOINT.CARTS}/${productId}`, input);
 };
 
 export const reduxPutEditCartById = async (input, cartId) => {

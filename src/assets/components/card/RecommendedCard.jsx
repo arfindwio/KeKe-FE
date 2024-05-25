@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -47,65 +48,75 @@ export const RecommendedCard = () => {
           },
         }}
         modules={[Mousewheel, Keyboard]}
-        className="h-[20.5rem] w-full cursor-grab lg:cursor-default"
+        className="h-fit w-full cursor-grab py-2 lg:cursor-default"
       >
         {recommendationProductData.slice(0, 5).map((product, index) => (
           <SwiperSlide
-            className="flex flex-col overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5"
+            className="h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md"
             key={index}
           >
-            <img
-              src={product.productImage}
-              alt="Product"
-              className="aspect-[16/10] h-[55%] w-full object-cover"
-            />
-            <div
-              className={`${
-                product.review.length === 0 && product.soldCount === 0 && "pb-8"
-              } flex h-[45%] flex-col gap-2 p-3`}
-            >
-              <p className="text-sm font-semibold text-neutral-2">
-                {product.category.categoryName}
-              </p>
-              <p className="truncate text-sm text-neutral-3">
-                {product.productName}
-              </p>
-              <div className={`flex flex-col break-all text-base font-bold`}>
-                <p className={`${product.promotion && "text-neutral-1"}`}>
-                  IDR {product.price.toLocaleString()}
+            <Link to={`/product/${product.id}`}>
+              <img
+                src={product.productImage}
+                alt="Product"
+                className="aspect-[16/10] h-[55%] w-full object-cover"
+              />
+              <div
+                className={`${
+                  product.review.length === 0 &&
+                  product.soldCount === 0 &&
+                  "pb-8"
+                } flex h-fit w-full flex-col gap-1 p-3`}
+              >
+                <p className="text-sm font-semibold text-neutral-2">
+                  {product.category.categoryName}
                 </p>
-                {product.promotion && (
-                  <p className="break-all text-sm font-semibold text-alert-red">
-                    <span className="mr-2 text-xs font-normal text-neutral-3 line-through">
-                      IDR {product.price / (1 - product.promotion.discount)}
-                    </span>
-                    {product.promotion.discount * 100}%
+                <p className="truncate text-sm text-neutral-3">
+                  {product.productName}
+                </p>
+                <div className={`flex flex-col break-all text-base font-bold`}>
+                  <p className={`${product.promotion && "text-neutral-1"}`}>
+                    IDR {product.price.toLocaleString()}
                   </p>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                {product.review.length > 0 && (
-                  <>
-                    <FaStar size={18} className="text-alert-yellow" />
-                    <p className="text-sm font-light text-neutral-2">
-                      {averageRating(product.review)}
+                  {product.promotion && (
+                    <p className="break-all text-sm font-semibold text-alert-red">
+                      <span className="mr-2 text-xs font-normal text-neutral-3 line-through">
+                        IDR {product.price / (1 - product.promotion.discount)}
+                      </span>
+                      {product.promotion.discount * 100}%
                     </p>
-                    <p className="text-sm font-light text-neutral-3 opacity-80">
-                      ({product.review.length})
+                  )}
+                </div>
+                <div
+                  className={`${
+                    !product.promotion &&
+                    (product.review || !product.soldCount === 0) &&
+                    "pb-5"
+                  } flex items-center gap-2`}
+                >
+                  {product.review.length > 0 && (
+                    <>
+                      <FaStar size={18} className="text-alert-yellow" />
+                      <p className="text-sm font-light text-neutral-2">
+                        {averageRating(product.review)}
+                      </p>
+                      <p className="text-sm font-light text-neutral-3 opacity-80">
+                        ({product.review.length})
+                      </p>
+                    </>
+                  )}
+                  {product.soldCount > 0 && (
+                    <p
+                      className={`${
+                        product.review.length > 0 && "border-l-2 pl-2"
+                      } text-sm font-light text-neutral-2`}
+                    >
+                      {product.soldCount} Sold
                     </p>
-                  </>
-                )}
-                {product.soldCount > 0 && (
-                  <p
-                    className={`${
-                      product.review.length > 0 && "border-l-2 pl-2"
-                    } text-sm font-light text-neutral-2`}
-                  >
-                    {product.soldCount} Sold
-                  </p>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

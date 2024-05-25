@@ -14,7 +14,7 @@ export const CategoryHomeCard = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 rounded-md bg-slate-300 p-4">
+      <div className="flex flex-col gap-4 rounded-md border bg-neutral-5 p-4 shadow-md">
         <h1 className="w-full text-xl font-bold">Popular Categories</h1>
         <Swiper
           spaceBetween={10}
