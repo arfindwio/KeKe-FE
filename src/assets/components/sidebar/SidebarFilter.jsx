@@ -69,11 +69,7 @@ export const SidebarFilter = () => {
       <div className="flex flex-col gap-2">
         <h2 className="text-xl font-bold">Filter</h2>
         <div className="flex flex-col gap-4 px-3">
-          <div
-            className={`flex w-fit cursor-pointer gap-2 ${
-              queryFormat.includes("f=newest") && "checked"
-            }`}
-          >
+          <div className={`flex w-fit cursor-pointer gap-2`}>
             <input
               type="checkbox"
               id="newest"
@@ -81,15 +77,15 @@ export const SidebarFilter = () => {
               checked={queryFormat.includes("f=newest")}
               onChange={() => handleFilter("f", "newest")}
             />
-            <label htmlFor="newest" className="cursor-pointer font-medium">
+            <label
+              htmlFor="newest"
+              className="cursor-pointer font-medium"
+              onClick={() => handleFilter("f", "newest")}
+            >
               Newest
             </label>
           </div>
-          <div
-            className={`flex w-fit cursor-pointer gap-2 ${
-              queryFormat.includes("f=popular") && "checked"
-            }`}
-          >
+          <div className={`flex w-fit cursor-pointer gap-2`}>
             <input
               type="checkbox"
               id="popular"
@@ -97,15 +93,15 @@ export const SidebarFilter = () => {
               checked={queryFormat.includes("f=popular")}
               onChange={() => handleFilter("f", "popular")}
             />
-            <label htmlFor="popular" className="cursor-pointer font-medium">
+            <label
+              htmlFor="popular"
+              className="cursor-pointer font-medium"
+              onClick={() => handleFilter("f", "popular")}
+            >
               Popular
             </label>
           </div>
-          <div
-            className={`flex w-fit cursor-pointer gap-2 ${
-              queryFormat.includes("f=promo") && "checked"
-            }`}
-          >
+          <div className={`flex w-fit cursor-pointer gap-2`}>
             <input
               type="checkbox"
               id="promo"
@@ -113,7 +109,11 @@ export const SidebarFilter = () => {
               checked={queryFormat.includes("f=promo")}
               onChange={() => handleFilter("f", "promo")}
             />
-            <label htmlFor="promo" className="cursor-pointer font-medium">
+            <label
+              htmlFor="promo"
+              className="cursor-pointer font-medium"
+              onClick={() => handleFilter("f", "promo")}
+            >
               Promo
             </label>
           </div>
@@ -123,21 +123,24 @@ export const SidebarFilter = () => {
         <h2 className="text-xl font-bold">Categories</h2>
         <div className="flex flex-col gap-4 px-3">
           {categoryData.map((category, index) => (
-            <div className="flex w-fit cursor-pointer gap-2" key={index}>
-              <input
-                type="checkbox"
-                id={category.categoryName}
-                className="relative w-[20px] cursor-pointer"
-                checked={queryFormat.includes(`c=${category.categoryName}`)}
-                onChange={() => handleFilter("c", category.categoryName)}
-              />
-              <label
-                htmlFor={category.categoryName}
-                className="cursor-pointer font-medium"
-              >
-                {category.categoryName}
-              </label>
-            </div>
+            <>
+              <div className="flex w-fit cursor-pointer gap-2" key={index}>
+                <input
+                  type="checkbox"
+                  id={category.categoryName}
+                  className="relative w-[20px] cursor-pointer"
+                  checked={queryFormat.includes(`c=${category.categoryName}`)}
+                  onChange={() => handleFilter("c", category.categoryName)}
+                />
+                <label
+                  htmlFor={category.categoryName}
+                  className="cursor-pointer font-medium"
+                  onClick={() => handleFilter("c", category.categoryName)}
+                >
+                  {category.categoryName}
+                </label>
+              </div>
+            </>
           ))}
         </div>
       </div>
