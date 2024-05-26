@@ -32,10 +32,10 @@ export const getAllCartsByAuthAction = () => async (dispatch) => {
 };
 
 export const postCreateCartByProductIdAction =
-  (productId) => async (dispatch) => {
+  (input, productId) => async (dispatch) => {
     try {
       dispatch(startLoading());
-      await reduxPostCreateCartByProductId(productId);
+      await reduxPostCreateCartByProductId(input, productId);
       return true;
     } catch (err) {
       if (err.response) {

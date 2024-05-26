@@ -123,24 +123,22 @@ export const SidebarFilter = () => {
         <h2 className="text-xl font-bold">Categories</h2>
         <div className="flex flex-col gap-4 px-3">
           {categoryData.map((category, index) => (
-            <>
-              <div className="flex w-fit cursor-pointer gap-2" key={index}>
-                <input
-                  type="checkbox"
-                  id={category.categoryName}
-                  className="relative w-[20px] cursor-pointer"
-                  checked={queryFormat.includes(`c=${category.categoryName}`)}
-                  onChange={() => handleFilter("c", category.categoryName)}
-                />
-                <label
-                  htmlFor={category.categoryName}
-                  className="cursor-pointer font-medium"
-                  onClick={() => handleFilter("c", category.categoryName)}
-                >
-                  {category.categoryName}
-                </label>
-              </div>
-            </>
+            <div className="flex w-fit cursor-pointer gap-2" key={index}>
+              <input
+                type="checkbox"
+                id={category.categoryName}
+                className="relative w-[20px] cursor-pointer"
+                checked={queryFormat.includes(`c=${category.categoryName}`)}
+                onChange={() => handleFilter("c", category.categoryName)}
+              />
+              <label
+                htmlFor={category.categoryName}
+                className="cursor-pointer font-medium"
+                onClick={() => handleFilter("c", category.categoryName)}
+              >
+                {category.categoryName}
+              </label>
+            </div>
           ))}
         </div>
       </div>
