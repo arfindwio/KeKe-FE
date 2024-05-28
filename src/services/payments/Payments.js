@@ -14,6 +14,6 @@ export const reduxPutEditPaymentById = async (input, paymentId) => {
   return await http.put(`${API_ENDPOINT.PAYMENTS}/${paymentId}`, input);
 };
 
-export const reduxGetPaymentsHistory = async () => {
-  return await http.get(`${API_ENDPOINT.PAYMENTS}/history`);
+export const reduxGetPaymentsHistory = async (query) => {
+  return await http.get(`${API_ENDPOINT.PAYMENTS}/history${query}`);
 };

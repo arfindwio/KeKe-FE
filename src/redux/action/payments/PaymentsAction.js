@@ -69,10 +69,10 @@ export const putEditPaymentByIdAction =
     }
   };
 
-export const getPaymentsHistoryAction = () => async (dispatch) => {
+export const getPaymentsHistoryAction = (query) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetPaymentsHistory();
+    const result = await reduxGetPaymentsHistory(query);
     dispatch(setPaymentsHistory(result.data.data.payments));
 
     return true;

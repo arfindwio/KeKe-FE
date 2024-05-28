@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // Icons
 import { FaStar } from "react-icons/fa";
 
 export const ProductCard = ({ product }) => {
+  const location = useLocation();
+
   const averageRating = (reviews) => {
     const totalRating = reviews.reduce((acc, curr) => acc + curr.userRating, 0);
     const average = totalRating / reviews.length;
@@ -12,11 +14,19 @@ export const ProductCard = ({ product }) => {
     return average;
   };
 
+  const handleClick = (e) => {
+    if (location.pathname.startsWith("/product/")) {
+      e.preventDefault();
+      window.location.href = `/product/${product.id}`;
+    }
+  };
+
   return (
     <>
       <Link
         to={`/product/${product.id}`}
         className={`h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md`}
+        onClick={handleClick}
       >
         <img
           src={product.productImage}

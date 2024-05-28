@@ -89,7 +89,7 @@ export const UserActionButton = () => {
             <p className="text-sm">Login</p>
           </Link>
           <Link
-            to={"/login"}
+            to={"/register"}
             className="relative flex rounded-lg border border-neutral-5 bg-neutral-1 px-4 py-3 font-semibold text-neutral-5 hover:border-neutral-1 hover:bg-neutral-5 hover:text-neutral-1"
           >
             <p className="text-sm">Register</p>

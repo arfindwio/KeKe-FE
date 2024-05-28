@@ -62,7 +62,7 @@ export const SpecialOfferCard = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 rounded-md bg-slate-500 p-4">
+      <div className="flex flex-col gap-4 rounded-md bg-slate-400 p-4 shadow-lg">
         <h1 className="w-full text-center text-xl font-bold text-neutral-5">
           Special Offer
         </h1>
