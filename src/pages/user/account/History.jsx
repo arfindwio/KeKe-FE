@@ -29,7 +29,7 @@ export const History = () => {
 
   useEffect(() => {
     const fetchNotificationData = async () => {
-      await dispatch(getPaymentsHistoryAction());
+      await dispatch(getPaymentsHistoryAction(""));
     };
 
     fetchNotificationData();

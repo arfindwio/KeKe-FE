@@ -6,7 +6,7 @@ import {
   reduxPutEditProductById,
   reduxDeleteProductById,
   reduxGetProductsRecommendation,
-  reduxGetProductsRecommendationUser,
+  reduxGetProductsUserRecommendation,
   reduxGetSpecialOfferProduct,
 } from "../../../services/products/Products";
 import {
@@ -130,10 +130,10 @@ export const getRecommendationProductsAction = () => async (dispatch) => {
   }
 };
 
-export const getRecommendationProductsUserAction = () => async (dispatch) => {
+export const getRecommendationProductsActionUser = () => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetProductsRecommendationUser();
+    const result = await reduxGetProductsUserRecommendation();
     dispatch(setRecommendationProducts(result.data.data.products));
     return true;
   } catch (err) {

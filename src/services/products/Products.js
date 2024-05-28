@@ -25,7 +25,8 @@ export const reduxDeleteProductById = async (productId) => {
 export const reduxGetProductsRecommendation = async () => {
   return await http.get(`${API_ENDPOINT.PRODUCTS}/featured/recommendation`);
 };
-export const reduxGetProductsRecommendationUser = async () => {
+
+export const reduxGetProductsUserRecommendation = async () => {
   return await http.get(
     `${API_ENDPOINT.PRODUCTS}/featured/recommendation-user`,
   );

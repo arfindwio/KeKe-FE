@@ -95,7 +95,6 @@ export const DetailProductSection = () => {
 
     const loadingToastId = showLoadingToast("Loading...");
 
-    console.log(inputCart);
     const cart = await dispatch(
       postCreateCartByProductIdAction(inputCart, detailProductData.id),
     );
@@ -129,12 +128,12 @@ export const DetailProductSection = () => {
           {detailProductData.category.categoryName}
         </Link>
         <IoIosArrowForward size={20} className="text-neutral-2" />
-        <p className="text-base text-neutral-3">
+        <p className="truncate text-base text-neutral-3">
           {detailProductData.productName}
         </p>
       </div>
-      <div className="flex rounded-md border shadow-md">
-        <div className="relative min-h-full w-[40%] border-r">
+      <div className="flex flex-col rounded-md border shadow-md md:flex-row">
+        <div className="relative min-h-full w-full border-r md:w-[40%]">
           <Swiper
             navigation={{
               nextEl: ".button-next",
@@ -177,7 +176,7 @@ export const DetailProductSection = () => {
             </p>
           </button>
         </div>
-        <div className="flex w-full flex-col gap-3 px-6 py-8">
+        <div className="flex w-full flex-col gap-3 px-6 py-8 md:w-[60%]">
           <div className="flex flex-col">
             <h1 className="text-lg font-semibold">
               {detailProductData.productName}
@@ -207,7 +206,7 @@ export const DetailProductSection = () => {
             IDR {detailProductData.price.toLocaleString()}
           </h2>
           <div className="flex flex-wrap gap-4">
-            <div className="flex flex-col gap-2 border-r-2 pr-4">
+            <div className="flex flex-col gap-2 md:border-r-2 md:pr-4">
               <h5 className="text-sm font-semibold">
                 Choose Size:{" "}
                 <span className="text-slate-400">
@@ -254,7 +253,7 @@ export const DetailProductSection = () => {
           </div>
           <div className="flex items-center gap-2 pt-2">
             <button
-              className="w-fit rounded-lg bg-neutral-1 px-3 py-2 text-neutral-5 hover:bg-opacity-80"
+              className="w-fit rounded-lg bg-neutral-1 px-2 py-1 text-sm text-neutral-5 hover:bg-opacity-80 md:px-3 md:py-2 md:text-base"
               onClick={() => handleAddProductToCart()}
             >
               ADD TO CART
