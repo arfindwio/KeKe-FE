@@ -1,11 +1,28 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+// Redux Actions
+import {
+  getProductByIdAction,
+  getAllProductsAction,
+  getRecommendationProductsAction,
+  getRecommendationProductsActionUser,
+} from "../../../redux/action/products/ProductsAction";
+import { getReviewsByProductIdAction } from "../../../redux/action/reviews/ReviewsAction";
+import { getDiscussionsByProductIdAction } from "../../../redux/action/discussions/DiscussionsAction";
 
 // Icons
 import { FaStar } from "react-icons/fa";
 
+// Cookies
+import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
+
 export const ProductCard = ({ product }) => {
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  const token = CookieStorage.get(CookiesKeys.AuthToken);
 
   const averageRating = (reviews) => {
     const totalRating = reviews.reduce((acc, curr) => acc + curr.userRating, 0);
@@ -14,10 +31,19 @@ export const ProductCard = ({ product }) => {
     return average;
   };
 
-  const handleClick = (e) => {
+  const handleClick = async () => {
     if (location.pathname.startsWith("/product/")) {
-      e.preventDefault();
-      window.location.href = `/product/${product.id}`;
+      await dispatch(getProductByIdAction(product.id));
+      await dispatch(
+        getAllProductsAction(`?c=${product.category.categoryName}`),
+      );
+      await dispatch(getReviewsByProductIdAction(product.id));
+      await dispatch(getDiscussionsByProductIdAction(product.id));
+      if (token) {
+        await dispatch(getRecommendationProductsActionUser());
+      } else {
+        await dispatch(getRecommendationProductsAction());
+      }
     }
   };
 

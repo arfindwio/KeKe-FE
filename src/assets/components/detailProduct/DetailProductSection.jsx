@@ -213,7 +213,7 @@ export const DetailProductSection = () => {
                   {selectedSize?.toUpperCase()}
                 </span>
               </h5>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {detailProductData.size.map((size, index) => (
                   <p
                     className={`${
@@ -234,7 +234,7 @@ export const DetailProductSection = () => {
                 Choose Color:{" "}
                 <span className="text-slate-400">{selectedColor}</span>
               </h5>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {detailProductData.color.map((color, index) => (
                   <p
                     className={`${
