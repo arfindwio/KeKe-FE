@@ -17,6 +17,7 @@ import { History } from "../pages/user/account/History";
 import { Cart } from "../pages/user/account/Cart";
 import { Products } from "../pages/user/product/Products";
 import { DetailProduct } from "../pages/user/product/DetailProduct";
+import { Payment } from "../pages/user/payment/Payment";
 
 export const RouteList = () => {
   return (
@@ -46,6 +47,9 @@ export const RouteList = () => {
         {/* Products */}
         <Route path="/product" element={<Products />} />
         <Route path="/product/:productId" element={<DetailProduct />} />
+
+        {/* Payment */}
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   );

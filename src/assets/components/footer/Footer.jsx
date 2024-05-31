@@ -33,7 +33,9 @@ export const Footer = () => {
     <>
       <div
         className={`${
-          currentPath === "/cart" ? "pb-52 md:pb-40 lg:pb-10" : "pb-24 md:pb-10"
+          currentPath === "/cart" || currentPath === "/payment"
+            ? "pb-52 md:pb-40 lg:pb-10"
+            : "pb-24 md:pb-10"
         } flex w-full flex-col bg-neutral-1 px-4 pt-10 sm:px-10 lg:px-20`}
       >
         <div className="flex w-full flex-col justify-between gap-6 pb-10 md:flex-row md:gap-0">
