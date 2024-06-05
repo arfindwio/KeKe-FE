@@ -33,6 +33,10 @@ export const ProductCard = ({ product }) => {
 
   const handleClick = async () => {
     if (location.pathname.startsWith("/product/")) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       await dispatch(getProductByIdAction(product.id));
       await dispatch(
         getAllProductsAction(`?c=${product.category.categoryName}`),

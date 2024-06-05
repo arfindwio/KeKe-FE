@@ -11,6 +11,7 @@ import {
 } from "../../../services/products/Products";
 import {
   setProducts,
+  setProductsAdmin,
   setRecommendationProducts,
   setProduct,
   setSpecialOfferProduct,
@@ -23,6 +24,25 @@ export const getAllProductsAction = (query) => async (dispatch) => {
     dispatch(startLoading());
     const result = await reduxGetAllProducts(query);
     dispatch(setProducts(result.data.data.products));
+    return true;
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status >= 400 && err.response.status <= 500) {
+        showErrorToast(err.response.data.message);
+      } else {
+        console.error("unexpected Error", err);
+      }
+    }
+  } finally {
+    dispatch(endLoading());
+  }
+};
+
+export const getAllProductsAdminAction = () => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+    const result = await reduxGetAllProducts("?limit=9999");
+    dispatch(setProductsAdmin(result.data.data.products));
     return true;
   } catch (err) {
     if (err.response) {

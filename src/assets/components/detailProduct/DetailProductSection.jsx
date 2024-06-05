@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 // Import Swiper React components
@@ -38,6 +38,7 @@ import {
 } from "../../../helper/ToastHelper";
 
 export const DetailProductSection = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [inputCart, setInputCart] = useState({
@@ -91,7 +92,10 @@ export const DetailProductSection = () => {
   };
 
   const handleAddProductToCart = async () => {
-    if (!token) showErrorToast("Please log in first");
+    if (!token) {
+      showErrorToast("Please log in first");
+      navigate("/login");
+    }
 
     const loadingToastId = showLoadingToast("Loading...");
 

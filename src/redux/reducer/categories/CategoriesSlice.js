@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   categories: [],
+  categoriesAdmin: [],
   category: null,
   loading: false,
 };
@@ -12,6 +13,9 @@ const CategoriesSlice = createSlice({
   reducers: {
     setCategories: (state, action) => {
       state.categories = action.payload;
+    },
+    setCategoriesAdmin: (state, action) => {
+      state.categoriesAdmin = action.payload;
     },
     setCategory: (state, action) => {
       state.category = action.payload;
@@ -25,7 +29,12 @@ const CategoriesSlice = createSlice({
   },
 });
 
-export const { setCategories, setCategory, startLoading, endLoading } =
-  CategoriesSlice.actions;
+export const {
+  setCategories,
+  setCategoriesAdmin,
+  setCategory,
+  startLoading,
+  endLoading,
+} = CategoriesSlice.actions;
 
 export default CategoriesSlice.reducer;

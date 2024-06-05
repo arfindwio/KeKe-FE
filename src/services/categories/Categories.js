@@ -6,6 +6,10 @@ export const reduxGetAllCategories = async () => {
   return await http.get(`${API_ENDPOINT.CATEGORIES}`);
 };
 
+export const reduxGetAllCategoriesAdmin = async () => {
+  return await http.get(`${API_ENDPOINT.CATEGORIES}?limit=9999`);
+};
+
 export const reduxPostCreateCategory = async (input) => {
   return await http.post(`${API_ENDPOINT.CATEGORIES}`, input);
 };
