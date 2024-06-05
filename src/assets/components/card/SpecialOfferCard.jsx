@@ -1,15 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+// Redux Actions
+import {
+  getAllCartsByAuthAction,
+  postCreateCartByProductIdAction,
+} from "../../../redux/action/carts/CartsAction";
 
 // Icons
 import { FaStar } from "react-icons/fa";
 
+// Helper
+import {
+  showLoadingToast,
+  showSuccessToast,
+  showErrorToast,
+} from "../../../helper/ToastHelper";
+
+// Cookies
+import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
+
 export const SpecialOfferCard = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [countdown, setCountdown] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
+  });
+
+  const [inputCart, setInputCart] = useState({
+    note: "",
+    sizeId: "",
+    colorId: "",
   });
 
   const specialOfferData = useSelector(
@@ -21,6 +48,15 @@ export const SpecialOfferCard = () => {
       (specialOfferData.soldCount + specialOfferData.stock)) *
       100,
   );
+
+  const selectedColor = specialOfferData.color?.find(
+    (color) => color.id === inputCart.colorId,
+  )?.colorName;
+  const selectedSize = specialOfferData.size?.find(
+    (size) => size.id === inputCart.sizeId,
+  )?.sizeName;
+
+  const token = CookieStorage.get(CookiesKeys.AuthToken);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -50,6 +86,16 @@ export const SpecialOfferCard = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (specialOfferData) {
+      setInputCart((prevState) => ({
+        ...prevState,
+        sizeId: specialOfferData.size[0]?.id || "",
+        colorId: specialOfferData.color[0]?.id || "",
+      }));
+    }
+  }, [specialOfferData]);
+
   const averageRating = (reviews) => {
     const totalRating = reviews?.reduce(
       (acc, curr) => acc + curr.userRating,
@@ -60,17 +106,44 @@ export const SpecialOfferCard = () => {
     return average;
   };
 
+  const handleAddProductToCart = async () => {
+    if (!token) {
+      showErrorToast("Please log in first");
+      navigate("/login");
+    }
+
+    const loadingToastId = showLoadingToast("Loading...");
+
+    const cart = await dispatch(
+      postCreateCartByProductIdAction(inputCart, specialOfferData.id),
+    );
+
+    toast.dismiss(loadingToastId);
+
+    if (cart) {
+      showSuccessToast("Product successfully added to cart");
+      await dispatch(getAllCartsByAuthAction());
+    }
+  };
+
+  const handleInputCart = (field, valueId) => {
+    setInputCart((prevInputCart) => ({
+      ...prevInputCart,
+      [field]: valueId,
+    }));
+  };
+
   return (
     <>
       <div className="flex flex-col gap-4 rounded-md bg-slate-400 p-4 shadow-lg">
         <h1 className="w-full text-center text-xl font-bold text-neutral-5">
-          Special Offer
+          SPECIAL OFFER
         </h1>
         <div className="flex flex-col justify-between gap-4 rounded-md border border-neutral-4 bg-slate-100 p-4 md:flex-row md:gap-0">
           <img
             src={specialOfferData.productImage}
             alt="Product"
-            className="max-h-[15rem] w-full object-contain md:max-h-none md:w-[40%]"
+            className="min-h-full w-full rounded-md object-cover md:w-[40%]"
           />
           <div className="flex w-full flex-col gap-2 md:w-[58%]">
             {specialOfferData.review?.length > 0 && (
@@ -105,7 +178,56 @@ export const SpecialOfferCard = () => {
                 </p>
               </div>
             </div>
-            <button className="w-fit rounded-lg bg-neutral-1 px-3 py-2 text-neutral-5 hover:bg-opacity-80">
+            <div className="flex flex-wrap gap-4 pb-2">
+              <div className="flex flex-col gap-2 md:border-r-2 md:pr-4">
+                <h5 className="text-sm font-semibold">
+                  Choose Size:{" "}
+                  <span className="text-slate-400">
+                    {selectedSize?.toUpperCase()}
+                  </span>
+                </h5>
+                <div className="flex flex-wrap gap-2">
+                  {specialOfferData.size?.map((size, index) => (
+                    <p
+                      className={`${
+                        inputCart.sizeId === size.id
+                          ? "border-2 border-neutral-1 font-semibold text-neutral-1"
+                          : "border border-neutral-3 font-medium text-neutral-3"
+                      } cursor-pointer rounded-full p-2 text-xs`}
+                      key={index}
+                      onClick={() => handleInputCart("sizeId", size.id)}
+                    >
+                      {size?.sizeName.toUpperCase()}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <h5 className="text-sm font-semibold">
+                  Choose Color:{" "}
+                  <span className="text-slate-400">{selectedColor}</span>
+                </h5>
+                <div className="flex flex-wrap gap-2">
+                  {specialOfferData.color?.map((color, index) => (
+                    <p
+                      className={`${
+                        inputCart.colorId === color.id
+                          ? "border-2 border-neutral-1 font-semibold text-neutral-1"
+                          : "border border-neutral-3 font-medium text-neutral-3"
+                      } cursor-pointer rounded-full p-2 text-xs`}
+                      key={index}
+                      onClick={() => handleInputCart("colorId", color.id)}
+                    >
+                      {color.colorName}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <button
+              className="w-fit rounded-lg bg-neutral-1 px-3 py-2 text-neutral-5 hover:bg-opacity-80"
+              onClick={() => handleAddProductToCart()}
+            >
               ADD TO CART
             </button>
             <div className="flex justify-between">

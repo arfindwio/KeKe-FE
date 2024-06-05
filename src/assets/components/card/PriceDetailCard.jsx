@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 
 // Icons
@@ -7,6 +7,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 
 export const PriceDetailCard = ({ carts }) => {
+  const location = useLocation();
   const [showDetail, setShowDetail] = useState(false);
 
   const minWidth = useMediaQuery({ minDeviceWidth: 960 });
@@ -50,7 +51,7 @@ export const PriceDetailCard = ({ carts }) => {
             showDetail ? "flex" : "hidden"
           } justify-between lg:flex`}
         >
-          <p className="text-xs font-semibold sm:text-sm">Total</p>
+          <p className="text-xs font-semibold sm:text-sm">Price</p>
           <p className="text-xs sm:text-sm">
             IDR {(totalPrice + totalDiscount).toLocaleString()}
           </p>
@@ -99,7 +100,9 @@ export const PriceDetailCard = ({ carts }) => {
       </div>
       <Link
         to={"/payment"}
-        className="w-full rounded-lg bg-neutral-1 py-1 text-center text-sm text-neutral-5 hover:bg-opacity-80 sm:text-base"
+        className={`${
+          location.pathname === "/payment" && "hidden"
+        } w-full rounded-lg bg-neutral-1 py-1 text-center text-sm text-neutral-5 hover:bg-opacity-80 sm:text-base`}
       >
         Pay Items
       </Link>

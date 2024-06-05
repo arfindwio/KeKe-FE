@@ -8,6 +8,7 @@ import { getAllProductsAction } from "../../../redux/action/products/ProductsAct
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { SidebarFilter } from "../../../assets/components/sidebar/SidebarFilter";
 import { ProductCard } from "../../../assets/components/card/ProductCard";
+import { ScrollButton } from "../../../assets/components/button/ScrollButton";
 import { Footer } from "../../../assets/components/footer/Footer";
 
 // Material Tailwind
@@ -30,6 +31,13 @@ export const Products = () => {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
   }, []);
 
   return (
@@ -81,13 +89,20 @@ export const Products = () => {
           <div className="hidden h-fit  w-full flex-col gap-6 rounded-lg bg-neutral-5 p-6 md:flex md:w-[35%]">
             <SidebarFilter />
           </div>
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:w-[63%] md:grid-cols-2 xl:grid-cols-3">
-            {productData.map((product, index) => (
-              <ProductCard product={product} key={index} />
-            ))}
-          </div>
+          {productData.length > 0 ? (
+            <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:w-[63%] md:grid-cols-2 xl:grid-cols-3">
+              {productData.map((product, index) => (
+                <ProductCard product={product} key={index} />
+              ))}
+            </div>
+          ) : (
+            <p className="m-auto text-center text-2xl font-bold italic text-neutral-4">
+              - No product found -
+            </p>
+          )}
         </div>
       </div>
+      <ScrollButton />
       <Footer />
     </>
   );
