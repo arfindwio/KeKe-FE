@@ -127,9 +127,20 @@ export const CartCard = ({ cart }) => {
             <h5 className="lg:text-md truncate text-sm font-semibold sm:text-xl xl:text-xl">
               {cart.product.productName}
             </h5>
-            <h5 className="text-sm font-bold sm:text-lg md:block lg:hidden">
-              IDR {cart.product.price.toLocaleString()}
-            </h5>
+            <div className="flex flex-col md:block lg:hidden ">
+              <h5 className="text-sm font-bold sm:text-lg">
+                IDR {cart.product.price.toLocaleString()}
+              </h5>
+              {cart.product.promotion && (
+                <h5 className="text-xs font-bold text-neutral-3 line-through sm:text-sm">
+                  IDR{" "}
+                  {(
+                    cart.product.price /
+                    (1 - cart.product.promotion.discount)
+                  ).toLocaleString()}
+                </h5>
+              )}
+            </div>
             <div className="flex gap-1">
               <p className="w-fit rounded-sm bg-neutral-4 px-1 text-xs font-light text-neutral-5">
                 {cart.color?.colorName}
@@ -143,10 +154,21 @@ export const CartCard = ({ cart }) => {
             </p>
           </div>
           <div className="flex h-full w-full flex-col items-end justify-end lg:w-[35%] lg:items-center lg:justify-center xl:w-[25%]">
-            <h5 className="ms-auto hidden w-[80%] text-center text-lg font-bold md:hidden lg:block">
-              IDR {cart.product.price.toLocaleString()}
-            </h5>
-            <p className="hidden  text-center text-xs font-light text-neutral-4 sm:block sm:w-[53%] md:w-[43%] lg:hidden">
+            <div className="hidden w-[80%] text-center md:hidden lg:flex lg:flex-col">
+              <h5 className="ms-auto text-lg font-bold">
+                IDR {cart.product.price.toLocaleString()}
+              </h5>
+              {cart.product.promotion && (
+                <h5 className="ms-auto pr-[7%] text-sm font-bold text-neutral-3 line-through">
+                  IDR{" "}
+                  {(
+                    cart.product.price /
+                    (1 - cart.product.promotion.discount)
+                  ).toLocaleString()}
+                </h5>
+              )}
+            </div>
+            <p className="hidden text-center text-xs font-light text-neutral-4 sm:block sm:w-[53%] md:w-[43%] lg:hidden">
               Stock {cart.product.stock}
             </p>
             <div className="flex w-full items-end justify-end gap-[2px] sm:gap-2 lg:items-center lg:justify-center">

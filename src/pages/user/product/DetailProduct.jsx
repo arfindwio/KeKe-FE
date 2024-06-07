@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 // Components
@@ -9,6 +9,7 @@ import { DetailProductSection } from "../../../assets/components/detailProduct/D
 import { ReviewCard } from "../../../assets/components/card/ReviewCard";
 import { DiscussionCard } from "../../../assets/components/card/DiscussionCard";
 import { ProductCard } from "../../../assets/components/card/ProductCard";
+import { ScrollButton } from "../../../assets/components/button/ScrollButton";
 import { Footer } from "../../../assets/components/footer/Footer";
 
 // Redux Actions
@@ -44,6 +45,7 @@ import {
 } from "../../../helper/ToastHelper";
 
 export const DetailProduct = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { productId } = useParams();
   const textareaRefReview = useRef(null);
@@ -86,13 +88,20 @@ export const DetailProduct = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }, []);
+
   const handleCancel = () => {
-    setInputDiscussion((prevInpsetInputDiscussion) => ({
-      ...prevInpsetInputDiscussion,
+    setInputDiscussion((previnputDiscussion) => ({
+      ...previnputDiscussion,
       userMessage: "",
     }));
-    setInputReview((prevInpsetInputReview) => ({
-      ...prevInpsetInputReview,
+    setInputReview((previnputReview) => ({
+      ...previnputReview,
       userRating: 1,
       userComment: "",
     }));
@@ -145,6 +154,7 @@ export const DetailProduct = () => {
   const handleButtonClick = (type) => {
     if (!token) {
       showErrorToast("Please log in first");
+      navigate("/login");
     } else {
       if (type === "review" && textareaRefReview.current) {
         textareaRefReview.current.focus();
@@ -260,18 +270,14 @@ export const DetailProduct = () => {
                     ></textarea>
                     <div className="flex gap-2 pt-2">
                       <button
+                        type="button"
                         className="rounded-lg border border-neutral-1 bg-neutral-5 px-4 py-1 text-sm hover:border-neutral-5 hover:bg-neutral-1 hover:text-neutral-5"
                         onClick={() => handleCancel()}
                       >
                         Cancel
                       </button>
                       <button
-                        className={`${
-                          inputReview.userComment
-                            ? "bg-neutral-1 hover:bg-opacity-80"
-                            : "border-neutral-4 bg-neutral-4"
-                        } rounded-lg border px-4 py-1 text-sm text-neutral-5`}
-                        disabled={!inputReview.userComment}
+                        className={`rounded-lg border bg-neutral-1 px-4 py-1 text-sm text-neutral-5 hover:bg-opacity-80`}
                         onClick={handleReview}
                       >
                         Send
@@ -343,6 +349,7 @@ export const DetailProduct = () => {
                     ></textarea>
                     <div className="flex gap-2 pt-2">
                       <button
+                        type="button"
                         className="rounded-lg border border-neutral-1 bg-neutral-5 px-4 py-1 text-sm hover:border-neutral-5 hover:bg-neutral-1 hover:text-neutral-5"
                         onClick={() => handleCancel()}
                       >
@@ -388,6 +395,7 @@ export const DetailProduct = () => {
         </div>
       </div>
 
+      <ScrollButton />
       <Footer />
     </>
   );

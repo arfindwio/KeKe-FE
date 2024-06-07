@@ -17,6 +17,7 @@ import { CategoryHomeCard } from "../assets/components/card/CategoryHomeCard";
 import { RecommendedCard } from "../assets/components/card/RecommendedCard";
 import { SpecialOfferCard } from "../assets/components/card/SpecialOfferCard";
 import { ProductsHomeCard } from "../assets/components/card/ProductsHomeCard";
+import { ScrollButton } from "../assets/components/button/ScrollButton";
 import { Footer } from "../assets/components/footer/Footer";
 
 // Cookies
@@ -43,6 +44,13 @@ export const Home = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "auto",
+    });
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -61,6 +69,8 @@ export const Home = () => {
           <ProductsHomeCard />
         </div>
       </div>
+
+      <ScrollButton />
 
       <Footer />
     </>

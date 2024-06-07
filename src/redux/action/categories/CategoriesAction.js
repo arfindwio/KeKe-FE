@@ -1,12 +1,14 @@
 import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetAllCategories,
+  reduxGetAllCategoriesAdmin,
   reduxPostCreateCategory,
   reduxPutEditCategoryById,
   reduxDeleteCategoryById,
 } from "../../../services/categories/Categories";
 import {
   setCategories,
+  setCategoriesAdmin,
   setCategory,
   startLoading,
   endLoading,
@@ -17,6 +19,25 @@ export const getAllCategoriesAction = () => async (dispatch) => {
     dispatch(startLoading());
     const result = await reduxGetAllCategories();
     dispatch(setCategories(result.data.data.categories));
+    return true;
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status >= 400 && err.response.status <= 500) {
+        showErrorToast(err.response.data.message);
+      } else {
+        console.error("unexpected Error", err);
+      }
+    }
+  } finally {
+    dispatch(endLoading());
+  }
+};
+
+export const getAllCategoriesAdminAction = () => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+    const result = await reduxGetAllCategoriesAdmin();
+    dispatch(setCategoriesAdmin(result.data.data.categories));
     return true;
   } catch (err) {
     if (err.response) {

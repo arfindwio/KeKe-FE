@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   products: [],
+  productsAdmin: [],
   recommendationProducts: [],
   product: null,
   specialOfferProduct: null,
@@ -14,6 +15,9 @@ const ProductsSlice = createSlice({
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
+    },
+    setProductsAdmin: (state, action) => {
+      state.productsAdmin = action.payload;
     },
     setRecommendationProducts: (state, action) => {
       state.recommendationProducts = action.payload;
@@ -35,6 +39,7 @@ const ProductsSlice = createSlice({
 
 export const {
   setProducts,
+  setProductsAdmin,
   setRecommendationProducts,
   setProduct,
   setSpecialOfferProduct,
