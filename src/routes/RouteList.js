@@ -19,6 +19,7 @@ import { Products } from "../pages/user/product/Products";
 import { DetailProduct } from "../pages/user/product/DetailProduct";
 import { Payment } from "../pages/user/payment/Payment";
 import { AdminDashboard } from "../pages/admin/AdminDashboard";
+import { AdminCategory } from "../pages/admin/AdminCategory";
 
 export const RouteList = () => {
   return (
@@ -54,6 +55,7 @@ export const RouteList = () => {
 
         {/* Admin */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/category" element={<AdminCategory />} />
       </Routes>
     </BrowserRouter>
   );

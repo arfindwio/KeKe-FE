@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetReviewsByProductId,
   reduxPostCreateReviewByProductId,
@@ -9,6 +8,7 @@ import {
   startLoading,
   endLoading,
 } from "../../reducer/reviews/ReviewsSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const getReviewsByProductIdAction = (productId) => async (dispatch) => {
   try {
@@ -17,13 +17,7 @@ export const getReviewsByProductIdAction = (productId) => async (dispatch) => {
     dispatch(setReviews(result.data.data.reviews));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -36,13 +30,7 @@ export const postCreateReviewByProductIdAction =
       await reduxPostCreateReviewByProductId(input, productId);
       return true;
     } catch (err) {
-      if (err.response) {
-        if (err.response.status >= 400 && err.response.status <= 500) {
-          showErrorToast(err.response.data.message);
-        } else {
-          console.error("unexpected Error", err);
-        }
-      }
+      handleRequestError(err);
     } finally {
       dispatch(endLoading());
     }

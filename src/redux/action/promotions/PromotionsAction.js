@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetAllPromotions,
   reduxPostCreatePromotion,
@@ -11,6 +10,7 @@ import {
   startLoading,
   endLoading,
 } from "../../reducer/promotions/PromotionsSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const getAllPromotionsAction = () => async (dispatch) => {
   try {
@@ -19,13 +19,7 @@ export const getAllPromotionsAction = () => async (dispatch) => {
     dispatch(setPromotions(result.data.data.promotions));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -37,13 +31,7 @@ export const postCreatePromotionAction = (input) => async (dispatch) => {
     await reduxPostCreatePromotion(input);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -56,13 +44,7 @@ export const putEditPromotionByIdAction =
       await reduxPutEditPromotionById(input, promotionId);
       return true;
     } catch (err) {
-      if (err.response) {
-        if (err.response.status >= 400 && err.response.status <= 500) {
-          showErrorToast(err.response.data.message);
-        } else {
-          console.error("unexpected Error", err);
-        }
-      }
+      handleRequestError(err);
     } finally {
       dispatch(endLoading());
     }
@@ -74,13 +56,7 @@ export const deletePromotionByIdAction = (promotionId) => async (dispatch) => {
     await reduxDeletePromotionById(promotionId);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }

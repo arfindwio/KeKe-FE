@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetAllSizes,
   reduxPostCreateSize,
@@ -13,6 +12,7 @@ import {
   startLoading,
   endLoading,
 } from "../../reducer/sizes/SizesSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const getAllSizesAction = () => async (dispatch) => {
   try {
@@ -21,13 +21,7 @@ export const getAllSizesAction = () => async (dispatch) => {
     dispatch(setSizes(result.data.data.sizes));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -39,13 +33,7 @@ export const postCreateSizeAction = (input) => async (dispatch) => {
     await reduxPostCreateSize(input);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -58,13 +46,7 @@ export const getSizesByProductIdAction = (productId) => async (dispatch) => {
     dispatch(setSizesByProductId(result.data.data.sizes));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -76,13 +58,7 @@ export const putEditSizeByIdAction = (input, sizeId) => async (dispatch) => {
     await reduxPutEditSizeById(input, sizeId);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -94,13 +70,7 @@ export const deleteSizeByIdAction = (sizeId) => async (dispatch) => {
     await reduxDeleteSizeById(sizeId);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }

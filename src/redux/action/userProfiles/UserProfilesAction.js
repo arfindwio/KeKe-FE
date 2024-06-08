@@ -1,10 +1,10 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import { reduxUpdateUserProfile } from "../../../services/userProfiles/UserProfiles";
 import {
   updateUserProfile,
   startLoading,
   endLoading,
 } from "../../reducer/userProfiles/UserProfilesSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const putUpdateUserProfile = (formData) => async (dispatch) => {
   try {
@@ -22,11 +22,7 @@ export const putUpdateUserProfile = (formData) => async (dispatch) => {
     await reduxUpdateUserProfile(formDataObject);
     return true;
   } catch (err) {
-    if (err.response.status >= 400 && err.response.status <= 500) {
-      showErrorToast(err.response.data.message);
-    } else {
-      console.error("unexpected Error", err);
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }

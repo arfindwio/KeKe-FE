@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetAllProducts,
   reduxGetProductById,
@@ -18,6 +17,7 @@ import {
   startLoading,
   endLoading,
 } from "../../reducer/products/ProductsSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const getAllProductsAction = (query) => async (dispatch) => {
   try {
@@ -26,13 +26,7 @@ export const getAllProductsAction = (query) => async (dispatch) => {
     dispatch(setProducts(result.data.data.products));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -45,13 +39,7 @@ export const getAllProductsAdminAction = () => async (dispatch) => {
     dispatch(setProductsAdmin(result.data.data.products));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -64,13 +52,7 @@ export const getProductByIdAction = (productId) => async (dispatch) => {
     dispatch(setProduct(result.data.data.product));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -82,13 +64,7 @@ export const postCreateProductAction = (formData) => async (dispatch) => {
     await reduxPostCreateProduct(formData);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -101,13 +77,7 @@ export const putEditProductByIdAction =
       await reduxPutEditProductById(formData, productId);
       return true;
     } catch (err) {
-      if (err.response) {
-        if (err.response.status >= 400 && err.response.status <= 500) {
-          showErrorToast(err.response.data.message);
-        } else {
-          console.error("unexpected Error", err);
-        }
-      }
+      handleRequestError(err);
     } finally {
       dispatch(endLoading());
     }
@@ -119,13 +89,7 @@ export const deleteProductByIdAction = (productId) => async (dispatch) => {
     await reduxDeleteProductById(productId);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -138,13 +102,7 @@ export const getRecommendationProductsAction = () => async (dispatch) => {
     dispatch(setRecommendationProducts(result.data.data.products));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -157,13 +115,7 @@ export const getRecommendationProductsActionUser = () => async (dispatch) => {
     dispatch(setRecommendationProducts(result.data.data.products));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -176,13 +128,7 @@ export const getSpecialOfferProductAction = () => async (dispatch) => {
     dispatch(setSpecialOfferProduct(result.data.data.product));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }

@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetAllPayments,
   reduxPostCreatePaymentMidtrans,
@@ -12,6 +11,7 @@ import {
   endLoading,
   setPaymentsHistory,
 } from "../../reducer/payments/PaymentsSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const getAllPaymentsAction = () => async (dispatch) => {
   try {
@@ -20,13 +20,7 @@ export const getAllPaymentsAction = () => async (dispatch) => {
     dispatch(setPayments(result.data.data.payments));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -38,13 +32,7 @@ export const postCreatePaymentMidtransAction = (input) => async (dispatch) => {
     await reduxPostCreatePaymentMidtrans(input);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -57,13 +45,7 @@ export const putEditPaymentByIdAction =
       await reduxPutEditPaymentById(input, paymentId);
       return true;
     } catch (err) {
-      if (err.response) {
-        if (err.response.status >= 400 && err.response.status <= 500) {
-          showErrorToast(err.response.data.message);
-        } else {
-          console.error("unexpected Error", err);
-        }
-      }
+      handleRequestError(err);
     } finally {
       dispatch(endLoading());
     }
@@ -77,13 +59,7 @@ export const getPaymentsHistoryAction = (query) => async (dispatch) => {
 
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }

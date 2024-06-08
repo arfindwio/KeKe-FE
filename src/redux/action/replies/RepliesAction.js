@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxPostCreateReplyByDiscussionId,
   reduxDeleteReplyById,
@@ -9,6 +8,7 @@ import {
   startLoading,
   endLoading,
 } from "../../reducer/replies/RepliesSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const postCreateReplyByDiscussionIdAction =
   (input, discussionId) => async (dispatch) => {
@@ -17,13 +17,7 @@ export const postCreateReplyByDiscussionIdAction =
       await reduxPostCreateReplyByDiscussionId(input, discussionId);
       return true;
     } catch (err) {
-      if (err.response) {
-        if (err.response.status >= 400 && err.response.status <= 500) {
-          showErrorToast(err.response.data.message);
-        } else {
-          console.error("unexpected Error", err);
-        }
-      }
+      handleRequestError(err);
     } finally {
       dispatch(endLoading());
     }
@@ -35,13 +29,7 @@ export const deleteReplyByIdAction = (replyId) => async (dispatch) => {
     await reduxDeleteReplyById(replyId);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
