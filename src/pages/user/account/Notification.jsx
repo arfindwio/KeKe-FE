@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // Redux Actions
@@ -15,22 +14,12 @@ import { Footer } from "../../../assets/components/footer/Footer";
 // Icons
 import { IoMdNotifications } from "react-icons/io";
 
-// Cookies
-import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
-
 export const Notification = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const notificationData = useSelector(
     (state) => state.notifications.notifications,
   );
-
-  useEffect(() => {
-    const token = CookieStorage.get(CookiesKeys.AuthToken);
-
-    if (!token) return navigate("/");
-  }, [navigate]);
 
   useEffect(() => {
     const delayFetch = setTimeout(async () => {

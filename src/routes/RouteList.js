@@ -1,6 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+// Componenet
+import { TokenProtected } from "../assets/components/protected/TokenProtected";
+import { AdminProtected } from "../assets/components/protected/AdminProtected";
+
 // Pages
 import { Error404 } from "../pages/errors/Error404";
 import { Home } from "../pages/Home";
@@ -20,6 +24,7 @@ import { DetailProduct } from "../pages/user/product/DetailProduct";
 import { Payment } from "../pages/user/payment/Payment";
 import { AdminDashboard } from "../pages/admin/AdminDashboard";
 import { AdminCategory } from "../pages/admin/AdminCategory";
+import { AdminPromotion } from "../pages/admin/AdminPromotion";
 
 export const RouteList = () => {
   return (
@@ -40,11 +45,23 @@ export const RouteList = () => {
         <Route path="/update-password" element={<UpdatePassword />} />
 
         {/* Account */}
-        <Route path="/account-profile" element={<Profile />} />
-        <Route path="/account-setting" element={<Setting />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/account-profile"
+          element={<TokenProtected element={<Profile />} />}
+        />
+        <Route
+          path="/account-setting"
+          element={<TokenProtected element={<Setting />} />}
+        />
+        <Route
+          path="/notification"
+          element={<TokenProtected element={<Notification />} />}
+        />
+        <Route
+          path="/history"
+          element={<TokenProtected element={<History />} />}
+        />
+        <Route path="/cart" element={<TokenProtected element={<Cart />} />} />
 
         {/* Products */}
         <Route path="/product" element={<Products />} />
@@ -54,8 +71,18 @@ export const RouteList = () => {
         <Route path="/payment" element={<Payment />} />
 
         {/* Admin */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/category" element={<AdminCategory />} />
+        <Route
+          path="/admin/dashboard"
+          element={<AdminProtected element={<AdminDashboard />} />}
+        />
+        <Route
+          path="/admin/promotion"
+          element={<AdminProtected element={<AdminPromotion />} />}
+        />
+        <Route
+          path="/admin/category"
+          element={<AdminProtected element={<AdminCategory />} />}
+        />
       </Routes>
     </BrowserRouter>
   );
