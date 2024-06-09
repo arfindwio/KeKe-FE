@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetAllNotifications,
   reduxPostCreateNotification,
@@ -9,6 +8,7 @@ import {
   startLoading,
   endLoading,
 } from "../../reducer/notifications/NotificationsSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const getAllNotificationsAction = () => async (dispatch) => {
   try {
@@ -17,13 +17,7 @@ export const getAllNotificationsAction = () => async (dispatch) => {
     dispatch(setNotifications(result.data.data.notifications));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -35,13 +29,7 @@ export const postCreateNotificationAction = (input) => async (dispatch) => {
     await reduxPostCreateNotification(input);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -53,13 +41,7 @@ export const putMarkAsReadNotificationAction = () => async (dispatch) => {
     await reduxPutMarkAsReadNotifications();
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }

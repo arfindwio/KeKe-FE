@@ -1,4 +1,3 @@
-import { showErrorToast } from "../../../helper/ToastHelper";
 import {
   reduxGetAllCategories,
   reduxGetAllCategoriesAdmin,
@@ -13,6 +12,7 @@ import {
   startLoading,
   endLoading,
 } from "../../reducer/categories/CategoriesSlice";
+import { handleRequestError } from "../../../utils/errorHandler";
 
 export const getAllCategoriesAction = () => async (dispatch) => {
   try {
@@ -21,13 +21,7 @@ export const getAllCategoriesAction = () => async (dispatch) => {
     dispatch(setCategories(result.data.data.categories));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -40,13 +34,7 @@ export const getAllCategoriesAdminAction = () => async (dispatch) => {
     dispatch(setCategoriesAdmin(result.data.data.categories));
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -58,13 +46,7 @@ export const postCreateCategoryAction = (formData) => async (dispatch) => {
     await reduxPostCreateCategory(formData);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }
@@ -77,13 +59,7 @@ export const putEditCategoryByIdAction =
       await reduxPutEditCategoryById(formData, categoryId);
       return true;
     } catch (err) {
-      if (err.response) {
-        if (err.response.status >= 400 && err.response.status <= 500) {
-          showErrorToast(err.response.data.message);
-        } else {
-          console.error("unexpected Error", err);
-        }
-      }
+      handleRequestError(err);
     } finally {
       dispatch(endLoading());
     }
@@ -95,13 +71,7 @@ export const deleteCategoryByIdAction = (categoryId) => async (dispatch) => {
     await reduxDeleteCategoryById(categoryId);
     return true;
   } catch (err) {
-    if (err.response) {
-      if (err.response.status >= 400 && err.response.status <= 500) {
-        showErrorToast(err.response.data.message);
-      } else {
-        console.error("unexpected Error", err);
-      }
-    }
+    handleRequestError(err);
   } finally {
     dispatch(endLoading());
   }

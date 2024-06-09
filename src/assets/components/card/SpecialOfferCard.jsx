@@ -179,7 +179,7 @@ export const SpecialOfferCard = () => {
               </div>
             </div>
             <div className="flex flex-wrap gap-4 pb-2">
-              <div className="flex flex-col gap-2 md:border-r-2 md:pr-4">
+              <div className="flex flex-col gap-2 md:border-r-2 md:border-neutral-4 md:pr-4">
                 <h5 className="text-sm font-semibold">
                   Choose Size:{" "}
                   <span className="text-slate-400">
@@ -253,27 +253,27 @@ export const SpecialOfferCard = () => {
               ></div>
             </div>
             <p className="text-sm font-medium">HURRY UP! OFFER ENDS IN:</p>
-            <div className="flex flex-wrap justify-center gap-4 sm:justify-start">
-              <div className="flex flex-col rounded-lg bg-slate-200 px-3 py-2 text-center">
-                <h5 className="text-lg font-medium tracking-wider">
+            <div className="flex flex-wrap justify-start gap-1 sm:gap-4">
+              <div className="flex flex-col rounded-lg bg-slate-200 px-1 py-1 text-center sm:px-3 sm:py-2">
+                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.days}
                 </h5>
                 <p className="text-xs text-neutral-2">Days</p>
               </div>
               <div className="flex flex-col rounded-lg bg-slate-200 px-3 py-2 text-center">
-                <h5 className="text-lg font-medium tracking-wider">
+                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.hours}
                 </h5>
                 <p className="text-xs text-neutral-2">Hours</p>
               </div>
               <div className="flex flex-col rounded-lg bg-slate-200 px-3 py-2 text-center">
-                <h5 className="text-lg font-medium tracking-wider">
+                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.minutes}
                 </h5>
                 <p className="text-xs text-neutral-2">Min</p>
               </div>
               <div className="flex flex-col rounded-lg bg-slate-200 px-3 py-2 text-center">
-                <h5 className="text-lg font-medium tracking-wider">
+                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.seconds}
                 </h5>
                 <p className="text-xs text-neutral-2">Sec</p>
