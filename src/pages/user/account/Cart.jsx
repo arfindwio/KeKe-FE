@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Redux Actions
 import { getAllCartsByAuthAction } from "../../../redux/action/carts/CartsAction";
@@ -15,23 +15,13 @@ import { Footer } from "../../../assets/components/footer/Footer";
 // Icons
 import { BsBasketFill } from "react-icons/bs";
 
-// Cookies
-import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
-
 export const Cart = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const cartData = useSelector((state) => state.carts.carts);
   const recommendationProductData = useSelector(
     (state) => state.products.recommendationProducts,
   );
-
-  useEffect(() => {
-    const token = CookieStorage.get(CookiesKeys.AuthToken);
-
-    if (!token) return navigate("/");
-  }, [navigate]);
 
   useEffect(() => {
     const fetchData = async () => {

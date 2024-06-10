@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -15,9 +14,6 @@ import {
   showSuccessToast,
 } from "../../../helper/ToastHelper";
 
-// Cookies
-import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
-
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { SidebarAccount } from "../../../assets/components/sidebar/SidebarAccount";
@@ -27,7 +23,6 @@ import { IoImageOutline } from "react-icons/io5";
 
 export const Profile = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [dataImage, setDataImage] = useState("");
@@ -44,12 +39,6 @@ export const Profile = () => {
   const userData = useSelector((state) => state.users.userAuthenticate);
 
   const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
-
-  useEffect(() => {
-    const token = CookieStorage.get(CookiesKeys.AuthToken);
-
-    if (!token) return navigate("/");
-  }, [navigate]);
 
   useEffect(() => {
     const fetchData = async () => {

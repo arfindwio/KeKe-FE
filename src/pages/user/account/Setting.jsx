@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import toast from "react-hot-toast";
@@ -14,9 +13,6 @@ import {
   showSuccessToast,
 } from "../../../helper/ToastHelper";
 
-// Cookies
-import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
-
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { SidebarAccount } from "../../../assets/components/sidebar/SidebarAccount";
@@ -29,7 +25,6 @@ import { IoClose } from "react-icons/io5";
 
 export const Setting = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [loadingButton, setLoadingButton] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -46,12 +41,6 @@ export const Setting = () => {
   });
 
   const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
-
-  useEffect(() => {
-    const token = CookieStorage.get(CookiesKeys.AuthToken);
-
-    if (!token) return navigate("/");
-  }, [navigate]);
 
   const handleInputChange = (e, field) => {
     const value = e.target.value;
