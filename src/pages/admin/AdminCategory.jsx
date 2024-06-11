@@ -52,22 +52,22 @@ export const AdminCategory = () => {
                       } border-b-2 bg-slate-200`}
                     >
                       <td className="px-2 py-1 text-sm">{index + 1}</td>
-                      <td className="flex flex-col px-2 py-1 text-sm lg:min-w-0">
+                      <td className="px-2 py-1 text-sm lg:min-w-0">
                         {category.categoryImage}
                       </td>
                       <td className="px-2 py-1 text-sm lg:min-w-0">
                         {category.categoryName}
                       </td>
-                      <td className="flex flex-wrap gap-1 px-2 py-1 text-sm lg:min-w-0">
+                      <td className="px-2 py-1 text-sm lg:min-w-0">
                         <button
                           type="button"
-                          className="rounded-full bg-orange-400 px-3 py-1 text-white"
+                          className="mb-1 mr-1 rounded-full bg-orange-400 px-3 py-1 text-white hover:bg-orange-700"
                         >
                           Edit
                         </button>
                         <button
                           type="button"
-                          className="rounded-full bg-red-600 px-3 py-1 text-white"
+                          className="rounded-full bg-red-600 px-3 py-1 text-white hover:bg-red-800"
                         >
                           Delete
                         </button>
