@@ -23,8 +23,9 @@ import { Products } from "../pages/user/product/Products";
 import { DetailProduct } from "../pages/user/product/DetailProduct";
 import { Payment } from "../pages/user/payment/Payment";
 import { AdminDashboard } from "../pages/admin/AdminDashboard";
-import { AdminCategory } from "../pages/admin/AdminCategory";
 import { AdminPromotion } from "../pages/admin/AdminPromotion";
+import { AdminCategory } from "../pages/admin/AdminCategory";
+import { AdminProduct } from "../pages/admin/AdminProduct";
 
 export const RouteList = () => {
   return (
@@ -82,6 +83,10 @@ export const RouteList = () => {
         <Route
           path="/admin/category"
           element={<AdminProtected element={<AdminCategory />} />}
+        />
+        <Route
+          path="/admin/product"
+          element={<AdminProtected element={<AdminProduct />} />}
         />
       </Routes>
     </BrowserRouter>
