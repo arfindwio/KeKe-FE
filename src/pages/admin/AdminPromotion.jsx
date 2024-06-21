@@ -197,7 +197,7 @@ export const AdminPromotion = () => {
               <p>Create Promotion</p>
             </button>
             <div className="overflow-x-auto">
-              <table class="w-full">
+              <table className="w-full">
                 <thead>
                   <tr className="border-2 bg-slate-200">
                     <th className="px-2 py-2 text-start text-sm">No</th>

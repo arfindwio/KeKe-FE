@@ -101,6 +101,7 @@ export const AdminDashboard = () => {
           <AdminNavbar />
           <AdminCard />
           <div className="flex flex-col justify-center gap-1 px-5 pt-10">
+            <h5 className="mb-2 text-xl font-semibold">Manage Payment</h5>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>

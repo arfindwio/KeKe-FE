@@ -5,6 +5,9 @@ import http from "../../utils/http";
 export const reduxGetAllPromotions = async () => {
   return await http.get(`${API_ENDPOINT.PROMOTIONS}`);
 };
+export const reduxGetAllPromotionsAdmin = async () => {
+  return await http.get(`${API_ENDPOINT.PROMOTIONS}?limit=9999`);
+};
 
 export const reduxPostCreatePromotion = async (input) => {
   return await http.post(`${API_ENDPOINT.PROMOTIONS}`, input);

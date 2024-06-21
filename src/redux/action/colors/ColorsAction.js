@@ -52,10 +52,10 @@ export const getColorsByProductIdAction = (productId) => async (dispatch) => {
   }
 };
 
-export const putEditColorByIdAction = (colorId) => async (dispatch) => {
+export const putEditColorByIdAction = (input, colorId) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxPutEditColorById(colorId);
+    await reduxPutEditColorById(input, colorId);
     return true;
   } catch (err) {
     handleRequestError(err);

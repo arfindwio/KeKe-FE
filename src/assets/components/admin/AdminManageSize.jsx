@@ -1,0 +1,138 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+
+// Redux Actions
+import {
+  postCreateSizeAction,
+  putEditSizeByIdAction,
+  deleteSizeByIdAction,
+} from "../../../redux/action/sizes/SizesAction";
+import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
+
+// Helper
+import {
+  showErrorToast,
+  showLoadingToast,
+  showSuccessToast,
+} from "../../../helper/ToastHelper";
+
+// Icons
+import { RiDeleteBin5Line } from "react-icons/ri";
+
+export const AdminManageSize = ({
+  type,
+  size,
+  submitProduct,
+  completeSubmit,
+}) => {
+  const dispatch = useDispatch();
+
+  const [inputSize, setInputSize] = useState({
+    sizeName: "",
+    productId: submitProduct?.id,
+  });
+
+  useEffect(() => {
+    if (type === "edit") {
+      setInputSize({
+        sizeName: size?.sizeName,
+      });
+    }
+  }, [type, size, submitProduct]);
+
+  useEffect(() => {
+    const handleCreate = async () => {
+      const loadingToastId = showLoadingToast("Loading...");
+
+      const createSize = await dispatch(
+        postCreateSizeAction({ ...inputSize, productId: submitProduct?.id }),
+      );
+
+      toast.dismiss(loadingToastId);
+
+      if (!createSize) {
+        showErrorToast("Create Size Failed");
+      } else {
+        completeSubmit(null, "create");
+      }
+    };
+
+    const handleEdit = async () => {
+      const loadingToastId = showLoadingToast("Loading...");
+
+      const editSize = await dispatch(
+        putEditSizeByIdAction(
+          { ...inputSize, productId: submitProduct?.id },
+          size?.id,
+        ),
+      );
+
+      toast.dismiss(loadingToastId);
+
+      if (!editSize) {
+        showErrorToast("Edit Size Failed");
+      } else {
+        completeSubmit(null, "edit");
+      }
+    };
+
+    if (submitProduct && type === "create") {
+      handleCreate();
+    }
+
+    if (submitProduct && type === "edit") {
+      handleEdit();
+    }
+  }, [submitProduct]);
+
+  const handleInputChange = (e) => {
+    setInputSize((prevInputSize) => ({
+      ...prevInputSize,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleDelete = async () => {
+    const loadingToastId = showLoadingToast("Loading...");
+
+    const deleteSize = await dispatch(deleteSizeByIdAction(size?.id));
+
+    toast.dismiss(loadingToastId);
+
+    if (!deleteSize) showErrorToast("Delete Size Failed");
+
+    if (deleteSize) {
+      showSuccessToast("Delete Size Successful");
+      await dispatch(getAllProductsAction(""));
+    }
+  };
+
+  return (
+    <>
+      <div className="flex w-full flex-col">
+        <label htmlFor="sizeName" className="text-neutral-1">
+          Size Name
+        </label>
+        <div className="flex flex-nowrap items-center justify-between">
+          <input
+            type="text"
+            id="sizeName"
+            name="sizeName"
+            className="border-1 w-[90%] rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
+            placeholder="Input Size Name"
+            value={inputSize.sizeName}
+            onChange={handleInputChange}
+          />
+          <button
+            type="button"
+            className="flex h-full w-fit items-center rounded-lg bg-red-600 px-2 text-neutral-5 hover:bg-red-800"
+            onClick={() => handleDelete()}
+          >
+            <RiDeleteBin5Line size={25} />
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
