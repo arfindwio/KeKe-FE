@@ -1,11 +1,13 @@
 import {
   reduxGetAllPromotions,
   reduxPostCreatePromotion,
+  reduxGetAllPromotionsAdmin,
   reduxPutEditPromotionById,
   reduxDeletePromotionById,
 } from "../../../services/promotions/Promotions";
 import {
   setPromotions,
+  setPromotionsAdmin,
   setPromotion,
   startLoading,
   endLoading,
@@ -17,6 +19,19 @@ export const getAllPromotionsAction = () => async (dispatch) => {
     dispatch(startLoading());
     const result = await reduxGetAllPromotions();
     dispatch(setPromotions(result.data.data.promotions));
+    return true;
+  } catch (err) {
+    handleRequestError(err);
+  } finally {
+    dispatch(endLoading());
+  }
+};
+
+export const getAllPromotionsAdminAction = () => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+    const result = await reduxGetAllPromotionsAdmin();
+    dispatch(setPromotionsAdmin(result.data.data.promotions));
     return true;
   } catch (err) {
     handleRequestError(err);

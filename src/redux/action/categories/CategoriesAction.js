@@ -43,7 +43,12 @@ export const getAllCategoriesAdminAction = () => async (dispatch) => {
 export const postCreateCategoryAction = (formData) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxPostCreateCategory(formData);
+    const { image, categoryName } = formData;
+
+    const formDataObject = new FormData();
+    formDataObject.append("image", image || "");
+    formDataObject.append("categoryName", categoryName);
+    await reduxPostCreateCategory(formDataObject);
     return true;
   } catch (err) {
     handleRequestError(err);
