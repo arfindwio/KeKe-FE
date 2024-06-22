@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   promotions: [],
+  promotionsAdmin: [],
   promotion: null,
   loading: false,
 };
@@ -12,6 +13,9 @@ const PromotionsSlice = createSlice({
   reducers: {
     setPromotions: (state, action) => {
       state.promotions = action.payload;
+    },
+    setPromotionsAdmin: (state, action) => {
+      state.promotionsAdmin = action.payload;
     },
     setPromotion: (state, action) => {
       state.promotion = action.payload;
@@ -25,7 +29,12 @@ const PromotionsSlice = createSlice({
   },
 });
 
-export const { setPromotions, setPromotion, startLoading, endLoading } =
-  PromotionsSlice.actions;
+export const {
+  setPromotions,
+  setPromotionsAdmin,
+  setPromotion,
+  startLoading,
+  endLoading,
+} = PromotionsSlice.actions;
 
 export default PromotionsSlice.reducer;

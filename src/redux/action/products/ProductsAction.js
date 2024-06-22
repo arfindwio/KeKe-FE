@@ -61,8 +61,27 @@ export const getProductByIdAction = (productId) => async (dispatch) => {
 export const postCreateProductAction = (formData) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxPostCreateProduct(formData);
-    return true;
+    const {
+      image,
+      productName,
+      price,
+      description,
+      stock,
+      categoryId,
+      promotionId,
+    } = formData;
+
+    const formDataObject = new FormData();
+    formDataObject.append("image", image || "");
+    formDataObject.append("productName", productName);
+    formDataObject.append("price", price);
+    formDataObject.append("description", description);
+    formDataObject.append("stock", stock);
+    formDataObject.append("categoryId", categoryId);
+    formDataObject.append("promotionId", promotionId);
+
+    const result = await reduxPostCreateProduct(formDataObject);
+    return result.data.data.newProduct;
   } catch (err) {
     handleRequestError(err);
   } finally {
@@ -74,8 +93,29 @@ export const putEditProductByIdAction =
   (formData, productId) => async (dispatch) => {
     try {
       dispatch(startLoading());
-      await reduxPutEditProductById(formData, productId);
-      return true;
+
+      const {
+        image,
+        productName,
+        price,
+        description,
+        stock,
+        categoryId,
+        promotionId,
+      } = formData;
+
+      const formDataObject = new FormData();
+      formDataObject.append("image", image || "");
+      formDataObject.append("productName", productName);
+      formDataObject.append("price", price);
+      formDataObject.append("description", description);
+      formDataObject.append("stock", stock);
+      formDataObject.append("categoryId", categoryId);
+      formDataObject.append("promotionId", promotionId);
+
+      const result = await reduxPutEditProductById(formDataObject, productId);
+
+      return result.data.data.editedProduct;
     } catch (err) {
       handleRequestError(err);
     } finally {
