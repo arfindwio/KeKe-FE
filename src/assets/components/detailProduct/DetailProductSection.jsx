@@ -49,10 +49,10 @@ export const DetailProductSection = () => {
 
   const detailProductData = useSelector((state) => state.products.product);
 
-  const selectedColor = detailProductData.color.find(
+  const selectedColor = detailProductData?.color.find(
     (color) => color.id === inputCart.colorId,
   )?.colorName;
-  const selectedSize = detailProductData.size.find(
+  const selectedSize = detailProductData?.size.find(
     (size) => size.id === inputCart.sizeId,
   )?.sizeName;
 
@@ -62,8 +62,8 @@ export const DetailProductSection = () => {
     if (detailProductData) {
       setInputCart((prevState) => ({
         ...prevState,
-        sizeId: detailProductData.size[0]?.id || "",
-        colorId: detailProductData.color[0]?.id || "",
+        sizeId: detailProductData?.size[0]?.id || "",
+        colorId: detailProductData?.color[0]?.id || "",
       }));
     }
   }, [detailProductData]);
@@ -100,7 +100,7 @@ export const DetailProductSection = () => {
     const loadingToastId = showLoadingToast("Loading...");
 
     const cart = await dispatch(
-      postCreateCartByProductIdAction(inputCart, detailProductData.id),
+      postCreateCartByProductIdAction(inputCart, detailProductData?.id),
     );
 
     toast.dismiss(loadingToastId);
@@ -126,14 +126,14 @@ export const DetailProductSection = () => {
         </Link>
         <IoIosArrowForward size={20} className="text-neutral-2" />
         <Link
-          to={`/product?c=${detailProductData.category.categoryName}`}
+          to={`/product?c=${detailProductData?.category?.categoryName}`}
           className="text-base font-semibold text-neutral-1"
         >
-          {detailProductData.category.categoryName}
+          {detailProductData?.category?.categoryName}
         </Link>
         <IoIosArrowForward size={20} className="text-neutral-2" />
         <p className="truncate text-base text-neutral-3">
-          {detailProductData.productName}
+          {detailProductData?.productName}
         </p>
       </div>
       <div className="flex flex-col rounded-md border shadow-md md:flex-row">
@@ -156,14 +156,14 @@ export const DetailProductSection = () => {
           >
             <SwiperSlide>
               <img
-                src={detailProductData.productImage}
+                src={detailProductData?.productImage}
                 alt="Photo"
                 className="h-full w-full object-cover"
               />
             </SwiperSlide>
             <SwiperSlide>
               <img
-                src={detailProductData.productImage}
+                src={detailProductData?.productImage}
                 alt="Photo"
                 className="h-full w-full object-cover"
               />
@@ -183,7 +183,7 @@ export const DetailProductSection = () => {
         <div className="flex w-full flex-col gap-3 px-6 py-8 md:w-[60%]">
           <div className="flex flex-col">
             <h1 className="text-lg font-semibold">
-              {detailProductData.productName}
+              {detailProductData?.productName}
             </h1>
             <div className="flex items-center gap-2">
               {detailProductData?.review?.length > 0 && (
@@ -195,19 +195,19 @@ export const DetailProductSection = () => {
                   </span>
                 </p>
               )}
-              {detailProductData.soldCount > 0 && (
+              {detailProductData?.soldCount > 0 && (
                 <p
                   className={`${
-                    detailProductData.review?.length > 0 && "border-l-2 pl-2"
+                    detailProductData?.review?.length > 0 && "border-l-2 pl-2"
                   } text-sm font-light text-neutral-2`}
                 >
-                  {detailProductData.soldCount} Items Sold
+                  {detailProductData?.soldCount} Items Sold
                 </p>
               )}
             </div>
           </div>
           <h2 className="text-2xl font-bold">
-            IDR {detailProductData.price.toLocaleString()}
+            IDR {detailProductData?.price.toLocaleString()}
           </h2>
           <div className="flex flex-wrap gap-4">
             <div className="flex flex-col gap-2 md:border-r-2 md:pr-4">
@@ -218,7 +218,7 @@ export const DetailProductSection = () => {
                 </span>
               </h5>
               <div className="flex flex-wrap gap-2">
-                {detailProductData.size.map((size, index) => (
+                {detailProductData?.size.map((size, index) => (
                   <p
                     className={`${
                       inputCart.sizeId === size.id
@@ -239,7 +239,7 @@ export const DetailProductSection = () => {
                 <span className="text-slate-400">{selectedColor}</span>
               </h5>
               <div className="flex flex-wrap gap-2">
-                {detailProductData.color.map((color, index) => (
+                {detailProductData?.color.map((color, index) => (
                   <p
                     className={`${
                       inputCart.colorId === color.id
@@ -264,7 +264,7 @@ export const DetailProductSection = () => {
             </button>
             <p className="text-sm">
               Stock:{" "}
-              <span className="text-slate-400">{detailProductData.stock}</span>
+              <span className="text-slate-400">{detailProductData?.stock}</span>
             </p>
           </div>
           <form className="flex w-full flex-col">
@@ -286,7 +286,7 @@ export const DetailProductSection = () => {
           <div className="flex flex-col gap-2 border-opacity-50 py-2">
             <h5 className="text-base font-semibold">Description</h5>
             <p className="text-justify text-sm font-medium text-neutral-2">
-              {detailProductData.description}
+              {detailProductData?.description}
             </p>
           </div>
         </div>

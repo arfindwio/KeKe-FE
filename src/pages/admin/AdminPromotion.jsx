@@ -39,6 +39,7 @@ import {
 export const AdminPromotion = () => {
   const dispatch = useDispatch();
 
+  const [openNavbar, setOpenNavbar] = useState(false);
   const [open, setOpen] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -50,6 +51,10 @@ export const AdminPromotion = () => {
   const [promotionId, setPromotionId] = useState(null);
 
   const promotionData = useSelector((state) => state.promotions.promotions);
+
+  openNavbar
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "auto");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -177,16 +182,19 @@ export const AdminPromotion = () => {
       setOpenDelete(false);
     }
   };
+
+  const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
+
   return (
     <>
       <div className="flex">
         <div className="fixed w-[20%]">
           <AdminSidebar />
         </div>
-        <div className="ml-auto flex w-[80%] flex-col">
-          <AdminNavbar />
+        <div className="ml-auto flex w-full flex-col lg:w-[80%]">
+          <AdminNavbar onOpen={handleOpenNavbar} />
           <AdminCard />
-          <div className="flex flex-col justify-center gap-1 px-5 pt-10">
+          <div className="flex flex-col justify-center gap-1 px-5 pb-16 pt-10">
             <h5 className="mb-2 text-xl font-semibold">Manage Promotion</h5>
             <button
               type="button"

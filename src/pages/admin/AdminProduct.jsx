@@ -42,6 +42,7 @@ import { IoMdClose } from "react-icons/io";
 export const AdminProduct = () => {
   const dispatch = useDispatch();
 
+  const [openNavbar, setOpenNavbar] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -67,6 +68,10 @@ export const AdminProduct = () => {
   const promotionData = useSelector(
     (state) => state.promotions.promotionsAdmin,
   );
+
+  openNavbar
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "auto");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,6 +153,7 @@ export const AdminProduct = () => {
       if (!createProduct) showErrorToast("Create Product Failed");
 
       if (createProduct) {
+        showSuccessToast("Create Product Successful");
         setSubmitProduct(createProduct);
       }
     }
@@ -167,7 +173,10 @@ export const AdminProduct = () => {
 
       if (!editProduct) showErrorToast("Edit Product Failed");
 
-      if (editProduct) setSubmitProduct(editProduct);
+      if (editProduct) {
+        showSuccessToast("Edit Product Successful");
+        setSubmitProduct(editProduct);
+      }
     }
   };
 
@@ -190,27 +199,24 @@ export const AdminProduct = () => {
   const handleSubmitProduct = async (completeSubmit, type) => {
     setSubmitProduct(completeSubmit);
     if (type === "create") {
-      showSuccessToast("Create Product Successful");
-      showSuccessToast("Create Size Successful");
-      showSuccessToast("Create Color Successful");
       setOpenCreate(false);
     }
-    if (type === "edit") {
-      showSuccessToast("Edit Product Successful");
-      showSuccessToast("Edit Size Successful");
-      showSuccessToast("Edit Color Successful");
+    if (type === "edit" || type === "delete") {
       setOpenEdit(false);
     }
     await dispatch(getAllProductsAction(""));
   };
+
+  const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
+
   return (
     <>
       <div className="flex">
         <div className="fixed w-[20%]">
           <AdminSidebar />
         </div>
-        <div className="ml-auto flex w-[80%] flex-col">
-          <AdminNavbar />
+        <div className="ml-auto flex w-full flex-col lg:w-[80%]">
+          <AdminNavbar onOpen={handleOpenNavbar} />
           <AdminCard />
           <div className="flex flex-col justify-center gap-1 px-5 pb-16 pt-10">
             <h5 className="mb-2 text-xl font-semibold">Manage Product</h5>
@@ -278,11 +284,13 @@ export const AdminProduct = () => {
                       <td className="px-2 py-1 text-sm lg:min-w-0">
                         {product.category.categoryName}
                       </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
+                      <td className="px-2 py-1 text-sm font-bold italic text-alert-red lg:min-w-0">
                         {product.promotion?.discount ? (
-                          product.promotion?.discount
+                          `${product.promotion?.discount * 100}%`
                         ) : (
-                          <p className="text-neutral-3 text-opacity-50">null</p>
+                          <p className="font-normal not-italic text-neutral-3 text-opacity-50">
+                            null
+                          </p>
                         )}
                       </td>
                       <td className="px-2 py-1 text-sm lg:min-w-0">
@@ -685,8 +693,8 @@ export const AdminProduct = () => {
             <h5 className="text-xl font-bold text-neutral-1">Edit Size</h5>
             <div className="grid grid-cols-2 gap-6">
               {products &&
-                products.size &&
-                products.size.map((size, index) => (
+                products?.size &&
+                products?.size.map((size, index) => (
                   <AdminManageSize
                     type={"edit"}
                     size={size}
@@ -724,8 +732,8 @@ export const AdminProduct = () => {
             <h5 className="text-xl font-bold text-neutral-1">Edit Color</h5>
             <div className="grid grid-cols-2 gap-6">
               {products &&
-                products.color &&
-                products.color.map((color, index) => (
+                products?.color &&
+                products?.color.map((color, index) => (
                   <AdminManageColor
                     type={"edit"}
                     color={color}

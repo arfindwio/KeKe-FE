@@ -104,7 +104,7 @@ export const AdminManageColor = ({
 
     if (deleteColor) {
       showSuccessToast("Delete Color Successful");
-      await dispatch(getAllProductsAction(""));
+      completeSubmit(null, "delete");
     }
   };
 
@@ -118,18 +118,22 @@ export const AdminManageColor = ({
           type="text"
           id="colorName"
           name="colorName"
-          className="border-1 w-[90%] rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
+          className={`${
+            !color.id ? "w-full" : "w-[90%]"
+          } border-1  rounded-2xl border px-4 py-3 text-neutral-2 outline-none`}
           placeholder="Input Color Name"
           value={inputColor.colorName}
           onChange={handleInputChange}
         />
-        <button
-          type="button"
-          className="flex h-full w-fit items-center rounded-lg bg-red-600 px-2 text-neutral-5 hover:bg-red-800"
-          onClick={() => handleDelete()}
-        >
-          <RiDeleteBin5Line size={25} />
-        </button>
+        {color.id && (
+          <button
+            type="button"
+            className="flex h-full w-fit items-center rounded-lg bg-red-600 px-2 text-neutral-5 hover:bg-red-800"
+            onClick={() => handleDelete()}
+          >
+            <RiDeleteBin5Line size={25} />
+          </button>
+        )}
       </div>
     </div>
   );

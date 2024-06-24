@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Icons
 import { IoIosArrowDown } from "react-icons/io";
@@ -6,6 +7,8 @@ import { IoIosArrowUp } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 
 export const PaymentHistoryCard = ({ payment }) => {
+  const navigate = useNavigate();
+
   const [showAll, setShowAll] = useState(false);
 
   const displayedItems = showAll ? payment.cart : [payment.cart[0]];
@@ -51,8 +54,9 @@ export const PaymentHistoryCard = ({ payment }) => {
           <div className="flex w-full flex-col gap-2 border-neutral-4 sm:w-[78%] sm:border-r-2">
             {displayedItems.map((cart, index) => (
               <div
-                className="flex w-full justify-between sm:items-center"
+                className="flex w-full cursor-pointer justify-between sm:items-center"
                 key={index}
+                onClick={() => navigate(`/product/${cart.product.id}`)}
               >
                 <div className="w-[32%] rounded-md sm:w-[25%] md:w-[20%] lg:w-[10%]">
                   <img

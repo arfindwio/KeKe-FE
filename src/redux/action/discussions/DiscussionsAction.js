@@ -1,15 +1,30 @@
 import {
   reduxGetDiscussionsByProductId,
+  reduxGetAllDiscussions,
   reduxPostCreateDiscussionByProductId,
   reduxDeleteDiscussionById,
 } from "../../../services/discussions/Discussions";
 import {
   setDiscussions,
+  setDiscussionsAdmin,
   setDiscussion,
   startLoading,
   endLoading,
 } from "../../reducer/discussions/DiscussionsSlice";
 import { handleRequestError } from "../../../utils/errorHandler";
+
+export const getAllDiscussionsAction = () => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+    const result = await reduxGetAllDiscussions();
+    dispatch(setDiscussionsAdmin(result.data.data.discussions));
+    return true;
+  } catch (err) {
+    handleRequestError(err);
+  } finally {
+    dispatch(endLoading());
+  }
+};
 
 export const getDiscussionsByProductIdAction =
   (productId) => async (dispatch) => {
