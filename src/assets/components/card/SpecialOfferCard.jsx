@@ -160,7 +160,7 @@ export const SpecialOfferCard = () => {
             <h5 className="text-base font-bold ">
               {specialOfferData.productName}
             </h5>
-            <p className="text-sm text-neutral-4 ">
+            <p className="text-sm text-neutral-3">
               {specialOfferData.description}
             </p>
             <div className="flex gap-3">

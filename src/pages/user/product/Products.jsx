@@ -36,7 +36,7 @@ export const Products = () => {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "auto",
+      behavior: "instant",
     });
   }, []);
 
@@ -48,7 +48,7 @@ export const Products = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold md:text-3xl">Products</h1>
           <button
-            className="text-primary-1 text-lg font-medium md:hidden"
+            className="text-lg font-medium text-primary-1 md:hidden"
             onClick={() => setOpenBottom(true)}
           >
             Filter

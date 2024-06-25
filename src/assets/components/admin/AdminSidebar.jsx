@@ -1,17 +1,22 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+// Redux Actions
+import { logoutUserAction } from "../../../redux/action/users/UsersAction";
 
 // Images
 import Logo from "../../img/Logo1.svg";
 
 export const AdminSidebar = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   return (
     <>
-      <div className="h-screen bg-neutral-2 py-4 text-neutral-5">
+      <div className="fixed hidden h-screen w-1/5 bg-neutral-2 py-4 text-neutral-5 lg:flex lg:flex-col lg:items-center">
         <img
           src={Logo}
           alt="Logo"
@@ -59,9 +64,20 @@ export const AdminSidebar = () => {
           >
             Product
           </Link>
+          <Link
+            to={"/admin/discussion"}
+            className={`${
+              location.pathname === "/admin/discussion"
+                ? "bg-neutral-5 bg-opacity-50 font-semibold"
+                : "hover:bg-neutral-5 hover:bg-opacity-20"
+            } px-6 py-3 text-lg`}
+          >
+            Discussion
+          </Link>
           <button
             type="button"
             className={`px-6 py-3 text-start text-lg hover:bg-neutral-5 hover:bg-opacity-20`}
+            onClick={() => dispatch(logoutUserAction())}
           >
             Logout
           </button>

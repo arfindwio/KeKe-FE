@@ -104,7 +104,7 @@ export const AdminManageSize = ({
 
     if (deleteSize) {
       showSuccessToast("Delete Size Successful");
-      await dispatch(getAllProductsAction(""));
+      completeSubmit(null, "delete");
     }
   };
 
@@ -119,18 +119,22 @@ export const AdminManageSize = ({
             type="text"
             id="sizeName"
             name="sizeName"
-            className="border-1 w-[90%] rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
+            className={`${
+              !size.id ? "w-full" : "w-[90%]"
+            } border-1  rounded-2xl border px-4 py-3 text-neutral-2 outline-none`}
             placeholder="Input Size Name"
             value={inputSize.sizeName}
             onChange={handleInputChange}
           />
-          <button
-            type="button"
-            className="flex h-full w-fit items-center rounded-lg bg-red-600 px-2 text-neutral-5 hover:bg-red-800"
-            onClick={() => handleDelete()}
-          >
-            <RiDeleteBin5Line size={25} />
-          </button>
+          {size.id && (
+            <button
+              type="button"
+              className="flex h-full w-fit items-center rounded-lg bg-red-600 px-2 text-neutral-5 hover:bg-red-800"
+              onClick={() => handleDelete()}
+            >
+              <RiDeleteBin5Line size={25} />
+            </button>
+          )}
         </div>
       </div>
     </>
