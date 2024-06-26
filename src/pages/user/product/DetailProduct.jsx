@@ -71,13 +71,21 @@ export const DetailProduct = () => {
   const token = CookieStorage.get(CookiesKeys.AuthToken);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getProductByIdAction(productId));
+      const detailProduct = await dispatch(getProductByIdAction(productId));
+      if (!detailProduct) navigate("/");
       await dispatch(
-        getAllProductsAction(`?c=${detailProductData.category.categoryName}`),
+        getAllProductsAction(`?c=${detailProductData?.category?.categoryName}`),
       );
-      await dispatch(getReviewsByProductIdAction(detailProductData.id));
-      await dispatch(getDiscussionsByProductIdAction(detailProductData.id));
+      await dispatch(getReviewsByProductIdAction(productId));
+      await dispatch(getDiscussionsByProductIdAction(productId));
       if (token) {
         await dispatch(getRecommendationProductsActionUser());
       } else {
@@ -86,13 +94,6 @@ export const DetailProduct = () => {
     };
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "auto",
-    });
   }, []);
 
   const handleCancel = () => {

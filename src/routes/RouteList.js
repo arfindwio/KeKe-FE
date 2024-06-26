@@ -26,6 +26,7 @@ import { AdminDashboard } from "../pages/admin/AdminDashboard";
 import { AdminPromotion } from "../pages/admin/AdminPromotion";
 import { AdminCategory } from "../pages/admin/AdminCategory";
 import { AdminProduct } from "../pages/admin/AdminProduct";
+import { AdminDiscussion } from "../pages/admin/AdminDiscussion";
 
 export const RouteList = () => {
   return (
@@ -87,6 +88,11 @@ export const RouteList = () => {
         <Route
           path="/admin/product"
           element={<AdminProtected element={<AdminProduct />} />}
+        />
+
+        <Route
+          path="/admin/discussion"
+          element={<AdminProtected element={<AdminDiscussion />} />}
         />
       </Routes>
     </BrowserRouter>

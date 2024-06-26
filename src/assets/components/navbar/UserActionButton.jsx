@@ -1,18 +1,27 @@
 import React from "react";
-import { useLocation, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+// Redux Actions
+import { logoutUserAction } from "../../../redux/action/users/UsersAction";
 
 // Cookie
 import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
 
 // Icons
-import { MdLogin } from "react-icons/md";
+import { TbShirt } from "react-icons/tb";
 import { RiFileList2Line } from "react-icons/ri";
 import { FiBell } from "react-icons/fi";
 import { LuUser } from "react-icons/lu";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { LuLogOut } from "react-icons/lu";
+
+// Material Tailwind
+import { Menu, MenuHandler, MenuList } from "@material-tailwind/react";
 
 export const UserActionButton = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const notificationData = useSelector(
@@ -28,24 +37,22 @@ export const UserActionButton = () => {
   const currentPath = location.pathname;
   const token = CookieStorage.get(CookiesKeys.AuthToken);
 
+  const handleLogout = () => {
+    dispatch(logoutUserAction());
+    navigate("/login");
+  };
+
   return (
     <>
       {token ? (
         <div className="flex items-center gap-2 md:gap-6">
           <Link
-            to={"/notification"}
+            to={"/product"}
             className={`${
-              currentPath === "/notification"
-                ? "text-neutral-1"
-                : "text-neutral-3"
-            } relative`}
+              currentPath === "/product" ? "text-neutral-1" : "text-neutral-3"
+            }`}
           >
-            <FiBell size={23} />
-            {unreadNotifications.length > 0 && (
-              <p className="absolute -right-[6px] -top-2 rounded-full bg-alert-red px-[6px] py-[0.1px] text-xs font-bold text-neutral-5">
-                {unreadNotifications.length}
-              </p>
-            )}
+            <TbShirt size={25} />
           </Link>
           <Link
             to={"/cart"}
@@ -60,25 +67,71 @@ export const UserActionButton = () => {
               </p>
             )}
           </Link>
-          <Link
-            to={"/history"}
-            className={`${
-              currentPath === "/history" ? "text-neutral-1" : "text-neutral-3"
-            }`}
-          >
-            <RiFileList2Line size={25} />
-          </Link>
-          <Link
-            to={"/account-profile"}
-            className={`${
-              currentPath === "/account-profile" ||
-              currentPath === "/account-setting"
-                ? "text-neutral-1"
-                : "text-neutral-3"
-            }`}
-          >
-            <LuUser size={25} />
-          </Link>
+          <Menu allowHover>
+            <MenuHandler>
+              <button
+                className={`${
+                  currentPath === "/account-profile" ||
+                  currentPath === "/account-setting" ||
+                  currentPath === "/history" ||
+                  currentPath === "/notification"
+                    ? "text-neutral-1"
+                    : "text-neutral-3"
+                }`}
+              >
+                <LuUser size={25} />
+              </button>
+            </MenuHandler>
+            <MenuList className="flex flex-col gap-1">
+              <Link
+                to={"/account-profile"}
+                className={`${
+                  currentPath === "/account-profile" ||
+                  currentPath === "/account-setting"
+                    ? "text-neutral-1"
+                    : "text-neutral-3"
+                } flex w-full items-center gap-1 rounded-md p-1 hover:bg-slate-100`}
+              >
+                <LuUser size={20} />
+                <p>Account</p>
+              </Link>
+              <Link
+                to={"/history"}
+                className={`${
+                  currentPath === "/history"
+                    ? "text-neutral-1"
+                    : "text-neutral-3"
+                } flex w-full items-center gap-1 rounded-md p-1 hover:bg-slate-100`}
+              >
+                <RiFileList2Line size={20} />
+                <p>History</p>
+              </Link>
+              <Link
+                to={"/notification"}
+                className={`${
+                  currentPath === "/notification"
+                    ? "text-neutral-1"
+                    : "text-neutral-3"
+                } flex w-full items-center gap-1 rounded-md p-1 hover:bg-slate-100`}
+              >
+                <FiBell size={20} />
+                <p className="mr-auto">Notification</p>
+                {unreadNotifications.length > 0 && (
+                  <p className="rounded-full bg-alert-red px-[6px] py-[0.1px] text-xs font-bold text-neutral-5">
+                    {unreadNotifications.length}
+                  </p>
+                )}
+              </Link>
+              <hr className="my-2 border-blue-gray-50" />
+              <button
+                className="flex w-full items-center gap-1 p-1 text-neutral-3 hover:bg-slate-100"
+                onClick={handleLogout}
+              >
+                <LuLogOut size={20} />
+                Logout
+              </button>
+            </MenuList>
+          </Menu>
         </div>
       ) : (
         <div className="flex gap-2">
