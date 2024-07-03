@@ -43,8 +43,8 @@ export const DetailProductSection = () => {
 
   const [inputCart, setInputCart] = useState({
     note: "",
-    sizeId: "",
-    colorId: "",
+    sizeId: null,
+    colorId: null,
   });
 
   const detailProductData = useSelector((state) => state.products.product);
