@@ -14,6 +14,7 @@ import {
 import { AdminSidebar } from "../../assets/components/admin/AdminSidebar";
 import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
 import { AdminCard } from "../../assets/components/admin/AdminCard";
+import { Pagination } from "../../assets/components/pagination/Pagination";
 
 // Helper
 import {
@@ -50,7 +51,12 @@ export const AdminPromotion = () => {
   });
   const [promotionId, setPromotionId] = useState(null);
 
-  const promotionData = useSelector((state) => state.promotions.promotions);
+  const promotionData = useSelector(
+    (state) => state.promotions.promotions.promotions,
+  );
+  const paginationPromotion = useSelector(
+    (state) => state.promotions.promotions.pagination,
+  );
 
   openNavbar
     ? (document.body.style.overflow = "hidden")
@@ -58,7 +64,7 @@ export const AdminPromotion = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getAllPromotionsAction());
+      await dispatch(getAllPromotionsAction(""));
     };
 
     fetchData();
@@ -137,7 +143,7 @@ export const AdminPromotion = () => {
 
       if (createPromotion) {
         showSuccessToast("Create Promotion Successful");
-        await dispatch(getAllPromotionsAction());
+        await dispatch(getAllPromotionsAction(""));
         setOpenCreate(false);
       }
     }
@@ -159,7 +165,7 @@ export const AdminPromotion = () => {
 
       if (editPromotion) {
         showSuccessToast("Edit Promotion Successful");
-        await dispatch(getAllPromotionsAction());
+        await dispatch(getAllPromotionsAction(""));
         setOpen(false);
       }
     }
@@ -178,12 +184,30 @@ export const AdminPromotion = () => {
 
     if (deletePromotion) {
       showSuccessToast("Delete Promotion Successful");
-      await dispatch(getAllPromotionsAction());
+      await dispatch(getAllPromotionsAction(""));
       setOpenDelete(false);
     }
   };
 
   const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
+
+  const handleQuery = (formatLink) => {
+    dispatch(getAllPromotionsAction(formatLink));
+  };
+
+  const getPageValue = () => {
+    if (paginationPromotion?.links?.next) {
+      const url = paginationPromotion?.links?.next;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page") - 2);
+    } else if (paginationPromotion?.links?.prev) {
+      const url = paginationPromotion?.links?.prev;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page"));
+    } else {
+      return 0;
+    }
+  };
 
   return (
     <>
@@ -223,7 +247,11 @@ export const AdminPromotion = () => {
                         index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
                       } border-b-2 bg-slate-200`}
                     >
-                      <td className="px-2 py-1 text-sm">{index + 1}</td>
+                      <td className="px-2 py-1 text-sm">
+                        {getPageValue() > 0
+                          ? `${getPageValue()}${index + 1}`
+                          : `${index + 1}`}
+                      </td>
                       <td className="px-2 py-1 text-sm lg:min-w-0">
                         {promotion.discount * 100}%
                       </td>
@@ -255,6 +283,16 @@ export const AdminPromotion = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            <div className="mx-auto">
+              <Pagination
+                onQuery={handleQuery}
+                type={"promotions"}
+                nextLink={paginationPromotion?.links?.next}
+                prevLink={paginationPromotion?.links?.prev}
+                totalItems={paginationPromotion?.total_items}
+              />
             </div>
           </div>
         </div>

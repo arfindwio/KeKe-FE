@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+// Components
+import { LoadingSpinner } from "../loading/LoadingSpinner";
+
 // Redux Actions
 import {
   getUserAuthenticateAction,
@@ -38,7 +41,7 @@ export const TokenProtected = ({ element }) => {
   }, [dispatch, token]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!token || !authenticated) {
