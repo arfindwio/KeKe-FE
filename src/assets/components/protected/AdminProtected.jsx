@@ -8,6 +8,9 @@ import {
   logoutUserAction,
 } from "../../../redux/action/users/UsersAction";
 
+// Components
+import { LoadingSpinner } from "../loading/LoadingSpinner";
+
 // Cookies
 import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
 
@@ -39,7 +42,7 @@ export const AdminProtected = ({ element }) => {
   }, [dispatch, token]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!token || !authenticated) {
