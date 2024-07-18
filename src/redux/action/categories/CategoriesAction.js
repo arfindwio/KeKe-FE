@@ -1,6 +1,5 @@
 import {
   reduxGetAllCategories,
-  reduxGetAllCategoriesAdmin,
   reduxPostCreateCategory,
   reduxPutEditCategoryById,
   reduxDeleteCategoryById,
@@ -14,11 +13,11 @@ import {
 } from "../../reducer/categories/CategoriesSlice";
 import { handleRequestError } from "../../../utils/errorHandler";
 
-export const getAllCategoriesAction = () => async (dispatch) => {
+export const getAllCategoriesAction = (query) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetAllCategories();
-    dispatch(setCategories(result.data.data.categories));
+    const result = await reduxGetAllCategories(query);
+    dispatch(setCategories(result.data.data));
     return true;
   } catch (err) {
     handleRequestError(err);
@@ -30,7 +29,7 @@ export const getAllCategoriesAction = () => async (dispatch) => {
 export const getAllCategoriesAdminAction = () => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetAllCategoriesAdmin();
+    const result = await reduxGetAllCategories("?limit=9999");
     dispatch(setCategoriesAdmin(result.data.data.categories));
     return true;
   } catch (err) {
@@ -40,16 +39,12 @@ export const getAllCategoriesAdminAction = () => async (dispatch) => {
   }
 };
 
-export const postCreateCategoryAction = (formData) => async (dispatch) => {
+export const postCreateCategoryAction = (input) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const { image, categoryName } = formData;
+    const result = await reduxPostCreateCategory(input);
 
-    const formDataObject = new FormData();
-    formDataObject.append("image", image || "");
-    formDataObject.append("categoryName", categoryName);
-    await reduxPostCreateCategory(formDataObject);
-    return true;
+    return result.data.data.newCategory;
   } catch (err) {
     handleRequestError(err);
   } finally {
@@ -58,11 +53,13 @@ export const postCreateCategoryAction = (formData) => async (dispatch) => {
 };
 
 export const putEditCategoryByIdAction =
-  (formData, categoryId) => async (dispatch) => {
+  (input, categoryId) => async (dispatch) => {
     try {
       dispatch(startLoading());
-      await reduxPutEditCategoryById(formData, categoryId);
-      return true;
+
+      const result = await reduxPutEditCategoryById(input, categoryId);
+
+      return result.data.data.editedCategory;
     } catch (err) {
       handleRequestError(err);
     } finally {

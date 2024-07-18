@@ -20,8 +20,10 @@ export const ProductsHomeCard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const productData = useSelector((state) => state.products.products);
-  const categoryData = useSelector((state) => state.categories.categories);
+  const productData = useSelector((state) => state.products.products.products);
+  const categoryData = useSelector(
+    (state) => state.categories.categories.categories,
+  );
 
   const queryParams = new URLSearchParams(location.search);
   const categoryValue = queryParams.get("c");
@@ -63,7 +65,7 @@ export const ProductsHomeCard = () => {
         >
           Show All
         </SwiperSlide>
-        {categoryData.map((category, index) => (
+        {categoryData?.map((category, index) => (
           <SwiperSlide
             className={`${
               categoryValue === category.categoryName
@@ -101,15 +103,15 @@ export const ProductsHomeCard = () => {
         modules={[Mousewheel, Keyboard]}
         className="h-fit w-full cursor-grab py-2 lg:cursor-default"
       >
-        {productData.length > 0 ? (
-          productData.slice(0, 5).map((product, index) => (
+        {productData?.length > 0 ? (
+          productData?.slice(0, 5).map((product, index) => (
             <SwiperSlide
               className="h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md"
               key={index}
             >
               <Link to={`/product/${product.id}`}>
                 <img
-                  src={product.productImage}
+                  src={product?.image[0]?.image}
                   alt="Product"
                   className="aspect-[16/10] h-[55%] w-full object-cover"
                 />
@@ -120,7 +122,7 @@ export const ProductsHomeCard = () => {
                     "pb-8"
                   } flex h-fit w-full flex-col gap-1 p-3`}
                 >
-                  <p className="text-primary-1 text-sm font-semibold">
+                  <p className="text-sm font-semibold text-primary-1">
                     {product.category?.categoryName}
                   </p>
                   <p className="truncate text-sm text-neutral-3">
@@ -134,8 +136,11 @@ export const ProductsHomeCard = () => {
                     </p>
                     {product.promotion && (
                       <p className="break-all text-sm font-semibold text-alert-red">
-                        <span className="mr-2 text-xs font-normal text-neutral-3 line-through">
-                          IDR {product.price / (1 - product.promotion.discount)}
+                        <span className="mr-1 text-xs font-normal text-neutral-3 line-through">
+                          IDR{" "}
+                          {Math.floor(
+                            product.price / (1 - product.promotion.discount),
+                          ).toLocaleString()}
                         </span>
                         {product.promotion.discount * 100}%
                       </p>

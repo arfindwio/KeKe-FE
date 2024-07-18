@@ -8,7 +8,6 @@ import {
   putEditSizeByIdAction,
   deleteSizeByIdAction,
 } from "../../../redux/action/sizes/SizesAction";
-import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
 
 // Helper
 import {
@@ -43,6 +42,8 @@ export const AdminManageSize = ({
 
   useEffect(() => {
     const handleCreate = async () => {
+      if (!inputSize.sizeName) return;
+
       const loadingToastId = showLoadingToast("Loading...");
 
       const createSize = await dispatch(
@@ -59,6 +60,8 @@ export const AdminManageSize = ({
     };
 
     const handleEdit = async () => {
+      if (!inputSize.sizeName) return;
+
       const loadingToastId = showLoadingToast("Loading...");
 
       const editSize = await dispatch(
@@ -94,6 +97,8 @@ export const AdminManageSize = ({
   };
 
   const handleDelete = async () => {
+    if (!size.id) return;
+
     const loadingToastId = showLoadingToast("Loading...");
 
     const deleteSize = await dispatch(deleteSizeByIdAction(size?.id));

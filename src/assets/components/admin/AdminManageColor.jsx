@@ -8,7 +8,6 @@ import {
   putEditColorByIdAction,
   deleteColorByIdAction,
 } from "../../../redux/action/colors/ColorsAction";
-import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
 
 // Helper
 import {

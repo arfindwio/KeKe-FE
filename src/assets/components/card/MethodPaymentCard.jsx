@@ -223,7 +223,7 @@ export const MethodPaymentCard = ({ inputPayment, methodPayment }) => {
             </div>
 
             <button
-              className="bg-primary-1 hover:bg-primary-hover mt-6 w-[90%] rounded-xl py-4 text-center text-neutral-5"
+              className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
               onClick={() => handlePay()}
             >
               Pay

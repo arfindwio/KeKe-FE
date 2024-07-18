@@ -10,18 +10,19 @@ import {
 } from "../../reducer/reviews/ReviewsSlice";
 import { handleRequestError } from "../../../utils/errorHandler";
 
-export const getReviewsByProductIdAction = (productId) => async (dispatch) => {
-  try {
-    dispatch(startLoading());
-    const result = await reduxGetReviewsByProductId(productId);
-    dispatch(setReviews(result.data.data.reviews));
-    return true;
-  } catch (err) {
-    handleRequestError(err);
-  } finally {
-    dispatch(endLoading());
-  }
-};
+export const getReviewsByProductIdAction =
+  (productId, query) => async (dispatch) => {
+    try {
+      dispatch(startLoading());
+      const result = await reduxGetReviewsByProductId(productId, query);
+      dispatch(setReviews(result.data.data));
+      return true;
+    } catch (err) {
+      handleRequestError(err);
+    } finally {
+      dispatch(endLoading());
+    }
+  };
 
 export const postCreateReviewByProductIdAction =
   (input, productId) => async (dispatch) => {

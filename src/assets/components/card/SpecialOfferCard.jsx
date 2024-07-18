@@ -35,12 +35,12 @@ export const SpecialOfferCard = () => {
 
   const [inputCart, setInputCart] = useState({
     note: "",
-    sizeId: "",
-    colorId: "",
+    sizeId: null,
+    colorId: null,
   });
 
   const specialOfferData = useSelector(
-    (state) => state.products.specialOfferProduct,
+    (state) => state.products?.specialOfferProduct,
   );
 
   const soldPercentage = Math.round(
@@ -49,19 +49,46 @@ export const SpecialOfferCard = () => {
       100,
   );
 
-  const selectedColor = specialOfferData.color?.find(
+  const selectedColor = specialOfferData?.color?.find(
     (color) => color.id === inputCart.colorId,
   )?.colorName;
-  const selectedSize = specialOfferData.size?.find(
+  const selectedSize = specialOfferData?.size?.find(
     (size) => size.id === inputCart.sizeId,
   )?.sizeName;
 
   const token = CookieStorage.get(CookiesKeys.AuthToken);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const calculateTimeLeft = () => {
       const currentDate = new Date();
-      const endDate = new Date(specialOfferData.promotion.endDate);
+      const endDateString = specialOfferData?.promotion?.endDate;
+
+      if (!endDateString) {
+        return;
+      }
+
+      // Parse the end date string (assuming it's in "23 Oktober 2024" format)
+      const [day, monthName, year] = endDateString.split(" ");
+      const monthMap = {
+        Januari: 0,
+        Februari: 1,
+        Maret: 2,
+        April: 3,
+        Mei: 4,
+        Juni: 5,
+        Juli: 6,
+        Agustus: 7,
+        September: 8,
+        Oktober: 9,
+        November: 10,
+        Desember: 11,
+      };
+
+      const targetDay = parseInt(day, 10);
+      const targetMonth = monthMap[monthName];
+      const targetYear = parseInt(year, 10);
+      const endDate = new Date(targetYear, targetMonth, targetDay);
+
       const timeDifference = endDate.getTime() - currentDate.getTime();
 
       const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -81,7 +108,9 @@ export const SpecialOfferCard = () => {
         minutes: minutesDifference,
         seconds: secondsDifference,
       });
-    }, 1000);
+    };
+
+    const interval = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -90,8 +119,8 @@ export const SpecialOfferCard = () => {
     if (specialOfferData) {
       setInputCart((prevState) => ({
         ...prevState,
-        sizeId: specialOfferData.size[0]?.id || "",
-        colorId: specialOfferData.color[0]?.id || "",
+        sizeId: specialOfferData.size ? specialOfferData?.size[0]?.id : null,
+        colorId: specialOfferData.color ? specialOfferData?.color[0]?.id : null,
       }));
     }
   }, [specialOfferData]);
@@ -141,42 +170,46 @@ export const SpecialOfferCard = () => {
         </h1>
         <div className="flex flex-col justify-between gap-4 rounded-md border border-neutral-4 bg-slate-100 p-4 md:flex-row md:gap-0">
           <img
-            src={specialOfferData.productImage}
+            src={specialOfferData?.image[0]?.image}
             alt="Product"
             className="min-h-full w-full rounded-md object-cover md:w-[40%]"
           />
           <div className="flex w-full flex-col gap-2 md:w-[58%]">
-            {specialOfferData.review?.length > 0 && (
+            {specialOfferData?.review?.length > 0 && (
               <div className="flex items-center gap-1">
                 <FaStar size={20} className="text-alert-yellow" />
                 <p className="text-sm font-semibold text-neutral-2">
-                  {averageRating(specialOfferData.review)}
+                  {averageRating(specialOfferData?.review)}
                 </p>
                 <p className="text-sm font-light text-neutral-3 opacity-80">
-                  ({specialOfferData.review.length})
+                  ({specialOfferData?.review.length})
                 </p>
               </div>
             )}
             <h5 className="text-base font-bold ">
-              {specialOfferData.productName}
+              {specialOfferData?.productName}
             </h5>
             <p className="text-sm text-neutral-3">
-              {specialOfferData.description}
+              {specialOfferData?.description}
             </p>
             <div className="flex gap-3">
               <h4 className="text-lg font-bold text-neutral-1">
-                IDR {specialOfferData.price}
+                IDR {specialOfferData?.price}
               </h4>
-              <div className="flex items-center gap-1 text-base">
-                <h4 className="font-normal text-neutral-3 line-through">
-                  IDR{" "}
-                  {specialOfferData.price /
-                    (1 - specialOfferData.promotion.discount)}
-                </h4>
-                <p className="font-semibold text-alert-red">
-                  {specialOfferData.promotion.discount * 100}%
-                </p>
-              </div>
+              {specialOfferData?.promotion && (
+                <div className="flex items-center gap-1 text-base">
+                  <h4 className="font-normal text-neutral-3 line-through">
+                    IDR{" "}
+                    {Math.floor(
+                      specialOfferData?.price /
+                        (1 - specialOfferData?.promotion?.discount),
+                    ).toLocaleString()}
+                  </h4>
+                  <p className="font-semibold text-alert-red">
+                    {specialOfferData?.promotion?.discount * 100}%
+                  </p>
+                </div>
+              )}
             </div>
             <div className="flex flex-wrap gap-4 pb-2">
               <div className="flex flex-col gap-2 md:border-r-2 md:border-neutral-4 md:pr-4">
@@ -187,7 +220,7 @@ export const SpecialOfferCard = () => {
                   </span>
                 </h5>
                 <div className="flex flex-wrap gap-2">
-                  {specialOfferData.size?.map((size, index) => (
+                  {specialOfferData?.size?.map((size, index) => (
                     <p
                       className={`${
                         inputCart.sizeId === size.id
@@ -208,7 +241,7 @@ export const SpecialOfferCard = () => {
                   <span className="text-slate-400">{selectedColor}</span>
                 </h5>
                 <div className="flex flex-wrap gap-2">
-                  {specialOfferData.color?.map((color, index) => (
+                  {specialOfferData?.color?.map((color, index) => (
                     <p
                       className={`${
                         inputCart.colorId === color.id
@@ -235,14 +268,14 @@ export const SpecialOfferCard = () => {
                 ALREADY SOLD:
                 <span className="font-semibold text-neutral-1">
                   {" "}
-                  {specialOfferData.soldCount}
+                  {specialOfferData?.soldCount}
                 </span>
               </p>
               <p className="text-sm text-neutral-2">
                 AVAILABLE:
                 <span className="font-semibold text-neutral-1">
                   {" "}
-                  {specialOfferData.stock}
+                  {specialOfferData?.stock}
                 </span>
               </p>
             </div>

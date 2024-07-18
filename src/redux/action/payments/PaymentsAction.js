@@ -13,11 +13,11 @@ import {
 } from "../../reducer/payments/PaymentsSlice";
 import { handleRequestError } from "../../../utils/errorHandler";
 
-export const getAllPaymentsAction = () => async (dispatch) => {
+export const getAllPaymentsAction = (query) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetAllPayments();
-    dispatch(setPayments(result.data.data.payments));
+    const result = await reduxGetAllPayments(query);
+    dispatch(setPayments(result.data.data));
     return true;
   } catch (err) {
     handleRequestError(err);
@@ -29,8 +29,8 @@ export const getAllPaymentsAction = () => async (dispatch) => {
 export const postCreatePaymentMidtransAction = (input) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxPostCreatePaymentMidtrans(input);
-    return true;
+    const result = await reduxPostCreatePaymentMidtrans(input);
+    return result.data.data;
   } catch (err) {
     handleRequestError(err);
   } finally {

@@ -136,7 +136,7 @@ export const DetailProductSection = () => {
           {detailProductData?.productName}
         </p>
       </div>
-      <div className="flex flex-col rounded-md border shadow-md md:flex-row">
+      <div className="flex flex-col overflow-hidden rounded-md border shadow-md md:flex-row">
         <div className="relative min-h-full w-full border-r md:w-[40%]">
           <Swiper
             navigation={{
@@ -154,20 +154,16 @@ export const DetailProductSection = () => {
             modules={[Autoplay, Pagination, Navigation, Mousewheel, Keyboard]}
             className="h-full min-w-full"
           >
-            <SwiperSlide>
-              <img
-                src={detailProductData?.productImage}
-                alt="Photo"
-                className="h-full w-full object-cover"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src={detailProductData?.productImage}
-                alt="Photo"
-                className="h-full w-full object-cover"
-              />
-            </SwiperSlide>
+            {detailProductData.image.map((image, index) => (
+              <SwiperSlide>
+                <img
+                  key={index}
+                  src={image.image}
+                  alt="Product Image"
+                  className="h-full w-full object-cover"
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
           <button className="button-prev absolute bottom-1/2 left-0 z-[1] translate-y-1/2 scale-[.65] sm:scale-75 md:scale-[.80]">
             <p className="cursor-pointer rounded-xl border border-neutral-4 bg-neutral-5 py-1 pl-[3px] pr-1 text-neutral-3 hover:bg-neutral-1 hover:text-neutral-5">
@@ -206,9 +202,23 @@ export const DetailProductSection = () => {
               )}
             </div>
           </div>
-          <h2 className="text-2xl font-bold">
-            IDR {detailProductData?.price.toLocaleString()}
-          </h2>
+          <div className="flex flex-col">
+            <h2 className="text-2xl font-bold">
+              IDR {detailProductData?.price.toLocaleString()}
+            </h2>
+            {detailProductData?.promotion && (
+              <p className="break-all text-base font-semibold text-alert-red">
+                <span className="mr-2 text-base font-normal text-neutral-3 line-through">
+                  IDR{" "}
+                  {Math.floor(
+                    detailProductData?.price / 1 -
+                      detailProductData?.promotion?.discount,
+                  ).toLocaleString()}
+                </span>
+                {detailProductData?.promotion?.discount * 100}%
+              </p>
+            )}
+          </div>
           <div className="flex flex-wrap gap-4">
             <div className="flex flex-col gap-2 md:border-r-2 md:pr-4">
               <h5 className="text-sm font-semibold">
@@ -283,13 +293,14 @@ export const DetailProductSection = () => {
               />
             </div>
           </form>
-          <div className="flex flex-col gap-2 border-opacity-50 py-2">
-            <h5 className="text-base font-semibold">Description</h5>
-            <p className="text-justify text-sm font-medium text-neutral-2">
-              {detailProductData?.description}
-            </p>
-          </div>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-2 border bg-neutral-5 px-6 py-2 shadow-md">
+        <h5 className="text-center text-base font-semibold">Description</h5>
+        <p className="text-justify text-sm font-medium text-neutral-2">
+          {detailProductData?.description}
+        </p>
       </div>
     </div>
   );

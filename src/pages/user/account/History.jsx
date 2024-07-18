@@ -32,10 +32,10 @@ export const History = () => {
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Payment History
           </h3>
-          {paymentHistoryData?.length ? (
-            paymentHistoryData.map((payment) => (
+          {paymentHistoryData?.length > 0 ? (
+            paymentHistoryData?.map((payment, index) => (
               <div className="flex w-full flex-col gap-4 p-3">
-                <PaymentHistoryCard key={payment.id} payment={payment} />
+                <PaymentHistoryCard key={index} payment={payment} />
               </div>
             ))
           ) : (

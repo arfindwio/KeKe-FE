@@ -14,6 +14,8 @@ import {
 import { AdminSidebar } from "../../assets/components/admin/AdminSidebar";
 import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
 import { AdminCard } from "../../assets/components/admin/AdminCard";
+import { AdminManageImage } from "../../assets/components/admin/AdminManageImage";
+import { Pagination } from "../../assets/components/pagination/Pagination";
 
 // Helper
 import {
@@ -44,12 +46,21 @@ export const AdminCategory = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [inputCategory, setInputCategory] = useState({
-    image: "",
     categoryName: "",
   });
   const [categoryId, setCategoryId] = useState(null);
+  const [image, setImage] = useState(null);
+  const [afterSubmit, setAfterSubmit] = useState({
+    categoryId: null,
+    productId: null,
+  });
 
-  const categoryData = useSelector((state) => state.categories.categories);
+  const categoryData = useSelector(
+    (state) => state.categories.categories.categories,
+  );
+  const paginationCategory = useSelector(
+    (state) => state.categories.categories.pagination,
+  );
 
   openNavbar
     ? (document.body.style.overflow = "hidden")
@@ -57,7 +68,7 @@ export const AdminCategory = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getAllCategoriesAction());
+      await dispatch(getAllCategoriesAction(""));
     };
 
     fetchData();
@@ -72,9 +83,9 @@ export const AdminCategory = () => {
         (category) => category.id === categoryId,
       );
       setInputCategory({
-        image: filteredData.categoryImage,
         categoryName: filteredData.categoryName,
       });
+      setImage(filteredData.image);
       setOpenEdit(!openEdit);
     } else if (type === "create") {
       setInputCategory({
@@ -86,17 +97,10 @@ export const AdminCategory = () => {
   };
 
   const handleInputChange = (e) => {
-    if (e.target.name === "image") {
-      setInputCategory((prevInputCategory) => ({
-        ...prevInputCategory,
-        image: e.target.files[0],
-      }));
-    } else {
-      setInputCategory((prevInputCategory) => ({
-        ...prevInputCategory,
-        [e.target.name]: e.target.value,
-      }));
-    }
+    setInputCategory((prevInputCategory) => ({
+      ...prevInputCategory,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleCreate = async (e) => {
@@ -115,8 +119,10 @@ export const AdminCategory = () => {
 
       if (createCategory) {
         showSuccessToast("Create Category Successful");
-        await dispatch(getAllCategoriesAction());
-        setOpenCreate(false);
+        setAfterSubmit({
+          ...afterSubmit,
+          categoryId: createCategory.id,
+        });
       }
     }
   };
@@ -137,8 +143,7 @@ export const AdminCategory = () => {
 
       if (editCategory) {
         showSuccessToast("Edit Category Successful");
-        await dispatch(getAllCategoriesAction());
-        setOpenEdit(false);
+        setAfterSubmit({ ...afterSubmit, categoryId: editCategory.id });
       }
     }
   };
@@ -150,16 +155,52 @@ export const AdminCategory = () => {
 
     toast.dismiss(loadingToastId);
 
-    if (!deleteCategory) showErrorToast("Delete Category Failed");
+    if (!deleteCategory) {
+      showErrorToast("Delete Category Failed");
+      setOpenDelete(false);
+    }
 
     if (deleteCategory) {
       showSuccessToast("Delete Category Successful");
-      await dispatch(getAllCategoriesAction());
+      await dispatch(getAllCategoriesAction(""));
       setOpenDelete(false);
     }
   };
 
+  const handleCompleteSubmit = async (completeSubmit, type) => {
+    setAfterSubmit({
+      categoryId: completeSubmit,
+      productId: completeSubmit,
+    });
+    if (type === "create") {
+      setOpenCreate(false);
+      setOpenEdit(false);
+    }
+    if (type === "edit" || type === "delete") {
+      setOpenEdit(false);
+    }
+    await dispatch(getAllCategoriesAction(""));
+  };
+
   const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
+
+  const handleQuery = (formatLink) => {
+    dispatch(getAllCategoriesAction(formatLink));
+  };
+
+  const getPageValue = () => {
+    if (paginationCategory?.links?.next) {
+      const url = paginationCategory?.links?.next;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page") - 2);
+    } else if (paginationCategory?.links?.prev) {
+      const url = paginationCategory?.links?.prev;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page"));
+    } else {
+      return 0;
+    }
+  };
 
   return (
     <>
@@ -193,42 +234,70 @@ export const AdminCategory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categoryData.map((category, index) => (
-                    <tr
-                      key={index}
-                      className={`${
-                        index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
-                      } border-b-2 bg-slate-200`}
+                  {categoryData.length > 0 ? (
+                    categoryData?.map((category, index) => (
+                      <tr
+                        key={index}
+                        className={`${
+                          index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
+                        } border-b-2 bg-slate-200`}
+                      >
+                        <td className="px-2 py-1 text-sm">
+                          {getPageValue() > 0
+                            ? `${getPageValue()}${index + 1}`
+                            : `${index + 1}`}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          <img
+                            src={category.image.image}
+                            alt="category image"
+                            width={500}
+                            height={500}
+                            className=" h-16 w-16 overflow-hidden rounded-md border border-slate-300 object-cover"
+                          />
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {category.categoryName}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          <button
+                            type="button"
+                            className="mb-1 mr-1 flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-neutral-5 hover:bg-orange-700"
+                            onClick={() => handleOpen("edit", category.id)}
+                          >
+                            <MdEdit size={20} />
+                          </button>
+                          <button
+                            type="button"
+                            className="flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-neutral-5 hover:bg-red-800"
+                            onClick={() => handleOpen("delete", category.id)}
+                          >
+                            <RiDeleteBin5Line size={20} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <td
+                      className="h-full border-b-2 bg-slate-200 bg-opacity-20 text-center italic text-neutral-4"
+                      colSpan={4}
                     >
-                      <td className="px-2 py-1 text-sm">{index + 1}</td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {category.categoryImage}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {category.categoryName}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        <button
-                          type="button"
-                          className="mb-1 mr-1 flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-neutral-5 hover:bg-orange-700"
-                          onClick={() => handleOpen("edit", category.id)}
-                        >
-                          <MdEdit size={20} />
-                          <p>Edit</p>
-                        </button>
-                        <button
-                          type="button"
-                          className="flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-neutral-5 hover:bg-red-800"
-                          onClick={() => handleOpen("delete", category.id)}
-                        >
-                          <RiDeleteBin5Line size={20} />
-                          <p>Delete</p>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                      No Category Found
+                    </td>
+                  )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Pagination Section */}
+            <div className="mx-auto">
+              <Pagination
+                onQuery={handleQuery}
+                type={"categories"}
+                nextLink={paginationCategory?.links?.next}
+                prevLink={paginationCategory?.links?.prev}
+                totalItems={paginationCategory?.total_items}
+              />
             </div>
           </div>
         </div>
@@ -252,16 +321,12 @@ export const AdminCategory = () => {
         <DialogBody>
           <form className="flex flex-col gap-4" onKeyDown={handleCreate}>
             <div className="flex w-full flex-col">
-              <label htmlFor="image" className="text-neutral-1">
-                Category Image
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                id="image"
-                name="image"
-                className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
-                onChange={handleInputChange}
+              <p className="text-neutral-1">Category Image</p>
+              <AdminManageImage
+                type={"create"}
+                image={[]}
+                afterSubmit={afterSubmit}
+                completeSubmit={handleCompleteSubmit}
               />
             </div>
             <div className="flex w-full flex-col">
@@ -315,17 +380,24 @@ export const AdminCategory = () => {
         <DialogBody>
           <form className="flex flex-col gap-4" onKeyDown={handleEdit}>
             <div className="flex w-full flex-col">
-              <label htmlFor="image" className="text-neutral-1">
-                Category Image
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                id="image"
-                name="image"
-                className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
-                onChange={handleInputChange}
-              />
+              <p className="text-neutral-1">Category Image</p>
+              {image ? (
+                <AdminManageImage
+                  type={"edit"}
+                  image={image}
+                  afterSubmit={afterSubmit}
+                  completeSubmit={handleCompleteSubmit}
+                  count={1}
+                />
+              ) : (
+                <AdminManageImage
+                  type={"create"}
+                  image={[]}
+                  afterSubmit={afterSubmit}
+                  completeSubmit={handleCompleteSubmit}
+                  count={1}
+                />
+              )}
             </div>
             <div className="flex w-full flex-col">
               <label htmlFor="categoryName" className="text-neutral-1">

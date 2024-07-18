@@ -13,11 +13,11 @@ import {
 } from "../../reducer/discussions/DiscussionsSlice";
 import { handleRequestError } from "../../../utils/errorHandler";
 
-export const getAllDiscussionsAction = () => async (dispatch) => {
+export const getAllDiscussionsAction = (query) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetAllDiscussions();
-    dispatch(setDiscussionsAdmin(result.data.data.discussions));
+    const result = await reduxGetAllDiscussions(query);
+    dispatch(setDiscussionsAdmin(result.data.data));
     return true;
   } catch (err) {
     handleRequestError(err);
@@ -27,11 +27,11 @@ export const getAllDiscussionsAction = () => async (dispatch) => {
 };
 
 export const getDiscussionsByProductIdAction =
-  (productId) => async (dispatch) => {
+  (productId, query) => async (dispatch) => {
     try {
       dispatch(startLoading());
-      const result = await reduxGetDiscussionsByProductId(productId);
-      dispatch(setDiscussions(result.data.data.discussions));
+      const result = await reduxGetDiscussionsByProductId(productId, query);
+      dispatch(setDiscussions(result.data.data));
       return true;
     } catch (err) {
       handleRequestError(err);

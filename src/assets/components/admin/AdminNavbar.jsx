@@ -35,7 +35,7 @@ export const AdminNavbar = ({ onOpen }) => {
         >
           <GiHamburgerMenu size={25} />
         </div>
-        <h1 className="text-lg font-bold md:text-xl xl:text-3xl">Hi, Admin</h1>
+        <h1 className="text-lg font-bold md:text-xl xl:text-2xl">Hi, Admin</h1>
       </div>
 
       {/* Material Tailwind */}

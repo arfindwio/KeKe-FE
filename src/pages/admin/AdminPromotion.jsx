@@ -218,6 +218,7 @@ export const AdminPromotion = () => {
         <div className="ml-auto flex w-full flex-col lg:w-[80%]">
           <AdminNavbar onOpen={handleOpenNavbar} />
           <AdminCard />
+
           <div className="flex flex-col justify-center gap-1 px-5 pb-16 pt-10">
             <h5 className="mb-2 text-xl font-semibold">Manage Promotion</h5>
             <button
@@ -240,51 +241,59 @@ export const AdminPromotion = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {promotionData.map((promotion, index) => (
-                    <tr
-                      key={index}
-                      className={`${
-                        index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
-                      } border-b-2 bg-slate-200`}
+                  {promotionData.length > 0 ? (
+                    promotionData.map((promotion, index) => (
+                      <tr
+                        key={index}
+                        className={`${
+                          index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
+                        } border-b-2 bg-slate-200`}
+                      >
+                        <td className="px-2 py-1 text-sm">
+                          {getPageValue() > 0
+                            ? `${getPageValue()}${index + 1}`
+                            : `${index + 1}`}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {promotion.discount * 100}%
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {promotion.startDate}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {promotion.endDate}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          <button
+                            type="button"
+                            className="mb-1 mr-1 flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-neutral-5 hover:bg-orange-700"
+                            onClick={() => handleOpen("edit", promotion.id)}
+                          >
+                            <MdEdit size={20} />
+                          </button>
+                          <button
+                            type="button"
+                            className="flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-neutral-5 hover:bg-red-800"
+                            onClick={() => handleOpen("delete", promotion.id)}
+                          >
+                            <RiDeleteBin5Line size={20} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <td
+                      className="h-full border-b-2 bg-slate-200 bg-opacity-20 text-center italic text-neutral-4"
+                      colSpan={5}
                     >
-                      <td className="px-2 py-1 text-sm">
-                        {getPageValue() > 0
-                          ? `${getPageValue()}${index + 1}`
-                          : `${index + 1}`}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {promotion.discount * 100}%
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {promotion.startDate}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {promotion.endDate}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        <button
-                          type="button"
-                          className="mb-1 mr-1 flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-neutral-5 hover:bg-orange-700"
-                          onClick={() => handleOpen("edit", promotion.id)}
-                        >
-                          <MdEdit size={20} />
-                          <p>Edit</p>
-                        </button>
-                        <button
-                          type="button"
-                          className="flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-neutral-5 hover:bg-red-800"
-                          onClick={() => handleOpen("delete", promotion.id)}
-                        >
-                          <RiDeleteBin5Line size={20} />
-                          <p>Delete</p>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                      No Promotion Found
+                    </td>
+                  )}
                 </tbody>
               </table>
             </div>
 
+            {/* Pagiantion Section */}
             <div className="mx-auto">
               <Pagination
                 onQuery={handleQuery}
