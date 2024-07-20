@@ -12,7 +12,9 @@ export const SidebarFilter = () => {
 
   const [queryFormat, setQueryFormat] = useState("");
 
-  const categoryData = useSelector((state) => state.categories.categories);
+  const categoryData = useSelector(
+    (state) => state.categories.categories.categories,
+  );
 
   const queryParams = location.search;
 

@@ -10,7 +10,9 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 export const CategoryHomeCard = () => {
-  const categoryData = useSelector((state) => state.categories.categories);
+  const categoryData = useSelector(
+    (state) => state.categories.categories.categories,
+  );
 
   return (
     <>
@@ -36,13 +38,13 @@ export const CategoryHomeCard = () => {
           modules={[Mousewheel, Keyboard]}
           className="w-full cursor-grab 2xl:cursor-default"
         >
-          {categoryData.map((category, index) => (
+          {categoryData?.slice(0, 5)?.map((category, index) => (
             <SwiperSlide
               className="flex w-full flex-row justify-between rounded-md border border-neutral-4 bg-neutral-5 p-4"
               key={index}
             >
               <img
-                src={category.categoryImage}
+                src={category.image.image}
                 alt="Category"
                 className="h-full w-[30%] object-cover"
               />

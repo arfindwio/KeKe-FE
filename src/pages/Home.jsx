@@ -35,7 +35,7 @@ export const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(getAllProductsAction(""));
-      await dispatch(getAllCategoriesAction());
+      await dispatch(getAllCategoriesAction(""));
       await dispatch(getSpecialOfferProductAction());
       if (token) return await dispatch(getRecommendationProductsActionUser());
       await dispatch(getRecommendationProductsAction());

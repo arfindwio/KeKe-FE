@@ -34,9 +34,13 @@ export const Pagination = ({
     );
 
     if (formatLink) {
-      onQuery(`?${formatLink}&page=${page}&limit=10`);
+      const url = !nextLink ? prevLink : nextLink;
+      const limit = parseInt(url.match(/limit=(\d+)/)[1], 10);
+      onQuery(`?${formatLink}&page=${page}&limit=${limit}`);
     } else {
-      onQuery(`?page=${page}&limit=10`);
+      const url = !nextLink ? prevLink : nextLink;
+      const limit = parseInt(url.match(/limit=(\d+)/)[1], 10);
+      onQuery(`?page=${page}&limit=${limit}`);
     }
   };
 
@@ -52,9 +56,13 @@ export const Pagination = ({
     );
 
     if (newLink) {
-      onQuery(`?${newLink}&page=${numberPage}&limit=10`);
+      const url = !nextLink ? prevLink : nextLink;
+      const limit = parseInt(url.match(/limit=(\d+)/)[1], 10);
+      onQuery(`?${newLink}&page=${numberPage}&limit=${limit}`);
     } else {
-      onQuery(`?page=${numberPage}&limit=10`);
+      const url = !nextLink ? prevLink : nextLink;
+      const limit = parseInt(url.match(/limit=(\d+)/)[1], 10);
+      onQuery(`?page=${numberPage}&limit=${limit}`);
     }
   };
 

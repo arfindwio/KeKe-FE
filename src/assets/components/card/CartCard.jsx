@@ -115,9 +115,9 @@ export const CartCard = ({ cart }) => {
   return (
     <>
       <div className="flex w-full justify-between">
-        <div className="w-[32%] rounded-md border border-neutral-4 shadow-sm sm:w-[25%] md:w-[20%] lg:w-[10%]">
+        <div className="flex w-[32%] rounded-md border border-neutral-4 shadow-sm sm:w-[25%] md:w-[20%] lg:w-[10%]">
           <img
-            src={cart.product?.productImage}
+            src={cart.product?.image[0]?.image}
             alt="Product"
             className="h-full w-full object-cover"
           />
@@ -134,9 +134,8 @@ export const CartCard = ({ cart }) => {
               {cart.product.promotion && (
                 <h5 className="text-xs font-bold text-neutral-3 line-through sm:text-sm">
                   IDR{" "}
-                  {(
-                    cart.product.price /
-                    (1 - cart.product.promotion.discount)
+                  {Math.floor(
+                    cart.product.price / (1 - cart.product.promotion.discount),
                   ).toLocaleString()}
                 </h5>
               )}
@@ -154,16 +153,15 @@ export const CartCard = ({ cart }) => {
             </p>
           </div>
           <div className="flex h-full w-full flex-col items-end justify-end lg:w-[35%] lg:items-center lg:justify-center xl:w-[25%]">
-            <div className="hidden w-[80%] text-center md:hidden lg:flex lg:flex-col">
-              <h5 className="ms-auto text-lg font-bold">
+            <div className="hidden pl-[20%] text-center md:hidden lg:flex lg:flex-col lg:flex-nowrap">
+              <h5 className="text-lg font-bold">
                 IDR {cart.product.price.toLocaleString()}
               </h5>
               {cart.product.promotion && (
-                <h5 className="ms-auto pr-[7%] text-sm font-bold text-neutral-3 line-through">
+                <h5 className="text-sm font-bold text-neutral-3 line-through">
                   IDR{" "}
-                  {(
-                    cart.product.price /
-                    (1 - cart.product.promotion.discount)
+                  {Math.floor(
+                    cart.product.price / (1 - cart.product.promotion.discount),
                   ).toLocaleString()}
                 </h5>
               )}

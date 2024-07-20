@@ -1,14 +1,23 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
+import { useSelector } from "react-redux";
 
 // Icons
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 
+// Helper
+import { showErrorToast } from "../../../helper/ToastHelper";
+
 export const PriceDetailCard = ({ carts }) => {
+  const navigate = useNavigate();
   const location = useLocation();
+
   const [showDetail, setShowDetail] = useState(false);
+
+  const cartData = useSelector((state) => state.carts.carts);
+  const userData = useSelector((state) => state.users.userAuthenticate);
 
   const minWidth = useMediaQuery({ minDeviceWidth: 960 });
 
@@ -25,6 +34,15 @@ export const PriceDetailCard = ({ carts }) => {
       const priceAfterDiscount = normalPrice - cart.product.price;
       return total + priceAfterDiscount * cart.quantity;
     }, 0);
+
+  const handlePayment = () => {
+    if (!cartData.length)
+      return showErrorToast("Please add items to your cart before proceeding.");
+    if (!userData.userProfile.address)
+      return showErrorToast("Please complete your profile before proceeding.");
+    if (userData?.userProfile?.address && cartData?.length)
+      navigate("/payment");
+  };
 
   return (
     <>
@@ -53,7 +71,7 @@ export const PriceDetailCard = ({ carts }) => {
         >
           <p className="text-xs font-semibold sm:text-sm">Price</p>
           <p className="text-xs sm:text-sm">
-            IDR {(totalPrice + totalDiscount).toLocaleString()}
+            IDR {Math.floor(totalPrice + totalDiscount).toLocaleString()}
           </p>
         </div>
         {totalDiscount > 0 && (
@@ -64,7 +82,7 @@ export const PriceDetailCard = ({ carts }) => {
           >
             <p className="text-xs font-semibold sm:text-sm">Discount</p>
             <p className="text-xs sm:text-sm">
-              - IDR {totalDiscount.toLocaleString()}
+              - IDR {Math.floor(totalDiscount).toLocaleString()}
             </p>
           </div>
         )}
@@ -77,13 +95,13 @@ export const PriceDetailCard = ({ carts }) => {
           <div className={`flex justify-between`}>
             <p className="text-xs font-semibold sm:text-sm">Total</p>
             <p className="text-xs sm:text-sm">
-              IDR {totalPrice.toLocaleString()}
+              IDR {Math.floor(totalPrice).toLocaleString()}
             </p>
           </div>
           <div className={`flex justify-between`}>
             <p className="text-xs font-semibold sm:text-sm">Tax 11%</p>
             <p className="text-xs sm:text-sm">
-              IDR {(0.11 * totalPrice).toLocaleString()}
+              IDR {Math.floor(0.11 * totalPrice).toLocaleString()}
             </p>
           </div>
         </div>
@@ -94,18 +112,18 @@ export const PriceDetailCard = ({ carts }) => {
         >
           <p className="text-xs sm:text-sm">Total Price</p>
           <p className="text-xs sm:text-sm">
-            IDR {(0.11 * totalPrice + totalPrice).toLocaleString()}
+            IDR {Math.floor(0.11 * totalPrice + totalPrice).toLocaleString()}
           </p>
         </div>
       </div>
-      <Link
-        to={"/payment"}
+      <button
+        onClick={() => handlePayment()}
         className={`${
           location.pathname === "/payment" && "hidden"
         } w-full rounded-lg bg-neutral-1 py-1 text-center text-sm text-neutral-5 hover:bg-opacity-80 sm:text-base`}
       >
         Pay Items
-      </Link>
+      </button>
     </>
   );
 };

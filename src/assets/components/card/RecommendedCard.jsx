@@ -57,7 +57,7 @@ export const RecommendedCard = () => {
           >
             <Link to={`/product/${product.id}`}>
               <img
-                src={product.productImage}
+                src={product?.image[0]?.image}
                 alt="Product"
                 className="aspect-[16/10] h-[55%] w-full object-cover"
               />
@@ -68,7 +68,7 @@ export const RecommendedCard = () => {
                   "pb-8"
                 } flex h-fit w-full flex-col gap-1 p-3`}
               >
-                <p className="text-sm font-semibold text-neutral-2">
+                <p className="text-sm font-semibold text-primary-1">
                   {product.category.categoryName}
                 </p>
                 <p className="truncate text-sm text-neutral-3">
@@ -80,8 +80,11 @@ export const RecommendedCard = () => {
                   </p>
                   {product.promotion && (
                     <p className="break-all text-sm font-semibold text-alert-red">
-                      <span className="mr-2 text-xs font-normal text-neutral-3 line-through">
-                        IDR {product.price / (1 - product.promotion.discount)}
+                      <span className="mr-1 text-xs font-normal text-neutral-3 line-through">
+                        IDR{" "}
+                        {Math.floor(
+                          product.price / (1 - product.promotion.discount),
+                        ).toLocaleString()}
                       </span>
                       {product.promotion.discount * 100}%
                     </p>

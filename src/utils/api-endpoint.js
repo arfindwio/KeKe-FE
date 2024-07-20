@@ -18,6 +18,9 @@ export const API_ENDPOINT = {
   // PRODUCTS
   PRODUCTS: "/products",
 
+  // IMAGES
+  IMAGES: "/images",
+
   //  SIZES
   SIZES: "/sizes",
 

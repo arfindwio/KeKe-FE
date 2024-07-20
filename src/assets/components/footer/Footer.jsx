@@ -25,7 +25,9 @@ import { MdOutlineEmail } from "react-icons/md";
 export const Footer = () => {
   const location = useLocation();
 
-  const categoryData = useSelector((state) => state.categories.categories);
+  const categoryData = useSelector(
+    (state) => state.categories.categories.categories,
+  );
 
   const currentPath = location.pathname;
 
@@ -44,9 +46,9 @@ export const Footer = () => {
               Popular Categories
             </h5>
             <div className="flex w-fit flex-col gap-2 text-sm">
-              {categoryData.map((category, index) => (
+              {categoryData?.slice(0, 5)?.map((category, index) => (
                 <Link
-                  to={`/product?${category.categoryName}`}
+                  to={`/product?c=${category.categoryName}`}
                   className="text-neutral-3 hover:text-neutral-5"
                   key={index}
                 >

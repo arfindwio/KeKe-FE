@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 // Redux Actions
 import { getAllUsersAction } from "../../../redux/action/users/UsersAction";
 import { getAllCategoriesAdminAction } from "../../../redux/action/categories/CategoriesAction";
-import { getAllProductsAdminAction } from "../../../redux/action/products/ProductsAction";
 
 // Icons
 import { PiUsersLight } from "react-icons/pi";
@@ -16,13 +15,14 @@ export const AdminCard = () => {
 
   const userData = useSelector((state) => state.users.users);
   const categoryData = useSelector((state) => state.categories.categoriesAdmin);
-  const productData = useSelector((state) => state.products.productsAdmin);
+  const productData = useSelector(
+    (state) => state.products.products.pagination.total_items,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(getAllUsersAction());
       await dispatch(getAllCategoriesAdminAction());
-      await dispatch(getAllProductsAdminAction());
     };
 
     fetchData();
@@ -54,7 +54,7 @@ export const AdminCard = () => {
             <TbShirt size={40} />
           </div>
           <div className="flex flex-col flex-wrap text-neutral-5">
-            <h5 className="text-lg font-thin">{productData.length}</h5>
+            <h5 className="text-lg font-thin">{productData}</h5>
             <h5 className="text-lg font-semibold">Shirt</h5>
           </div>
         </div>

@@ -64,7 +64,7 @@ export const ReplyCard = ({ reply, productId }) => {
     if (deleteReply) {
       showSuccessToast("Delete Reply Successful");
       location.pathname === "/admin/discussion"
-        ? await dispatch(getAllDiscussionsAction())
+        ? await dispatch(getAllDiscussionsAction(""))
         : await dispatch(getAllDiscussionsAction(productId));
       setOpenDelete(false);
     }

@@ -2,12 +2,12 @@
 import { API_ENDPOINT } from "../../utils/api-endpoint";
 import http from "../../utils/http";
 
-export const reduxGetAllDiscussions = async () => {
-  return await http.get(`${API_ENDPOINT.DISCUSSIONS}`);
+export const reduxGetAllDiscussions = async (query) => {
+  return await http.get(`${API_ENDPOINT.DISCUSSIONS}${query}`);
 };
 
-export const reduxGetDiscussionsByProductId = async (productId) => {
-  return await http.get(`${API_ENDPOINT.DISCUSSIONS}/${productId}`);
+export const reduxGetDiscussionsByProductId = async (productId, query) => {
+  return await http.get(`${API_ENDPOINT.DISCUSSIONS}/${productId}${query}`);
 };
 
 export const reduxPostCreateDiscussionByProductId = async (

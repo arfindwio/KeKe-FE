@@ -15,8 +15,10 @@ import { getAllPromotionsAdminAction } from "../../redux/action/promotions/Promo
 import { AdminSidebar } from "../../assets/components/admin/AdminSidebar";
 import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
 import { AdminCard } from "../../assets/components/admin/AdminCard";
+import { AdminManageImage } from "../../assets/components/admin/AdminManageImage";
 import { AdminManageSize } from "../../assets/components/admin/AdminManageSize";
 import { AdminManageColor } from "../../assets/components/admin/AdminManageColor";
+import { Pagination } from "../../assets/components/pagination/Pagination";
 
 // Material Tailwind
 import {
@@ -47,7 +49,6 @@ export const AdminProduct = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [inputProduct, setInputProduct] = useState({
-    image: "",
     productName: "",
     price: null,
     description: "",
@@ -63,7 +64,10 @@ export const AdminProduct = () => {
   const [submitProduct, setSubmitProduct] = useState(null);
   const [products, setProducts] = useState(null);
 
-  const productData = useSelector((state) => state.products.products);
+  const productData = useSelector((state) => state.products.products.products);
+  const paginationProduct = useSelector(
+    (state) => state.products.products.pagination,
+  );
   const categoryData = useSelector((state) => state.categories.categoriesAdmin);
   const promotionData = useSelector(
     (state) => state.promotions.promotionsAdmin,
@@ -91,7 +95,6 @@ export const AdminProduct = () => {
         (product) => product.id === productId,
       );
       setInputProduct({
-        image: filteredData.productImage,
         productName: filteredData.productName,
         price: filteredData.price,
         description: filteredData.description,
@@ -209,6 +212,24 @@ export const AdminProduct = () => {
 
   const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
 
+  const handleQuery = (formatLink) => {
+    dispatch(getAllProductsAction(formatLink));
+  };
+
+  const getPageValue = () => {
+    if (paginationProduct?.links?.next) {
+      const url = paginationProduct?.links?.next;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page") - 2);
+    } else if (paginationProduct?.links?.prev) {
+      const url = paginationProduct?.links?.prev;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page"));
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <>
       <div className="flex">
@@ -255,88 +276,125 @@ export const AdminProduct = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {productData.map((product, index) => (
-                    <tr
-                      key={index}
-                      className={`${
-                        index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
-                      } border-b-2 bg-slate-200`}
+                  {productData.length > 0 ? (
+                    productData.map((product, index) => (
+                      <tr
+                        key={index}
+                        className={`${
+                          index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
+                        } border-b-2 bg-slate-200`}
+                      >
+                        <td className="px-2 py-1 text-sm">
+                          {getPageValue() > 0
+                            ? `${getPageValue()}${index + 1}`
+                            : `${index + 1}`}
+                        </td>
+                        <td className="flex flex-wrap gap-2 px-2 py-1 text-sm lg:min-w-0">
+                          {product.image.map((image, index) => (
+                            <img
+                              key={index}
+                              src={image.image}
+                              alt="product image"
+                              width={500}
+                              height={500}
+                              className=" h-16 w-16 overflow-hidden rounded-md border border-slate-300 object-cover"
+                            />
+                          ))}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.productName}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.price}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.description}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.stock}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.soldCount}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.category.categoryName}
+                        </td>
+                        <td className="px-2 py-1 text-sm font-bold italic text-alert-red lg:min-w-0">
+                          {product.promotion?.discount ? (
+                            `${product.promotion?.discount * 100}%`
+                          ) : (
+                            <p className="font-normal not-italic text-neutral-3 text-opacity-50">
+                              null
+                            </p>
+                          )}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.size.length > 0 ? (
+                            product.size.map((size, index) => (
+                              <React.Fragment key={index}>
+                                {size.sizeName}
+                                {index < product.size.length - 1 && ", "}
+                              </React.Fragment>
+                            ))
+                          ) : (
+                            <p className="text-neutral-3 text-opacity-50">
+                              null
+                            </p>
+                          )}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          {product.color.length > 0 ? (
+                            product.color.map((color, index) => (
+                              <React.Fragment key={index}>
+                                {color.colorName}
+                                {index < product.color.length - 1 && ", "}
+                              </React.Fragment>
+                            ))
+                          ) : (
+                            <p className="text-neutral-3 text-opacity-50">
+                              null
+                            </p>
+                          )}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          <button
+                            type="button"
+                            className="mb-1 mr-1 flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-neutral-5 hover:bg-orange-700"
+                            onClick={() => handleOpen("edit", product.id)}
+                          >
+                            <MdEdit size={20} />
+                          </button>
+                          <button
+                            type="button"
+                            className="flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-neutral-5 hover:bg-red-800"
+                            onClick={() => handleOpen("delete", product.id)}
+                          >
+                            <RiDeleteBin5Line size={20} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <td
+                      className="h-full border-b-2 bg-slate-200 bg-opacity-20 text-center italic text-neutral-4"
+                      colSpan={12}
                     >
-                      <td className="px-2 py-1 text-sm">{index + 1}</td>
-                      <td className="break-all px-2 py-1 text-sm lg:min-w-0">
-                        {product.productImage}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.productName}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.price}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.description}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.stock}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.soldCount}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.category.categoryName}
-                      </td>
-                      <td className="px-2 py-1 text-sm font-bold italic text-alert-red lg:min-w-0">
-                        {product.promotion?.discount ? (
-                          `${product.promotion?.discount * 100}%`
-                        ) : (
-                          <p className="font-normal not-italic text-neutral-3 text-opacity-50">
-                            null
-                          </p>
-                        )}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.size.length > 0 ? (
-                          product.size.map((size, index) => (
-                            <React.Fragment key={index}>
-                              {size.sizeName}
-                              {index < product.size.length - 1 && ", "}
-                            </React.Fragment>
-                          ))
-                        ) : (
-                          <p className="text-neutral-3 text-opacity-50">null</p>
-                        )}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        {product.color.length > 0 ? (
-                          product.color.map((color, index) => (
-                            <React.Fragment key={index}>
-                              {color.colorName}
-                              {index < product.color.length - 1 && ", "}
-                            </React.Fragment>
-                          ))
-                        ) : (
-                          <p className="text-neutral-3 text-opacity-50">null</p>
-                        )}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        <button
-                          type="button"
-                          className="mb-1 mr-1 flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-neutral-5 hover:bg-orange-700"
-                          onClick={() => handleOpen("edit", product.id)}
-                        >
-                          <MdEdit size={20} />
-                        </button>
-                        <button
-                          type="button"
-                          className="flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-neutral-5 hover:bg-red-800"
-                          onClick={() => handleOpen("delete", product.id)}
-                        >
-                          <RiDeleteBin5Line size={20} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                      No Product Found
+                    </td>
+                  )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Pagination Section */}
+            <div className="mx-auto">
+              <Pagination
+                onQuery={handleQuery}
+                type={"products"}
+                nextLink={paginationProduct?.links?.next}
+                prevLink={paginationProduct?.links?.prev}
+                totalItems={paginationProduct?.total_items}
+              />
             </div>
           </div>
         </div>
@@ -365,17 +423,22 @@ export const AdminProduct = () => {
           >
             <div className="flex w-[49%] flex-col gap-4">
               <div className="flex w-full flex-col">
-                <label htmlFor="image" className="text-neutral-1">
-                  Product Image
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="image"
-                  name="image"
-                  className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
-                  onChange={handleInputChange}
-                />
+                <p className="text-neutral-1">Product Image</p>
+                <div className="flex flex-wrap gap-2">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <AdminManageImage
+                      key={index}
+                      type={"create"}
+                      image={[]}
+                      afterSubmit={{
+                        categoryId: null,
+                        productId: submitProduct?.id,
+                      }}
+                      completeSubmit={handleSubmitProduct}
+                      count={index}
+                    />
+                  ))}
+                </div>
               </div>
               <div className="flex w-full flex-col">
                 <label htmlFor="productName" className="text-neutral-1">
@@ -575,17 +638,40 @@ export const AdminProduct = () => {
           >
             <div className="flex w-[49%] flex-col gap-4">
               <div className="flex w-full flex-col">
-                <label htmlFor="image" className="text-neutral-1">
-                  Product Image
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="image"
-                  name="image"
-                  className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
-                  onChange={handleInputChange}
-                />
+                <p className="text-neutral-1">Product Image</p>
+                <div className="flex flex-wrap gap-2">
+                  {products &&
+                    products?.image &&
+                    products?.image.map((image, index) => (
+                      <AdminManageImage
+                        key={index}
+                        type={"edit"}
+                        image={image}
+                        afterSubmit={{
+                          categoryId: null,
+                          productId: submitProduct?.id,
+                        }}
+                        completeSubmit={handleSubmitProduct}
+                        count={index}
+                      />
+                    ))}
+
+                  {Array.from({ length: 4 - products?.image?.length }).map(
+                    (_, index) => (
+                      <AdminManageImage
+                        key={index}
+                        type={"create"}
+                        image={[]}
+                        afterSubmit={{
+                          categoryId: null,
+                          productId: submitProduct?.id,
+                        }}
+                        completeSubmit={handleSubmitProduct}
+                        count={index}
+                      />
+                    ),
+                  )}
+                </div>
               </div>
               <div className="flex w-full flex-col">
                 <label htmlFor="productName" className="text-neutral-1">

@@ -77,7 +77,7 @@ export const UserActionButton = () => {
                   currentPath === "/notification"
                     ? "text-neutral-1"
                     : "text-neutral-3"
-                }`}
+                } outline-none`}
               >
                 <LuUser size={25} />
               </button>
@@ -90,7 +90,7 @@ export const UserActionButton = () => {
                   currentPath === "/account-setting"
                     ? "text-neutral-1"
                     : "text-neutral-3"
-                } flex w-full items-center gap-1 rounded-md p-1 hover:bg-slate-100`}
+                } flex w-full items-center gap-1 rounded-md p-1 outline-none hover:bg-slate-100`}
               >
                 <LuUser size={20} />
                 <p>Account</p>
@@ -101,7 +101,7 @@ export const UserActionButton = () => {
                   currentPath === "/history"
                     ? "text-neutral-1"
                     : "text-neutral-3"
-                } flex w-full items-center gap-1 rounded-md p-1 hover:bg-slate-100`}
+                } flex w-full items-center gap-1 rounded-md p-1 outline-none hover:bg-slate-100`}
               >
                 <RiFileList2Line size={20} />
                 <p>History</p>
@@ -112,7 +112,7 @@ export const UserActionButton = () => {
                   currentPath === "/notification"
                     ? "text-neutral-1"
                     : "text-neutral-3"
-                } flex w-full items-center gap-1 rounded-md p-1 hover:bg-slate-100`}
+                } flex w-full items-center gap-1 rounded-md p-1 outline-none hover:bg-slate-100`}
               >
                 <FiBell size={20} />
                 <p className="mr-auto">Notification</p>
@@ -124,7 +124,7 @@ export const UserActionButton = () => {
               </Link>
               <hr className="my-2 border-blue-gray-50" />
               <button
-                className="flex w-full items-center gap-1 p-1 text-neutral-3 hover:bg-slate-100"
+                className="flex w-full items-center gap-1 p-1 text-neutral-3 outline-none hover:bg-slate-100"
                 onClick={handleLogout}
               >
                 <LuLogOut size={20} />
