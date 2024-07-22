@@ -8,6 +8,7 @@ import { getAllProductsAction } from "../../../redux/action/products/ProductsAct
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { SidebarFilter } from "../../../assets/components/sidebar/SidebarFilter";
 import { ProductCard } from "../../../assets/components/card/ProductCard";
+import { Pagination } from "../../../assets/components/pagination/Pagination";
 import { ScrollButton } from "../../../assets/components/button/ScrollButton";
 import { Footer } from "../../../assets/components/footer/Footer";
 
@@ -19,7 +20,10 @@ export const Products = () => {
 
   const [openBottom, setOpenBottom] = useState(false);
 
-  const productData = useSelector((state) => state.products.products);
+  const productData = useSelector((state) => state.products.products.products);
+  const paginationProduct = useSelector(
+    (state) => state.products.products.pagination,
+  );
 
   openBottom
     ? (document.body.style.overflow = "hidden")
@@ -39,6 +43,10 @@ export const Products = () => {
       behavior: "instant",
     });
   }, []);
+
+  const handleQuery = (formatLink) => {
+    dispatch(getAllProductsAction(formatLink));
+  };
 
   return (
     <>
@@ -89,17 +97,28 @@ export const Products = () => {
           <div className="hidden h-fit  w-full flex-col gap-6 rounded-lg bg-neutral-5 p-6 md:flex md:w-[35%]">
             <SidebarFilter />
           </div>
-          {productData.length > 0 ? (
-            <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:w-[63%] md:grid-cols-2 xl:grid-cols-3">
-              {productData.map((product, index) => (
+          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:w-[63%] md:grid-cols-2 xl:grid-cols-3">
+            {productData.length > 0 ? (
+              productData.map((product, index) => (
                 <ProductCard product={product} key={index} />
-              ))}
+              ))
+            ) : (
+              <p className="col-span-3 flex h-[50vh] items-center justify-center text-center text-2xl font-bold italic text-neutral-4 md:h-auto">
+                - No product found -
+              </p>
+            )}
+
+            {/* Pagination Section */}
+            <div className="col-span-3 flex items-center justify-center">
+              <Pagination
+                onQuery={handleQuery}
+                type={"products"}
+                nextLink={paginationProduct?.links?.next}
+                prevLink={paginationProduct?.links?.prev}
+                totalItems={paginationProduct?.total_items}
+              />
             </div>
-          ) : (
-            <p className="m-auto text-center text-2xl font-bold italic text-neutral-4">
-              - No product found -
-            </p>
-          )}
+          </div>
         </div>
       </div>
       <ScrollButton />

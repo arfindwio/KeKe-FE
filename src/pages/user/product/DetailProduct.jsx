@@ -9,6 +9,7 @@ import { DetailProductSection } from "../../../assets/components/detailProduct/D
 import { ReviewCard } from "../../../assets/components/card/ReviewCard";
 import { DiscussionCard } from "../../../assets/components/card/DiscussionCard";
 import { ProductCard } from "../../../assets/components/card/ProductCard";
+import { Pagination } from "../../../assets/components/pagination/Pagination";
 import { ScrollButton } from "../../../assets/components/button/ScrollButton";
 import { Footer } from "../../../assets/components/footer/Footer";
 
@@ -59,13 +60,21 @@ export const DetailProduct = () => {
     userComment: "",
   });
 
-  const productData = useSelector((state) => state.products.products);
+  const productData = useSelector((state) => state.products.products.products);
   const detailProductData = useSelector((state) => state.products.product);
   const recommendationProductData = useSelector(
     (state) => state.products.recommendationProducts,
   );
-  const reviewData = useSelector((state) => state.reviews.reviews);
-  const discussionData = useSelector((state) => state.discussions.discussions);
+  const reviewData = useSelector((state) => state.reviews.reviews.reviews);
+  const paginationReview = useSelector(
+    (state) => state.reviews.reviews.pagination,
+  );
+  const discussionData = useSelector(
+    (state) => state.discussions.discussions.discussions,
+  );
+  const paginationDiscussion = useSelector(
+    (state) => state.discussions.discussions.pagination,
+  );
   const userData = useSelector((state) => state.users.userAuthenticate);
 
   const token = CookieStorage.get(CookiesKeys.AuthToken);
@@ -84,8 +93,8 @@ export const DetailProduct = () => {
       await dispatch(
         getAllProductsAction(`?c=${detailProductData?.category?.categoryName}`),
       );
-      await dispatch(getReviewsByProductIdAction(productId));
-      await dispatch(getDiscussionsByProductIdAction(productId));
+      await dispatch(getReviewsByProductIdAction(productId, ""));
+      await dispatch(getDiscussionsByProductIdAction(productId, ""));
       if (token) {
         await dispatch(getRecommendationProductsActionUser());
       } else {
@@ -147,7 +156,7 @@ export const DetailProduct = () => {
       if (discussion) {
         showSuccessToast("Discussion Added");
         handleCancel();
-        await dispatch(getDiscussionsByProductIdAction(productId));
+        await dispatch(getDiscussionsByProductIdAction(productId, ""));
       }
     }
   };
@@ -177,10 +186,16 @@ export const DetailProduct = () => {
       if (review) {
         showSuccessToast("Review Added");
         handleCancel();
-        await dispatch(getDiscussionsByProductIdAction(productId));
+        await dispatch(getDiscussionsByProductIdAction(productId, ""));
       }
     }
   };
+
+  const handleQueryReview = (formatLink) =>
+    dispatch(getReviewsByProductIdAction(productId, formatLink));
+
+  const handleQueryDiscussion = (formatLink) =>
+    dispatch(getDiscussionsByProductIdAction(productId, formatLink));
 
   return (
     <>
@@ -213,6 +228,18 @@ export const DetailProduct = () => {
                 totalReviews={reviewData.length}
               />
             ))}
+
+            {/* Pagination Section */}
+            <div className="col-span-2 mx-auto mb-2">
+              <Pagination
+                onQuery={handleQueryReview}
+                type={"reviews"}
+                nextLink={paginationReview?.links?.next}
+                prevLink={paginationReview?.links?.prev}
+                totalItems={paginationReview?.total_items}
+              />
+            </div>
+
             {token && (
               <form
                 className="col-span-2 flex w-full flex-col items-start gap-2 rounded-md border p-4 shadow-sm"
@@ -315,6 +342,18 @@ export const DetailProduct = () => {
                 key={index}
               />
             ))}
+
+            {/* Pagination Section */}
+            <div className="col-span-2 mx-auto mb-2">
+              <Pagination
+                onQuery={handleQueryDiscussion}
+                type={"discussions"}
+                nextLink={paginationDiscussion?.links?.next}
+                prevLink={paginationDiscussion?.links?.prev}
+                totalItems={paginationDiscussion?.total_items}
+              />
+            </div>
+
             {token && (
               <form
                 className="flex w-full flex-col items-start gap-2 rounded-md border p-4 shadow-sm"

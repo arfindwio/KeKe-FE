@@ -12,6 +12,7 @@ import {
 import { AdminSidebar } from "../../assets/components/admin/AdminSidebar";
 import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
 import { AdminCard } from "../../assets/components/admin/AdminCard";
+import { Pagination } from "../../assets/components/pagination/Pagination";
 
 // Icons
 import { MdEdit } from "react-icons/md";
@@ -42,7 +43,10 @@ export const AdminDashboard = () => {
   });
   const [paymentId, setPaymentId] = useState(null);
 
-  const paymentData = useSelector((state) => state.payments.payments);
+  const paymentData = useSelector((state) => state.payments.payments.payments);
+  const paginationPayment = useSelector(
+    (state) => state.payments.payments.pagination,
+  );
 
   openNavbar
     ? (document.body.style.overflow = "hidden")
@@ -50,7 +54,7 @@ export const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getAllPaymentsAction());
+      await dispatch(getAllPaymentsAction(""));
     };
 
     fetchData();
@@ -90,13 +94,31 @@ export const AdminDashboard = () => {
 
       if (editPayment) {
         showSuccessToast("Edit Payment Successful");
-        await dispatch(getAllPaymentsAction());
+        await dispatch(getAllPaymentsAction(""));
         setOpen(false);
       }
     }
   };
 
   const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
+
+  const handleQuery = (formatLink) => {
+    dispatch(getAllPaymentsAction(formatLink));
+  };
+
+  const getPageValue = () => {
+    if (paginationPayment?.links?.next) {
+      const url = paginationPayment?.links?.next;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page") - 2);
+    } else if (paginationPayment?.links?.prev) {
+      const url = paginationPayment?.links?.prev;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page"));
+    } else {
+      return 0;
+    }
+  };
 
   return (
     <>
@@ -113,6 +135,7 @@ export const AdminDashboard = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-2 bg-slate-200">
+                    <th className="px-2 py-2 text-start text-sm">No</th>
                     <th className="px-2 py-2 text-start text-sm">Name</th>
                     <th className="px-2 py-2 text-start text-sm">Product</th>
                     <th className="px-2 py-2 text-start text-sm">Address</th>
@@ -130,72 +153,96 @@ export const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paymentData.map((payment, index) => (
-                    <tr
-                      key={index}
-                      className={`${
-                        index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
-                      } h-full border-b-2 bg-slate-200`}
-                    >
-                      <td className=" px-2 py-1 text-sm">
-                        {payment?.user?.userProfile?.fullName}
-                      </td>
-                      <td className="flex min-w-[30vw] flex-col px-2 py-1 text-sm lg:min-w-0">
-                        {payment.cart.map((cart, index) => (
-                          <p key={index}>
-                            {index + 1}. {cart.product.productName} -{" "}
-                            <span className="font-semibold">
-                              {(cart?.size?.sizeName).toUpperCase()}
-                            </span>{" "}
-                            -{" "}
-                            <span className="font-semibold">
-                              {cart?.color?.colorName}{" "}
-                            </span>
-                            {cart.note && (
-                              <span className="font-medium italic text-neutral-3">
-                                ({cart.note})
-                              </span>
-                            )}
-                          </p>
-                        ))}
-                      </td>
-                      <td className="min-w-[20vw] px-2 py-1 text-sm lg:min-w-0">
-                        {payment?.user?.userProfile?.address}
-                      </td>
-                      <td
+                  {paymentData.length > 0 ? (
+                    paymentData.map((payment, index) => (
+                      <tr
+                        key={index}
                         className={`${
-                          payment.paymentStatus === "Paid"
-                            ? "text-alert-green"
-                            : "text-alert-red"
-                        }  px-2 py-1 text-sm font-semibold`}
+                          index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
+                        } h-full border-b-2 bg-slate-200`}
                       >
-                        {payment.paymentStatus}
-                      </td>
-                      <td className=" px-2 py-1 text-sm">
-                        {payment.trackingNumber
-                          ? payment.trackingNumber
-                          : "null"}
-                      </td>
-                      <td className=" px-2 py-1 text-sm">
-                        {payment.methodPayment}
-                      </td>
-                      <td className=" px-2 py-1 text-sm">
-                        {payment.updatedAt}
-                      </td>
-                      <td className="px-2 py-1 text-sm lg:min-w-0">
-                        <button
-                          type="button"
-                          className="flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-white hover:bg-orange-700"
-                          onClick={() => handleOpen(payment.id)}
+                        <td className=" px-2 py-1 text-sm">
+                          {getPageValue() > 0
+                            ? `${getPageValue()}${index + 1}`
+                            : `${index + 1}`}
+                        </td>
+                        <td className=" px-2 py-1 text-sm">
+                          {payment?.user?.userProfile?.fullName}
+                        </td>
+                        <td className="flex min-w-[30vw] flex-col px-2 py-1 text-sm lg:min-w-0">
+                          {payment.cart.map((cart, index) => (
+                            <p key={index}>
+                              {index + 1}. {cart.product.productName} -{" "}
+                              <span className="font-semibold">
+                                {(cart?.size?.sizeName).toUpperCase()}
+                              </span>{" "}
+                              -{" "}
+                              <span className="font-semibold">
+                                {cart?.color?.colorName}{" "}
+                              </span>
+                              {cart.note && (
+                                <span className="font-medium italic text-neutral-3">
+                                  ({cart.note})
+                                </span>
+                              )}
+                            </p>
+                          ))}
+                        </td>
+                        <td className="min-w-[20vw] px-2 py-1 text-sm lg:min-w-0">
+                          {payment?.user?.userProfile?.address}
+                        </td>
+                        <td
+                          className={`${
+                            payment.paymentStatus === "Paid"
+                              ? "text-alert-green"
+                              : "text-alert-red"
+                          }  px-2 py-1 text-sm font-semibold`}
                         >
-                          <MdEdit size={20} />
-                          <p>Edit</p>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                          {payment.paymentStatus}
+                        </td>
+                        <td className=" px-2 py-1 text-sm">
+                          {payment.trackingNumber
+                            ? payment.trackingNumber
+                            : "null"}
+                        </td>
+                        <td className=" px-2 py-1 text-sm">
+                          {payment.methodPayment}
+                        </td>
+                        <td className=" px-2 py-1 text-sm">
+                          {payment.updatedAt}
+                        </td>
+                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                          <button
+                            type="button"
+                            className="flex items-center gap-1 rounded-full bg-orange-400 px-3 py-1 text-white hover:bg-orange-700"
+                            onClick={() => handleOpen(payment.id)}
+                          >
+                            <MdEdit size={20} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <td
+                      className="h-full border-b-2 bg-slate-200 bg-opacity-20 text-center italic text-neutral-4"
+                      colSpan={9}
+                    >
+                      No Payment Found
+                    </td>
+                  )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Pagination Section */}
+            <div className="mx-auto">
+              <Pagination
+                onQuery={handleQuery}
+                type={"payments"}
+                nextLink={paginationPayment?.links?.next}
+                prevLink={paginationPayment?.links?.prev}
+                totalItems={paginationPayment?.total_items}
+              />
             </div>
           </div>
         </div>

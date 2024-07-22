@@ -103,7 +103,7 @@ export const DiscussionCard = ({ discussion, productId }) => {
       if (reply) {
         showSuccessToast("Reply Added");
         handleCancel();
-        await dispatch(getDiscussionsByProductIdAction(productId));
+        await dispatch(getDiscussionsByProductIdAction(productId, ""));
       }
     }
   };
@@ -121,7 +121,7 @@ export const DiscussionCard = ({ discussion, productId }) => {
 
     if (deleteDiscussion) {
       showSuccessToast("Delete Discussion Successful");
-      await dispatch(getDiscussionsByProductIdAction(productId));
+      await dispatch(getDiscussionsByProductIdAction(productId, ""));
       setOpenDelete(false);
     }
   };
