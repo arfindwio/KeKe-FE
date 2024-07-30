@@ -38,7 +38,7 @@ export const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(getAllProductsAction(""));
-      await dispatch(getAllCategoriesAction(""));
+      await dispatch(getAllCategoriesAction("?limit=9999"));
     };
 
     fetchData();
