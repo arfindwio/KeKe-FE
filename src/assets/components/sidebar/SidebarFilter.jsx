@@ -5,11 +5,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 // Redux Actions
 import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
 
+// Icons
+import { IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
+
 export const SidebarFilter = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
 
+  const [showAll, setShowAll] = useState(false);
   const [queryFormat, setQueryFormat] = useState("");
 
   const categoryData = useSelector(
@@ -103,29 +108,44 @@ export const SidebarFilter = () => {
       <div className="flex flex-col gap-2">
         <h2 className="text-xl font-bold">Categories</h2>
         <div className="flex flex-col gap-4 px-3">
-          {categoryData.map((category, index) => (
-            <div
-              className="flex w-full cursor-pointer flex-wrap gap-2"
-              key={index}
-            >
-              <input
-                type="checkbox"
-                id={category.categoryName}
-                className="relative w-[20px] cursor-pointer"
-                checked={queryParams
-                  .getAll("c")
-                  .includes(category.categoryName)}
-                onChange={() => handleFilter("c", category.categoryName)}
-              />
-              <label
-                htmlFor={category.categoryName}
-                className="cursor-pointer font-medium"
+          {categoryData
+            ?.slice(0, showAll ? categoryData.length : 5)
+            ?.map((category, index) => (
+              <div
+                className="flex w-full cursor-pointer flex-wrap gap-2"
+                key={index}
               >
-                {category.categoryName}
-              </label>
-            </div>
-          ))}
+                <input
+                  type="checkbox"
+                  id={category.categoryName}
+                  className="relative w-[20px] cursor-pointer"
+                  checked={queryParams
+                    .getAll("c")
+                    .includes(category.categoryName)}
+                  onChange={() => handleFilter("c", category.categoryName)}
+                />
+                <label
+                  htmlFor={category.categoryName}
+                  className="cursor-pointer font-medium"
+                >
+                  {category.categoryName}
+                </label>
+              </div>
+            ))}
         </div>
+        {categoryData.length >= 6 && (
+          <button
+            className="flex w-full items-center justify-center gap-1 px-3 text-center text-xs font-medium text-blue-700"
+            onClick={() => setShowAll(!showAll)}
+          >
+            {showAll ? "Show Less" : "Show More"}
+            {showAll ? (
+              <IoIosArrowUp size={15} />
+            ) : (
+              <IoIosArrowDown size={15} />
+            )}
+          </button>
+        )}
       </div>
     </>
   );
