@@ -30,20 +30,20 @@ import { IoMdInformationCircle } from "react-icons/io";
 import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
 
 // Images
-import MasterCard from "../../../../src/assets/img/mastercard.webp";
-import Visa from "../../../../src/assets/img/visa.webp";
-import Amex from "../../../../src/assets/img/amex.webp";
-import Paypal from "../../../../src/assets/img/paypal.webp";
-import Gopay from "../../../../src/assets/img/Gopay.webp";
-import Alfamart from "../../../../src/assets/img/Alfamart.webp";
-import Indomaret from "../../../../src/assets/img/Indomaret.webp";
-import BCA from "../../../../src/assets/img/BCA.webp";
-import BNI from "../../../../src/assets/img/BNI.webp";
-import BRI from "../../../../src/assets/img/BRI.webp";
-import Cimb from "../../../../src/assets/img/Cimb.webp";
-import MandiriBill from "../../../../src/assets/img/MandiriBill.webp";
-import Permata from "../../../../src/assets/img/Permata.webp";
-import Akulaku from "../../../../src/assets/img/Akulaku.webp";
+import MasterCard from "../../../assets/img/mastercard.webp";
+import Visa from "../../../assets/img/visa.webp";
+import Amex from "../../../assets/img/amex.webp";
+import Paypal from "../../../assets/img/paypal.webp";
+import Gopay from "../../../assets/img/Gopay.webp";
+import Alfamart from "../../../assets/img/Alfamart.webp";
+import Indomaret from "../../../assets/img/Indomaret.webp";
+import BCA from "../../../assets/img/BCA.webp";
+import BNI from "../../../assets/img/BNI.webp";
+import BRI from "../../../assets/img/BRI.webp";
+import Cimb from "../../../assets/img/Cimb.webp";
+import MandiriBill from "../../../assets/img/MandiriBill.webp";
+import Permata from "../../../assets/img/Permata.webp";
+import Akulaku from "../../../assets/img/Akulaku.webp";
 
 export const Payment = () => {
   const navigate = useNavigate();
