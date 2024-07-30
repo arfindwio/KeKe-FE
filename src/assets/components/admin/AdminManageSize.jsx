@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 // Redux Actions
@@ -8,6 +8,12 @@ import {
   putEditSizeByIdAction,
   deleteSizeByIdAction,
 } from "../../../redux/action/sizes/SizesAction";
+
+// Redux Reducer
+import {
+  setProducts,
+  setFilterProduct,
+} from "../../../redux/reducer/products/ProductsSlice";
 
 // Helper
 import {
@@ -32,6 +38,12 @@ export const AdminManageSize = ({
     productId: submitProduct?.id,
   });
 
+  const productData = useSelector((state) => state.products.products.products);
+  const paginationProduct = useSelector(
+    (state) => state.products.products.pagination,
+  );
+  const filterProduct = useSelector((state) => state.products.filterProduct);
+
   useEffect(() => {
     if (type === "edit") {
       setInputSize({
@@ -55,6 +67,24 @@ export const AdminManageSize = ({
       if (!createSize) {
         showErrorToast("Create Size Failed");
       } else {
+        // const addedSize = productData.map((product) => {
+        //   if (product.id === submitProduct.productId) {
+        //     const updatedSizes = product.size ? [...product.size] : [];
+        //     updatedSizes.push(createSize);
+
+        //     return {
+        //       ...product,
+        //       size: updatedSizes,
+        //     };
+        //   }
+        //   return product;
+        // });
+        // dispatch(
+        //   setProducts({
+        //     pagination: paginationProduct,
+        //     products: [...productData, addedSize],
+        //   }),
+        // );
         completeSubmit(null, "create");
       }
     };
@@ -108,6 +138,11 @@ export const AdminManageSize = ({
     if (!deleteSize) showErrorToast("Delete Size Failed");
 
     if (deleteSize) {
+      const filteredProduct = {
+        ...filterProduct,
+        size: filterProduct.size.filter((item) => item.id !== size?.id),
+      };
+      dispatch(setFilterProduct(filteredProduct));
       showSuccessToast("Delete Size Successful");
       completeSubmit(null, "delete");
     }

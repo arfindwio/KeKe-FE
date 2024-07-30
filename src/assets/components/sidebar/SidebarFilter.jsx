@@ -13,24 +13,15 @@ export const SidebarFilter = () => {
   const [queryFormat, setQueryFormat] = useState("");
 
   const categoryData = useSelector(
-    (state) => state.categories.categories.categories,
+    (state) => state.categories?.categories?.categories,
   );
 
-  const queryParams = location.search;
+  const queryParams = new URLSearchParams(location.search);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setQueryFormat(queryParams);
-      await dispatch(getAllProductsAction(queryParams));
-    };
-
-    if (
-      (!queryFormat && queryParams) ||
-      new URLSearchParams(queryParams).get("search")
-    ) {
-      fetchData();
-    }
-  }, []);
+    setQueryFormat(location.search);
+    dispatch(getAllProductsAction(location.search));
+  }, [location.search, dispatch]);
 
   const handleFilter = async (type, filter) => {
     const params = new URLSearchParams(queryFormat);
@@ -61,8 +52,8 @@ export const SidebarFilter = () => {
     }
 
     const queryString = params.toString();
-    setQueryFormat(queryString ? `?${queryString}` : "");
-    await dispatch(getAllProductsAction(queryString ? `?${queryString}` : ""));
+    setQueryFormat(queryString);
+    await dispatch(getAllProductsAction(`?${queryString}`));
     navigate(`/product${queryString ? `?${queryString}` : ""}`);
   };
 
@@ -71,51 +62,39 @@ export const SidebarFilter = () => {
       <div className="flex flex-col gap-2">
         <h2 className="text-xl font-bold">Filter</h2>
         <div className="flex flex-col gap-4 px-3">
-          <div className={`flex w-fit cursor-pointer gap-2`}>
+          <div className="flex w-fit cursor-pointer gap-2">
             <input
               type="checkbox"
               id="newest"
               className="relative w-[20px] cursor-pointer"
-              checked={queryFormat.includes("f=newest")}
+              checked={queryFormat.includes(`f=newest`)}
               onChange={() => handleFilter("f", "newest")}
             />
-            <label
-              htmlFor="newest"
-              className="cursor-pointer font-medium"
-              onClick={() => handleFilter("f", "newest")}
-            >
+            <label htmlFor="newest" className="cursor-pointer font-medium">
               Newest
             </label>
           </div>
-          <div className={`flex w-fit cursor-pointer gap-2`}>
+          <div className="flex w-fit cursor-pointer gap-2">
             <input
               type="checkbox"
               id="popular"
               className="relative w-[20px] cursor-pointer"
-              checked={queryFormat.includes("f=popular")}
+              checked={queryFormat.includes(`f=popular`)}
               onChange={() => handleFilter("f", "popular")}
             />
-            <label
-              htmlFor="popular"
-              className="cursor-pointer font-medium"
-              onClick={() => handleFilter("f", "popular")}
-            >
+            <label htmlFor="popular" className="cursor-pointer font-medium">
               Popular
             </label>
           </div>
-          <div className={`flex w-fit cursor-pointer gap-2`}>
+          <div className="flex w-fit cursor-pointer gap-2">
             <input
               type="checkbox"
               id="promo"
               className="relative w-[20px] cursor-pointer"
-              checked={queryFormat.includes("f=promo")}
+              checked={queryFormat.includes(`f=promo`)}
               onChange={() => handleFilter("f", "promo")}
             />
-            <label
-              htmlFor="promo"
-              className="cursor-pointer font-medium"
-              onClick={() => handleFilter("f", "promo")}
-            >
+            <label htmlFor="promo" className="cursor-pointer font-medium">
               Promo
             </label>
           </div>
@@ -125,18 +104,22 @@ export const SidebarFilter = () => {
         <h2 className="text-xl font-bold">Categories</h2>
         <div className="flex flex-col gap-4 px-3">
           {categoryData.map((category, index) => (
-            <div className="flex w-fit cursor-pointer gap-2" key={index}>
+            <div
+              className="flex w-full cursor-pointer flex-wrap gap-2"
+              key={index}
+            >
               <input
                 type="checkbox"
                 id={category.categoryName}
                 className="relative w-[20px] cursor-pointer"
-                checked={queryFormat.includes(`c=${category.categoryName}`)}
+                checked={queryParams
+                  .getAll("c")
+                  .includes(category.categoryName)}
                 onChange={() => handleFilter("c", category.categoryName)}
               />
               <label
                 htmlFor={category.categoryName}
                 className="cursor-pointer font-medium"
-                onClick={() => handleFilter("c", category.categoryName)}
               >
                 {category.categoryName}
               </label>

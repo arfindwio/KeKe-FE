@@ -172,14 +172,14 @@ export const SpecialOfferCard = () => {
           <img
             src={specialOfferData?.image[0]?.image}
             alt="Product"
-            className="min-h-full w-full rounded-md object-cover md:w-[40%]"
+            className="w-full rounded-md object-contain md:w-[40%]"
           />
           <div className="flex w-full flex-col gap-2 md:w-[58%]">
             {specialOfferData?.review?.length > 0 && (
               <div className="flex items-center gap-1">
                 <FaStar size={20} className="text-alert-yellow" />
                 <p className="text-sm font-semibold text-neutral-2">
-                  {averageRating(specialOfferData?.review)}
+                  {averageRating(specialOfferData?.review).toFixed(1)}
                 </p>
                 <p className="text-sm font-light text-neutral-3 opacity-80">
                   ({specialOfferData?.review.length})
@@ -194,7 +194,7 @@ export const SpecialOfferCard = () => {
             </p>
             <div className="flex gap-3">
               <h4 className="text-lg font-bold text-neutral-1">
-                IDR {specialOfferData?.price}
+                IDR {(specialOfferData?.price).toLocaleString()}
               </h4>
               {specialOfferData?.promotion && (
                 <div className="flex items-center gap-1 text-base">
@@ -286,26 +286,26 @@ export const SpecialOfferCard = () => {
               ></div>
             </div>
             <p className="text-sm font-medium">HURRY UP! OFFER ENDS IN:</p>
-            <div className="flex flex-wrap justify-start gap-1 sm:gap-4">
-              <div className="flex flex-col rounded-lg bg-slate-200 px-1 py-1 text-center sm:px-3 sm:py-2">
+            <div className="flex flex-nowrap justify-start gap-1 sm:gap-4">
+              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
                 <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.days}
                 </h5>
                 <p className="text-xs text-neutral-2">Days</p>
               </div>
-              <div className="flex flex-col rounded-lg bg-slate-200 px-3 py-2 text-center">
+              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
                 <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.hours}
                 </h5>
                 <p className="text-xs text-neutral-2">Hours</p>
               </div>
-              <div className="flex flex-col rounded-lg bg-slate-200 px-3 py-2 text-center">
+              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
                 <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.minutes}
                 </h5>
                 <p className="text-xs text-neutral-2">Min</p>
               </div>
-              <div className="flex flex-col rounded-lg bg-slate-200 px-3 py-2 text-center">
+              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
                 <h5 className="text-sm font-medium tracking-wider sm:text-lg">
                   {countdown.seconds}
                 </h5>

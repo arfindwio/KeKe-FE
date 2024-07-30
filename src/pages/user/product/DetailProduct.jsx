@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 // Components
+import { LoadingSpinner } from "../../../assets/components/loading/LoadingSpinner";
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { DetailProductSection } from "../../../assets/components/detailProduct/DetailProductSection";
 import { ReviewCard } from "../../../assets/components/card/ReviewCard";
@@ -52,6 +53,7 @@ export const DetailProduct = () => {
   const textareaRefReview = useRef(null);
   const textareaRefDiscussion = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(true);
   const [inputDiscussion, setInputDiscussion] = useState({
     userMessage: "",
   });
@@ -90,6 +92,7 @@ export const DetailProduct = () => {
     const fetchData = async () => {
       const detailProduct = await dispatch(getProductByIdAction(productId));
       if (!detailProduct) navigate("/");
+      if (detailProduct.stock < 1) navigate("/product");
       await dispatch(
         getAllProductsAction(`?c=${detailProductData?.category?.categoryName}`),
       );
@@ -100,6 +103,8 @@ export const DetailProduct = () => {
       } else {
         await dispatch(getRecommendationProductsAction());
       }
+
+      if (Number(detailProduct.id) === Number(productId)) setIsLoading(false);
     };
 
     fetchData();
@@ -197,6 +202,10 @@ export const DetailProduct = () => {
   const handleQueryDiscussion = (formatLink) =>
     dispatch(getDiscussionsByProductIdAction(productId, formatLink));
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
       <Navbar />
@@ -220,12 +229,12 @@ export const DetailProduct = () => {
                 Add Your Review
               </button>
             </div>
-            {reviewData.map((review, index) => (
+            {reviewData?.map((review, index) => (
               <ReviewCard
                 review={review}
                 key={index}
                 index={index}
-                totalReviews={reviewData.length}
+                totalReviews={reviewData?.length}
               />
             ))}
 
@@ -335,7 +344,7 @@ export const DetailProduct = () => {
               </button>
             </div>
 
-            {discussionData.map((discussion, index) => (
+            {discussionData?.map((discussion, index) => (
               <DiscussionCard
                 discussion={discussion}
                 productId={detailProductData.id}
@@ -417,8 +426,8 @@ export const DetailProduct = () => {
         {/* Similar Product Section */}
         <div className="flex flex-col gap-3 border-t pt-4">
           <h5 className="text-lg font-semibold">Similar Product</h5>
-          <div className="grid h-fit w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {productData.slice(0, 5).map((product, index) => (
+          <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            {productData?.slice(0, 6).map((product, index) => (
               <ProductCard product={product} key={index} />
             ))}
           </div>
@@ -427,8 +436,8 @@ export const DetailProduct = () => {
         {/* Recommendation Product Section */}
         <div className="flex flex-col gap-3 ">
           <h5 className="text-lg font-semibold">Recommendation Product</h5>
-          <div className="grid h-fit w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {recommendationProductData.slice(0, 5).map((product, index) => (
+          <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            {recommendationProductData?.slice(0, 6).map((product, index) => (
               <ProductCard product={product} key={index} />
             ))}
           </div>

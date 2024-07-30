@@ -190,6 +190,7 @@ export const CartCard = ({ cart }) => {
                 value={inputCart.quantity}
                 className="h-full w-[15%] border border-neutral-3 bg-neutral-5 text-center focus:border-2 focus:border-neutral-2 focus:outline-none sm:w-[25%]"
                 onChange={(e) => handleCartInput(e, "quantity")}
+                onWheel={(e) => e.target.blur()}
               />
               <button
                 className={`${

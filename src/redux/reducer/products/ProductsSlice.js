@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  products: [],
-  recommendationProducts: [],
+  products: null,
   product: null,
+  filterProduct: null,
+  recommendationProducts: [],
   specialOfferProduct: null,
   loading: false,
 };
@@ -15,11 +16,14 @@ const ProductsSlice = createSlice({
     setProducts: (state, action) => {
       state.products = action.payload;
     },
-    setRecommendationProducts: (state, action) => {
-      state.recommendationProducts = action.payload;
-    },
     setProduct: (state, action) => {
       state.product = action.payload;
+    },
+    setFilterProduct: (state, action) => {
+      state.filterProduct = action.payload;
+    },
+    setRecommendationProducts: (state, action) => {
+      state.recommendationProducts = action.payload;
     },
     setSpecialOfferProduct: (state, action) => {
       state.specialOfferProduct = action.payload;
@@ -38,8 +42,9 @@ const ProductsSlice = createSlice({
 
 export const {
   setProducts,
-  setRecommendationProducts,
   setProduct,
+  setFilterProduct,
+  setRecommendationProducts,
   setSpecialOfferProduct,
   resetSpecialOfferProduct,
   startLoading,

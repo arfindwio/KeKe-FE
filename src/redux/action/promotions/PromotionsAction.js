@@ -6,8 +6,10 @@ import {
 } from "../../../services/promotions/Promotions";
 import {
   setPromotions,
-  setPromotionsAdmin,
   setPromotion,
+  setPromotionsAdmin,
+  setUpdatedPromotion,
+  setDeletePromotion,
   startLoading,
   endLoading,
 } from "../../reducer/promotions/PromotionsSlice";
@@ -20,7 +22,7 @@ export const getAllPromotionsAction = (query) => async (dispatch) => {
     dispatch(setPromotions(result.data.data));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -33,7 +35,7 @@ export const getAllPromotionsAdminAction = () => async (dispatch) => {
     dispatch(setPromotionsAdmin(result.data.data.promotions));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -55,7 +57,8 @@ export const putEditPromotionByIdAction =
   (input, promotionId) => async (dispatch) => {
     try {
       dispatch(startLoading());
-      await reduxPutEditPromotionById(input, promotionId);
+      const result = await reduxPutEditPromotionById(input, promotionId);
+      dispatch(setUpdatedPromotion(result.data.data.updatedPromotion));
       return true;
     } catch (err) {
       handleRequestError(err);
@@ -67,7 +70,8 @@ export const putEditPromotionByIdAction =
 export const deletePromotionByIdAction = (promotionId) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxDeletePromotionById(promotionId);
+    const result = await reduxDeletePromotionById(promotionId);
+    dispatch(setDeletePromotion(result.data.data.deletedPromotion));
     return true;
   } catch (err) {
     handleRequestError(err);

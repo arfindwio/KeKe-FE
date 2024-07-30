@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 // Redux Actions
@@ -8,6 +8,12 @@ import {
   putEditColorByIdAction,
   deleteColorByIdAction,
 } from "../../../redux/action/colors/ColorsAction";
+
+// Redux Reducer
+import {
+  setProducts,
+  setFilterProduct,
+} from "../../../redux/reducer/products/ProductsSlice";
 
 // Helper
 import {
@@ -32,6 +38,12 @@ export const AdminManageColor = ({
     productId: submitProduct?.id,
   });
 
+  const productData = useSelector((state) => state.products.products.products);
+  const paginationProduct = useSelector(
+    (state) => state.products.products.pagination,
+  );
+  const filterProduct = useSelector((state) => state.products.filterProduct);
+
   useEffect(() => {
     if (type === "edit") {
       setInputColor({
@@ -53,6 +65,21 @@ export const AdminManageColor = ({
       if (!createColor) {
         showErrorToast("Create Color Failed");
       } else {
+        // const addedColor = productData.map((product) => {
+        //   if (product.id === submitProduct.productId) {
+        //     return {
+        //       ...product,
+        //       color: [...product.color, createColor],
+        //     };
+        //   }
+        //   return product;
+        // });
+        // dispatch(
+        //   setProducts({
+        //     pagination: paginationProduct,
+        //     products: [...productData, addedColor],
+        //   }),
+        // );
         completeSubmit(null, "create");
       }
     };
@@ -102,6 +129,11 @@ export const AdminManageColor = ({
     if (!deleteColor) showErrorToast("Delete Color Failed");
 
     if (deleteColor) {
+      const filteredProduct = {
+        ...filterProduct,
+        color: filterProduct.color.filter((item) => item.id !== color?.id),
+      };
+      dispatch(setFilterProduct(filteredProduct));
       showSuccessToast("Delete Color Successful");
       completeSubmit(null, "delete");
     }

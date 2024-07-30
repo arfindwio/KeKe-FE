@@ -10,6 +10,10 @@ import {
   deleteCategoryByIdAction,
 } from "../../redux/action/categories/CategoriesAction";
 
+// Redux Reducer
+import { setImage } from "../../redux/reducer/images/ImagesSlice";
+import { setCategories } from "../../redux/reducer/categories/CategoriesSlice";
+
 // Components
 import { AdminSidebar } from "../../assets/components/admin/AdminSidebar";
 import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
@@ -49,7 +53,6 @@ export const AdminCategory = () => {
     categoryName: "",
   });
   const [categoryId, setCategoryId] = useState(null);
-  const [image, setImage] = useState(null);
   const [afterSubmit, setAfterSubmit] = useState({
     categoryId: null,
     productId: null,
@@ -58,9 +61,12 @@ export const AdminCategory = () => {
   const categoryData = useSelector(
     (state) => state.categories.categories.categories,
   );
+
   const paginationCategory = useSelector(
     (state) => state.categories.categories.pagination,
   );
+
+  const imageData = useSelector((state) => state.images.image);
 
   openNavbar
     ? (document.body.style.overflow = "hidden")
@@ -85,11 +91,12 @@ export const AdminCategory = () => {
       setInputCategory({
         categoryName: filteredData.categoryName,
       });
-      setImage(filteredData.image);
+      dispatch(
+        setImage({ ...filteredData.image, categoryId: Number(categoryId) }),
+      );
       setOpenEdit(!openEdit);
     } else if (type === "create") {
       setInputCategory({
-        image: "",
         categoryName: "",
       });
       setOpenCreate(!openCreate);
@@ -119,6 +126,12 @@ export const AdminCategory = () => {
 
       if (createCategory) {
         showSuccessToast("Create Category Successful");
+        dispatch(
+          setCategories({
+            pagination: paginationCategory,
+            categories: [...categoryData, createCategory],
+          }),
+        );
         setAfterSubmit({
           ...afterSubmit,
           categoryId: createCategory.id,
@@ -162,7 +175,6 @@ export const AdminCategory = () => {
 
     if (deleteCategory) {
       showSuccessToast("Delete Category Successful");
-      await dispatch(getAllCategoriesAction(""));
       setOpenDelete(false);
     }
   };
@@ -176,10 +188,9 @@ export const AdminCategory = () => {
       setOpenCreate(false);
       setOpenEdit(false);
     }
-    if (type === "edit" || type === "delete") {
+    if (type === "edit") {
       setOpenEdit(false);
     }
-    await dispatch(getAllCategoriesAction(""));
   };
 
   const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
@@ -234,7 +245,7 @@ export const AdminCategory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categoryData.length > 0 ? (
+                  {categoryData?.length > 0 ? (
                     categoryData?.map((category, index) => (
                       <tr
                         key={index}
@@ -248,13 +259,15 @@ export const AdminCategory = () => {
                             : `${index + 1}`}
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
-                          <img
-                            src={category.image.image}
-                            alt="category image"
-                            width={500}
-                            height={500}
-                            className=" h-16 w-16 overflow-hidden rounded-md border border-slate-300 object-cover"
-                          />
+                          {category?.image?.image && (
+                            <img
+                              src={category?.image?.image}
+                              alt="category image"
+                              width={500}
+                              height={500}
+                              className=" h-16 w-16 overflow-hidden rounded-md border border-slate-300 object-cover"
+                            />
+                          )}
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
                           {category.categoryName}
@@ -381,10 +394,10 @@ export const AdminCategory = () => {
           <form className="flex flex-col gap-4" onKeyDown={handleEdit}>
             <div className="flex w-full flex-col">
               <p className="text-neutral-1">Category Image</p>
-              {image ? (
+              {imageData?.image ? (
                 <AdminManageImage
                   type={"edit"}
-                  image={image}
+                  image={imageData}
                   afterSubmit={afterSubmit}
                   completeSubmit={handleCompleteSubmit}
                   count={1}

@@ -49,15 +49,15 @@ export const Profile = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setDataImage(userData.userProfile.profilePicture || "");
+    setDataImage(userData.userProfile.profilePicture);
     setInputUserProfile({
       image: null,
       fullName: userData.userProfile.fullName,
       phoneNumber: userData.userProfile.phoneNumber,
       email: userData.email,
-      city: userData.userProfile.city || "",
-      address: userData.userProfile.address || "",
-      country: userData.userProfile.country || "",
+      city: userData.userProfile.city ? userData.userProfile.city : "",
+      address: userData.userProfile.address ? userData.userProfile.address : "",
+      country: userData.userProfile.country ? userData.userProfile.country : "",
     });
   }, [userData]);
 

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 
 // Redux Actions
 import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
+import { getAllCategoriesAction } from "../../../redux/action/categories/CategoriesAction";
 
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
@@ -20,10 +22,14 @@ export const Products = () => {
 
   const [openBottom, setOpenBottom] = useState(false);
 
-  const productData = useSelector((state) => state.products.products.products);
-  const paginationProduct = useSelector(
-    (state) => state.products.products.pagination,
+  const productData = useSelector(
+    (state) => state.products?.products?.products,
   );
+  const paginationProduct = useSelector(
+    (state) => state.products?.products?.pagination,
+  );
+
+  const minWidth = useMediaQuery({ minDeviceWidth: 720 });
 
   openBottom
     ? (document.body.style.overflow = "hidden")
@@ -32,6 +38,7 @@ export const Products = () => {
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(getAllProductsAction(""));
+      await dispatch(getAllCategoriesAction(""));
     };
 
     fetchData();
@@ -43,6 +50,12 @@ export const Products = () => {
       behavior: "instant",
     });
   }, []);
+
+  useEffect(() => {
+    if (minWidth) {
+      setOpenBottom(false);
+    }
+  }, [minWidth]);
 
   const handleQuery = (formatLink) => {
     dispatch(getAllProductsAction(formatLink));
@@ -65,7 +78,9 @@ export const Products = () => {
             placement="bottom"
             open={openBottom}
             onClose={() => setOpenBottom(false)}
-            className={`${openBottom && "min-h-[70vh]"} overflow-auto p-4`}
+            className={`${
+              openBottom && "min-h-[70vh]"
+            } overflow-auto p-4 md:hidden`}
           >
             <div className="relative">
               <button
@@ -94,20 +109,21 @@ export const Products = () => {
           </Drawer>
         </div>
         <div className="flex flex-col md:flex-row md:justify-between">
-          <div className="hidden h-fit  w-full flex-col gap-6 rounded-lg bg-neutral-5 p-6 md:flex md:w-[35%]">
+          <div className="hidden h-fit w-full flex-col gap-6 rounded-lg bg-neutral-5 p-6 md:flex md:w-[35%]">
             <SidebarFilter />
           </div>
-          <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 md:w-[63%] md:grid-cols-2 xl:grid-cols-3">
-            {productData.length > 0 ? (
-              productData.map((product, index) => (
-                <ProductCard product={product} key={index} />
-              ))
-            ) : (
-              <p className="col-span-3 flex h-[50vh] items-center justify-center text-center text-2xl font-bold italic text-neutral-4 md:h-auto">
-                - No product found -
-              </p>
-            )}
-
+          <div className="w-full md:w-[63%]">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+              {productData?.length > 0 ? (
+                productData?.map((product, index) => (
+                  <ProductCard product={product} key={index} />
+                ))
+              ) : (
+                <p className="col-span-3 flex h-[50vh] items-center justify-center text-center text-2xl font-bold italic text-neutral-4 md:h-auto">
+                  - No product found -
+                </p>
+              )}
+            </div>
             {/* Pagination Section */}
             <div className="col-span-3 flex items-center justify-center">
               <Pagination

@@ -33,7 +33,7 @@ export const ScrollButton = () => {
     <>
       {showButton && (
         <button
-          className="fixed bottom-20 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-3 p-1 text-neutral-5 md:bottom-10"
+          className="fixed bottom-20 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-neutral-3 p-1 text-neutral-5 md:bottom-10"
           onClick={() => handleScrollToTop()}
         >
           <IoIosArrowUp size={50} />
