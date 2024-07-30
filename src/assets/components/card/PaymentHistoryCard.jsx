@@ -17,6 +17,7 @@ export const PaymentHistoryCard = ({ payment }) => {
     (acc, item) => acc + item.quantity * item.product.price,
     0,
   );
+
   return (
     <>
       <div className="flex w-full flex-col gap-3 rounded-md border border-neutral-4 p-3 shadow-md">
@@ -80,9 +81,11 @@ export const PaymentHistoryCard = ({ payment }) => {
                   <p className="text-xs font-light sm:text-sm">
                     {cart?.quantity} Items x IDR{" "}
                     {cart?.product?.price.toLocaleString()}{" "}
-                    <span className="text-xs font-semibold text-alert-red sm:text-sm">
-                      {cart?.promotion?.discount * 100}%
-                    </span>
+                    {cart?.promotion && (
+                      <span className="text-xs font-semibold text-alert-red sm:text-sm">
+                        {cart?.promotion?.discount * 100}%
+                      </span>
+                    )}
                   </p>
 
                   <p className="text-xs font-light text-neutral-3 sm:mt-1 sm:text-sm">

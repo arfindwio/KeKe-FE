@@ -258,6 +258,7 @@ export const Register = () => {
                 } border-1 w-full rounded-2xl border px-4 py-3 pr-12 outline-none`}
                 placeholder="+62"
                 value={inputRegister.phoneNumber}
+                onWheel={(e) => e.target.blur()}
                 onChange={(e) => handleInputChange(e, "phoneNumber")}
               />
               {validateRegister.phoneNumber ? (

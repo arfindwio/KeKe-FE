@@ -153,7 +153,7 @@ export const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paymentData.length > 0 ? (
+                  {paymentData?.length > 0 ? (
                     paymentData.map((payment, index) => (
                       <tr
                         key={index}
@@ -201,9 +201,13 @@ export const AdminDashboard = () => {
                           {payment.paymentStatus}
                         </td>
                         <td className=" px-2 py-1 text-sm">
-                          {payment.trackingNumber
-                            ? payment.trackingNumber
-                            : "null"}
+                          {payment.trackingNumber ? (
+                            payment.trackingNumber
+                          ) : (
+                            <p className="font-normal not-italic text-neutral-3 text-opacity-50">
+                              null
+                            </p>
+                          )}
                         </td>
                         <td className=" px-2 py-1 text-sm">
                           {payment.methodPayment}

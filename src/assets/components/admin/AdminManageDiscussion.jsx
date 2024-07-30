@@ -216,7 +216,7 @@ export const AdminManageDiscussion = ({ discussion }) => {
           ))}
 
         {token && (
-          <div className="ms-auto flex w-full items-start pl-4">
+          <div className="ms-auto mt-2 flex w-full items-start pl-4">
             <form
               className="flex w-full flex-col gap-1"
               onKeyDown={handleReply}

@@ -19,7 +19,7 @@ export const getAllCartsByAuthAction = () => async (dispatch) => {
     dispatch(setCarts(result.data.data.carts));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }

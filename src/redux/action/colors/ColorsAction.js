@@ -21,7 +21,7 @@ export const getAllColorsAction = () => async (dispatch) => {
     dispatch(setColors(result.data.data.colors));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -30,8 +30,8 @@ export const getAllColorsAction = () => async (dispatch) => {
 export const postCreateColorAction = (input) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxPostCreateColor(input);
-    return true;
+    const result = await reduxPostCreateColor(input);
+    return result.data.data.newSize;
   } catch (err) {
     handleRequestError(err);
   } finally {
@@ -46,7 +46,7 @@ export const getColorsByProductIdAction = (productId) => async (dispatch) => {
     dispatch(setColorsByProductId(result.data.data.colors));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }

@@ -71,8 +71,8 @@ export const Cart = () => {
           <h1 className="text-xl font-semibold text-neutral-1">
             Recommended For You
           </h1>
-          <div className="grid h-fit w-full grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {recommendationProductData.slice(0, 5).map((product, index) => (
+          <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            {recommendationProductData.slice(0, 6).map((product, index) => (
               <ProductCard product={product} key={index} />
             ))}
           </div>

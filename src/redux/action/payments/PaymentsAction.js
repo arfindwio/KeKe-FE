@@ -20,7 +20,7 @@ export const getAllPaymentsAction = (query) => async (dispatch) => {
     dispatch(setPayments(result.data.data));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -59,7 +59,7 @@ export const getPaymentsHistoryAction = (query) => async (dispatch) => {
 
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }

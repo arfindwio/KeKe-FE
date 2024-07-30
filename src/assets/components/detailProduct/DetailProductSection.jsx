@@ -154,11 +154,11 @@ export const DetailProductSection = () => {
             modules={[Autoplay, Pagination, Navigation, Mousewheel, Keyboard]}
             className="h-full min-w-full"
           >
-            {detailProductData.image.map((image, index) => (
+            {detailProductData?.image?.map((image, index) => (
               <SwiperSlide>
                 <img
                   key={index}
-                  src={image.image}
+                  src={image?.image}
                   alt="Product Image"
                   className="h-full w-full object-cover"
                 />
@@ -185,7 +185,7 @@ export const DetailProductSection = () => {
               {detailProductData?.review?.length > 0 && (
                 <p className="flex gap-1 text-sm font-light text-neutral-2">
                   <FaStar size={18} className="text-alert-yellow" />
-                  {averageRating(detailProductData?.review)}{" "}
+                  {averageRating(detailProductData?.review).toFixed(1)}{" "}
                   <span className="text-neutral-3 opacity-80">
                     ({detailProductData?.review?.length})
                   </span>

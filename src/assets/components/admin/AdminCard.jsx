@@ -16,7 +16,7 @@ export const AdminCard = () => {
   const userData = useSelector((state) => state.users.users);
   const categoryData = useSelector((state) => state.categories.categoriesAdmin);
   const productData = useSelector(
-    (state) => state.products.products.pagination.total_items,
+    (state) => state.products?.products?.pagination?.total_items,
   );
 
   useEffect(() => {

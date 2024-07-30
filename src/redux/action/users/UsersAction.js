@@ -124,7 +124,7 @@ export const getUserAuthenticateAction = () => async (dispatch) => {
     dispatch(setUserAuthenticate(result.data.data.user));
     return true;
   } catch (err) {
-    if (err.response) console.error("unexpected Error", err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -137,7 +137,7 @@ export const getAllUsersAction = () => async (dispatch) => {
     dispatch(setUsers(result.data.data.users));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }

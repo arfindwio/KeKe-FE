@@ -27,7 +27,7 @@ export const getAllProductsAction = (query) => async (dispatch) => {
     dispatch(setProducts(result.data.data));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -38,9 +38,9 @@ export const getProductByIdAction = (productId) => async (dispatch) => {
     dispatch(startLoading());
     const result = await reduxGetProductById(productId);
     dispatch(setProduct(result.data.data.product));
-    return true;
+    return result.data.data.product;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -93,7 +93,7 @@ export const getRecommendationProductsAction = () => async (dispatch) => {
     dispatch(setRecommendationProducts(result.data.data.products));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -106,7 +106,7 @@ export const getRecommendationProductsActionUser = () => async (dispatch) => {
     dispatch(setRecommendationProducts(result.data.data.products));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }

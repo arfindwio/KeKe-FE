@@ -11,6 +11,12 @@ import {
 } from "../../redux/action/products/ProductsAction";
 import { getAllPromotionsAdminAction } from "../../redux/action/promotions/PromotionsAction";
 
+// Redux Reducer
+import {
+  setProducts,
+  setFilterProduct,
+} from "../../redux/reducer/products/ProductsSlice";
+
 // Components
 import { AdminSidebar } from "../../assets/components/admin/AdminSidebar";
 import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
@@ -62,9 +68,9 @@ export const AdminProduct = () => {
     color: 1,
   });
   const [submitProduct, setSubmitProduct] = useState(null);
-  const [products, setProducts] = useState(null);
 
   const productData = useSelector((state) => state.products.products.products);
+  const filterProduct = useSelector((state) => state.products.filterProduct);
   const paginationProduct = useSelector(
     (state) => state.products.products.pagination,
   );
@@ -106,7 +112,7 @@ export const AdminProduct = () => {
         size: 0,
         color: 0,
       });
-      setProducts(filteredData);
+      dispatch(setFilterProduct(filteredData));
       setOpenEdit(!openEdit);
     } else if (type === "create") {
       setSubmitProduct(null);
@@ -115,7 +121,6 @@ export const AdminProduct = () => {
         color: 1,
       });
       setInputProduct({
-        image: "",
         productName: "",
         price: null,
         description: "",
@@ -128,17 +133,10 @@ export const AdminProduct = () => {
   };
 
   const handleInputChange = (e) => {
-    if (e.target.name === "image") {
-      setInputProduct((prevInputProduct) => ({
-        ...prevInputProduct,
-        image: e.target.files[0],
-      }));
-    } else {
-      setInputProduct((prevInputProduct) => ({
-        ...prevInputProduct,
-        [e.target.name]: e.target.value,
-      }));
-    }
+    setInputProduct((prevInputProduct) => ({
+      ...prevInputProduct,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleCreate = async (e) => {
@@ -194,7 +192,7 @@ export const AdminProduct = () => {
 
     if (deleteProduct) {
       showSuccessToast("Delete Product Successful");
-      await dispatch(getAllProductsAction(""));
+      // await dispatch(getAllProductsAction(""));
       setOpenDelete(false);
     }
   };
@@ -202,12 +200,12 @@ export const AdminProduct = () => {
   const handleSubmitProduct = async (completeSubmit, type) => {
     setSubmitProduct(completeSubmit);
     if (type === "create") {
+      await dispatch(getAllProductsAction(""));
       setOpenCreate(false);
     }
-    if (type === "edit" || type === "delete") {
+    if (type === "edit") {
       setOpenEdit(false);
     }
-    await dispatch(getAllProductsAction(""));
   };
 
   const handleOpenNavbar = (openValue) => setOpenNavbar(openValue);
@@ -276,8 +274,8 @@ export const AdminProduct = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {productData.length > 0 ? (
-                    productData.map((product, index) => (
+                  {productData?.length > 0 ? (
+                    productData?.map((product, index) => (
                       <tr
                         key={index}
                         className={`${
@@ -290,10 +288,10 @@ export const AdminProduct = () => {
                             : `${index + 1}`}
                         </td>
                         <td className="flex flex-wrap gap-2 px-2 py-1 text-sm lg:min-w-0">
-                          {product.image.map((image, index) => (
+                          {product?.image?.map((image, index) => (
                             <img
                               key={index}
-                              src={image.image}
+                              src={image?.image}
                               alt="product image"
                               width={500}
                               height={500}
@@ -305,7 +303,7 @@ export const AdminProduct = () => {
                           {product.productName}
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
-                          {product.price}
+                          IDR {product.price.toLocaleString()}
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
                           {product.description}
@@ -317,7 +315,7 @@ export const AdminProduct = () => {
                           {product.soldCount}
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
-                          {product.category.categoryName}
+                          {product?.category?.categoryName}
                         </td>
                         <td className="px-2 py-1 text-sm font-bold italic text-alert-red lg:min-w-0">
                           {product.promotion?.discount ? (
@@ -329,11 +327,11 @@ export const AdminProduct = () => {
                           )}
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
-                          {product.size.length > 0 ? (
-                            product.size.map((size, index) => (
+                          {product?.size?.length > 0 ? (
+                            product?.size?.map((size, index) => (
                               <React.Fragment key={index}>
                                 {size.sizeName}
-                                {index < product.size.length - 1 && ", "}
+                                {index < product?.size?.length - 1 && ", "}
                               </React.Fragment>
                             ))
                           ) : (
@@ -343,11 +341,11 @@ export const AdminProduct = () => {
                           )}
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
-                          {product.color.length > 0 ? (
-                            product.color.map((color, index) => (
+                          {product?.color?.length > 0 ? (
+                            product?.color?.map((color, index) => (
                               <React.Fragment key={index}>
                                 {color.colorName}
-                                {index < product.color.length - 1 && ", "}
+                                {index < product?.color?.length - 1 && ", "}
                               </React.Fragment>
                             ))
                           ) : (
@@ -464,6 +462,7 @@ export const AdminProduct = () => {
                   name="price"
                   className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
                   placeholder="Input Price"
+                  onWheel={(e) => e.target.blur()}
                   value={inputProduct.price}
                   onChange={handleInputChange}
                 />
@@ -494,6 +493,7 @@ export const AdminProduct = () => {
                   name="stock"
                   className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
                   placeholder="Input Stock"
+                  onWheel={(e) => e.target.blur()}
                   value={inputProduct.stock}
                   onChange={handleInputChange}
                 />
@@ -513,7 +513,7 @@ export const AdminProduct = () => {
                   </option>
                   {categoryData?.map((category, index) => (
                     <option value={category.id} key={index}>
-                      {category.categoryName}
+                      {category?.categoryName}
                     </option>
                   ))}
                 </select>
@@ -640,13 +640,13 @@ export const AdminProduct = () => {
               <div className="flex w-full flex-col">
                 <p className="text-neutral-1">Product Image</p>
                 <div className="flex flex-wrap gap-2">
-                  {products &&
-                    products?.image &&
-                    products?.image.map((image, index) => (
+                  {filterProduct &&
+                    filterProduct?.image &&
+                    filterProduct?.image?.map((image, index) => (
                       <AdminManageImage
                         key={index}
                         type={"edit"}
-                        image={image}
+                        image={{ ...image, productId: Number(productId) }}
                         afterSubmit={{
                           categoryId: null,
                           productId: submitProduct?.id,
@@ -656,7 +656,7 @@ export const AdminProduct = () => {
                       />
                     ))}
 
-                  {Array.from({ length: 4 - products?.image?.length }).map(
+                  {Array.from({ length: 4 - filterProduct?.image?.length }).map(
                     (_, index) => (
                       <AdminManageImage
                         key={index}
@@ -667,7 +667,7 @@ export const AdminProduct = () => {
                           productId: submitProduct?.id,
                         }}
                         completeSubmit={handleSubmitProduct}
-                        count={index}
+                        count={index + filterProduct?.image?.length}
                       />
                     ),
                   )}
@@ -697,6 +697,7 @@ export const AdminProduct = () => {
                   name="price"
                   className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
                   placeholder="Input Price"
+                  onWheel={(e) => e.target.blur()}
                   value={inputProduct.price}
                   onChange={handleInputChange}
                 />
@@ -727,6 +728,7 @@ export const AdminProduct = () => {
                   name="stock"
                   className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
                   placeholder="Input Stock"
+                  onWheel={(e) => e.target.blur()}
                   value={inputProduct.stock}
                   onChange={handleInputChange}
                 />
@@ -778,9 +780,9 @@ export const AdminProduct = () => {
           <div className="flex flex-col gap-3 pt-4">
             <h5 className="text-xl font-bold text-neutral-1">Edit Size</h5>
             <div className="grid grid-cols-2 gap-6">
-              {products &&
-                products?.size &&
-                products?.size.map((size, index) => (
+              {filterProduct &&
+                filterProduct?.size &&
+                filterProduct?.size?.map((size, index) => (
                   <AdminManageSize
                     type={"edit"}
                     size={size}
@@ -817,9 +819,9 @@ export const AdminProduct = () => {
           <div className="flex flex-col gap-3 pt-4">
             <h5 className="text-xl font-bold text-neutral-1">Edit Color</h5>
             <div className="grid grid-cols-2 gap-6">
-              {products &&
-                products?.color &&
-                products?.color.map((color, index) => (
+              {filterProduct &&
+                filterProduct?.color &&
+                filterProduct?.color?.map((color, index) => (
                   <AdminManageColor
                     type={"edit"}
                     color={color}

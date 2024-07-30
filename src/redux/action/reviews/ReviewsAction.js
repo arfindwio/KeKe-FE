@@ -18,7 +18,7 @@ export const getReviewsByProductIdAction =
       dispatch(setReviews(result.data.data));
       return true;
     } catch (err) {
-      handleRequestError(err);
+      console.error("Error without response:", err);
     } finally {
       dispatch(endLoading());
     }

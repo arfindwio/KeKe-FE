@@ -54,21 +54,28 @@ export const ProductCard = ({ product }) => {
   return (
     <>
       <Link
-        to={`/product/${product.id}`}
+        to={product.stock > 0 && `/product/${product.id}`}
         className={`h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md`}
         onClick={handleClick}
       >
-        <img
-          src={product?.image[0]?.image}
-          alt="Product"
-          className="aspect-[16/10] h-[55%] w-full object-cover"
-        />
+        <div className="relative h-[55%] w-full ">
+          <img
+            src={product?.image[0]?.image}
+            alt="Product"
+            className="h-full w-full object-cover"
+          />
+          {product.stock < 1 && (
+            <p className="absolute bottom-0 left-0 right-0 top-0 flex flex-wrap items-center justify-center bg-neutral-1 bg-opacity-[.85] text-xl capitalize text-neutral-5">
+              Sold Out
+            </p>
+          )}
+        </div>
         <div
           className={`${
             product.review.length === 0 && product.soldCount === 0 && "pb-8"
           } flex h-fit w-full flex-col gap-1 p-3`}
         >
-          <p className="text-sm font-semibold text-primary-1">
+          <p className="truncate text-sm font-semibold text-primary-1">
             {product.category?.categoryName}
           </p>
           <p className="truncate break-all text-sm text-neutral-3">
@@ -101,7 +108,7 @@ export const ProductCard = ({ product }) => {
               <>
                 <FaStar size={18} className="text-alert-yellow" />
                 <p className="text-sm font-light text-neutral-2">
-                  {averageRating(product.review)}
+                  {averageRating(product.review).toFixed(1)}
                 </p>
                 <p className="text-sm font-light text-neutral-3 opacity-80">
                   ({product.review.length})

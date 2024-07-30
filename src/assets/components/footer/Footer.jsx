@@ -26,7 +26,7 @@ export const Footer = () => {
   const location = useLocation();
 
   const categoryData = useSelector(
-    (state) => state.categories.categories.categories,
+    (state) => state.categories?.categories?.categories,
   );
 
   const currentPath = location.pathname;
