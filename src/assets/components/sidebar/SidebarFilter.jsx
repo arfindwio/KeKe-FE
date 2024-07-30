@@ -133,7 +133,7 @@ export const SidebarFilter = () => {
               </div>
             ))}
         </div>
-        {categoryData.length >= 6 && (
+        {categoryData?.length >= 6 && (
           <button
             className="flex w-full items-center justify-center gap-1 px-3 text-center text-xs font-medium text-blue-700"
             onClick={() => setShowAll(!showAll)}
