@@ -20,9 +20,11 @@ export const ProductsHomeCard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const productData = useSelector((state) => state.products.products.products);
+  const productData = useSelector(
+    (state) => state.products?.products?.products,
+  );
   const categoryData = useSelector(
-    (state) => state.categories.categories.categories,
+    (state) => state.categories?.categories?.categories,
   );
 
   const queryParams = new URLSearchParams(location.search);
@@ -71,7 +73,7 @@ export const ProductsHomeCard = () => {
               categoryValue === category.categoryName
                 ? "bg-neutral-1 text-neutral-5"
                 : "border-neutral-3 bg-neutral-4 hover:bg-neutral-1 hover:text-neutral-5"
-            } w-fit cursor-pointer break-all rounded-full border  px-2 py-1`}
+            } w-fit cursor-pointer truncate break-all rounded-full  border px-2 py-1`}
             key={index}
             onClick={() => handleFilter(category.categoryName)}
           >
@@ -81,22 +83,22 @@ export const ProductsHomeCard = () => {
       </Swiper>
       <Swiper
         spaceBetween={10}
-        slidesPerView={1}
+        slidesPerView={2}
         breakpoints={{
           400: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-          },
-          580: {
             slidesPerView: 3,
             spaceBetween: 10,
           },
-          800: {
+          540: {
             slidesPerView: 4,
             spaceBetween: 10,
           },
-          1000: {
+          800: {
             slidesPerView: 5,
+            spaceBetween: 10,
+          },
+          1000: {
+            slidesPerView: 6,
             spaceBetween: 10,
           },
         }}
@@ -113,7 +115,7 @@ export const ProductsHomeCard = () => {
                 <img
                   src={product?.image[0]?.image}
                   alt="Product"
-                  className="aspect-[16/10] h-[55%] w-full object-cover"
+                  className="h-[55%] w-full object-contain"
                 />
                 <div
                   className={`${
@@ -122,7 +124,7 @@ export const ProductsHomeCard = () => {
                     "pb-8"
                   } flex h-fit w-full flex-col gap-1 p-3`}
                 >
-                  <p className="text-sm font-semibold text-primary-1">
+                  <p className="truncate text-sm font-semibold text-primary-1">
                     {product.category?.categoryName}
                   </p>
                   <p className="truncate text-sm text-neutral-3">
@@ -151,13 +153,13 @@ export const ProductsHomeCard = () => {
                       !product.promotion &&
                       (product.review || !product.soldCount === 0) &&
                       "pb-5"
-                    } flex items-center gap-2`}
+                    } flex flex-wrap items-center gap-2`}
                   >
                     {product.review.length > 0 && (
                       <>
                         <FaStar size={18} className="text-alert-yellow" />
                         <p className="text-sm font-light text-neutral-2">
-                          {averageRating(product.review)}
+                          {averageRating(product.review).toFixed(1)}
                         </p>
                         <p className="text-sm font-light text-neutral-3 opacity-80">
                           ({product.review.length})

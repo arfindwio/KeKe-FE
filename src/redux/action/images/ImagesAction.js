@@ -21,9 +21,9 @@ export const postCreateImageAction = (formData) => async (dispatch) => {
     formDataObject.append("image", image || "");
     formDataObject.append("categoryId", categoryId);
     formDataObject.append("productId", productId);
-    await reduxPostCreateImage(formDataObject);
+    const result = await reduxPostCreateImage(formDataObject);
 
-    return true;
+    return result.data.data.newImage;
   } catch (err) {
     handleRequestError(err);
   } finally {
@@ -56,9 +56,9 @@ export const deleteImageByIdAction = (imageId) => async (dispatch) => {
   try {
     dispatch(startLoading());
 
-    await reduxDeleteImageById(imageId);
+    const result = await reduxDeleteImageById(imageId);
 
-    return true;
+    return result.data.data.deletedImage;
   } catch (err) {
     handleRequestError(err);
   } finally {

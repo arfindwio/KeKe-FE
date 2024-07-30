@@ -11,7 +11,7 @@ import "swiper/css/navigation";
 
 export const CategoryHomeCard = () => {
   const categoryData = useSelector(
-    (state) => state.categories.categories.categories,
+    (state) => state.categories?.categories?.categories,
   );
 
   return (
@@ -36,7 +36,7 @@ export const CategoryHomeCard = () => {
             },
           }}
           modules={[Mousewheel, Keyboard]}
-          className="w-full cursor-grab 2xl:cursor-default"
+          className="w-full cursor-grab pr-2 2xl:cursor-default"
         >
           {categoryData?.slice(0, 5)?.map((category, index) => (
             <SwiperSlide
@@ -44,19 +44,19 @@ export const CategoryHomeCard = () => {
               key={index}
             >
               <img
-                src={category.image.image}
+                src={category?.image?.image}
                 alt="Category"
-                className="h-full w-[30%] object-cover"
+                className="aspect-video h-full w-[40%] object-cover object-top"
               />
-              <div className="flex w-[68%] flex-col">
+              <div className="flex w-[58%] flex-col">
                 <div className="flex justify-between">
-                  <p className="text-sm font-bold">{category.categoryName}</p>
+                  <p className="text-sm font-bold">{category?.categoryName}</p>
                   <p className="text-xs font-medium text-neutral-3">
-                    ({category.product.length})
+                    ({category?.product?.length})
                   </p>
                 </div>
                 <Link
-                  to={`/product?c=${category.categoryName}`}
+                  to={`/product?c=${category?.categoryName}`}
                   className="mt-auto w-fit rounded-md bg-neutral-1 px-2 py-1 text-xs text-neutral-5 hover:bg-opacity-80"
                 >
                   Show All

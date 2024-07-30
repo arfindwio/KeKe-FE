@@ -17,7 +17,7 @@ export const getAllNotificationsAction = () => async (dispatch) => {
     dispatch(setNotifications(result.data.data.notifications));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }

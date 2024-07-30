@@ -52,10 +52,10 @@ export const AdminPromotion = () => {
   const [promotionId, setPromotionId] = useState(null);
 
   const promotionData = useSelector(
-    (state) => state.promotions.promotions.promotions,
+    (state) => state.promotions?.promotions?.promotions,
   );
   const paginationPromotion = useSelector(
-    (state) => state.promotions.promotions.pagination,
+    (state) => state.promotions?.promotions?.pagination,
   );
 
   openNavbar
@@ -165,7 +165,6 @@ export const AdminPromotion = () => {
 
       if (editPromotion) {
         showSuccessToast("Edit Promotion Successful");
-        await dispatch(getAllPromotionsAction(""));
         setOpen(false);
       }
     }
@@ -184,7 +183,6 @@ export const AdminPromotion = () => {
 
     if (deletePromotion) {
       showSuccessToast("Delete Promotion Successful");
-      await dispatch(getAllPromotionsAction(""));
       setOpenDelete(false);
     }
   };
@@ -241,8 +239,8 @@ export const AdminPromotion = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {promotionData.length > 0 ? (
-                    promotionData.map((promotion, index) => (
+                  {promotionData?.length > 0 ? (
+                    promotionData?.map((promotion, index) => (
                       <tr
                         key={index}
                         className={`${
@@ -254,7 +252,7 @@ export const AdminPromotion = () => {
                             ? `${getPageValue()}${index + 1}`
                             : `${index + 1}`}
                         </td>
-                        <td className="px-2 py-1 text-sm lg:min-w-0">
+                        <td className="px-2 py-1 text-sm font-bold italic text-alert-red lg:min-w-0">
                           {promotion.discount * 100}%
                         </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
@@ -334,11 +332,12 @@ export const AdminPromotion = () => {
                 name="discount"
                 min={0}
                 max={1}
-                step={0.1}
+                step={0.0}
                 className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
                 placeholder="Input Discount"
                 value={inputPromotion.discount}
                 onChange={handleInputChange}
+                onWheel={(e) => e.target.blur()}
               />
             </div>
             <div className="flex w-full flex-col">
@@ -414,6 +413,7 @@ export const AdminPromotion = () => {
                 step={0.1}
                 className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
                 placeholder="Input Discount"
+                onWheel={(e) => e.target.blur()}
                 value={inputPromotion.discount}
                 onChange={handleInputChange}
               />

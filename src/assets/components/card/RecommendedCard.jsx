@@ -28,29 +28,29 @@ export const RecommendedCard = () => {
       <h1 className="w-full text-xl font-bold">Recommended For You</h1>
       <Swiper
         spaceBetween={10}
-        slidesPerView={1}
+        slidesPerView={2}
         breakpoints={{
           400: {
-            slidesPerView: 2,
-            spaceBetween: 10,
-          },
-          540: {
             slidesPerView: 3,
             spaceBetween: 10,
           },
-          800: {
+          540: {
             slidesPerView: 4,
             spaceBetween: 10,
           },
-          1000: {
+          800: {
             slidesPerView: 5,
+            spaceBetween: 10,
+          },
+          1000: {
+            slidesPerView: 6,
             spaceBetween: 10,
           },
         }}
         modules={[Mousewheel, Keyboard]}
         className="h-fit w-full cursor-grab py-2 lg:cursor-default"
       >
-        {recommendationProductData.slice(0, 5).map((product, index) => (
+        {recommendationProductData.slice(0, 6).map((product, index) => (
           <SwiperSlide
             className="h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md"
             key={index}
@@ -59,7 +59,7 @@ export const RecommendedCard = () => {
               <img
                 src={product?.image[0]?.image}
                 alt="Product"
-                className="aspect-[16/10] h-[55%] w-full object-cover"
+                className="h-[55%] w-full object-contain"
               />
               <div
                 className={`${
@@ -68,7 +68,7 @@ export const RecommendedCard = () => {
                   "pb-8"
                 } flex h-fit w-full flex-col gap-1 p-3`}
               >
-                <p className="text-sm font-semibold text-primary-1">
+                <p className="truncate text-sm font-semibold text-primary-1">
                   {product.category.categoryName}
                 </p>
                 <p className="truncate text-sm text-neutral-3">
@@ -95,13 +95,13 @@ export const RecommendedCard = () => {
                     !product.promotion &&
                     (product.review || !product.soldCount === 0) &&
                     "pb-5"
-                  } flex items-center gap-2`}
+                  } flex flex-wrap items-center gap-2`}
                 >
                   {product.review.length > 0 && (
                     <>
                       <FaStar size={18} className="text-alert-yellow" />
                       <p className="text-sm font-light text-neutral-2">
-                        {averageRating(product.review)}
+                        {averageRating(product.review).toFixed(1)}
                       </p>
                       <p className="text-sm font-light text-neutral-3 opacity-80">
                         ({product.review.length})

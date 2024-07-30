@@ -21,7 +21,7 @@ export const getAllSizesAction = () => async (dispatch) => {
     dispatch(setSizes(result.data.data.sizes));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
@@ -30,8 +30,8 @@ export const getAllSizesAction = () => async (dispatch) => {
 export const postCreateSizeAction = (input) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    await reduxPostCreateSize(input);
-    return true;
+    const result = await reduxPostCreateSize(input);
+    return result.data.data.newSize;
   } catch (err) {
     handleRequestError(err);
   } finally {
@@ -46,7 +46,7 @@ export const getSizesByProductIdAction = (productId) => async (dispatch) => {
     dispatch(setSizesByProductId(result.data.data.sizes));
     return true;
   } catch (err) {
-    handleRequestError(err);
+    console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());
   }
