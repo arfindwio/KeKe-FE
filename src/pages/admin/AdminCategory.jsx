@@ -413,7 +413,7 @@ export const AdminCategory = () => {
               )}
             </div>
             <div className="flex w-full flex-col">
-              <label htmlFor="categoryName" className="text-neutral-1">
+              <label htmlFor="categoryName" className="text-neutral-1 ">
                 Category Name
               </label>
               <input
