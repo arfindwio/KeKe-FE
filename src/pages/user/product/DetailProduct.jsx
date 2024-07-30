@@ -80,6 +80,9 @@ export const DetailProduct = () => {
   const userData = useSelector((state) => state.users.userAuthenticate);
 
   const token = CookieStorage.get(CookiesKeys.AuthToken);
+  const filteredProduct = productData
+    .filter((product) => product.id === productId)
+    .slice(0, 6);
 
   useEffect(() => {
     window.scrollTo({
@@ -424,22 +427,27 @@ export const DetailProduct = () => {
         </div>
 
         {/* Similar Product Section */}
-        <div className="flex flex-col gap-3 border-t pt-4">
-          <h5 className="text-lg font-semibold">Similar Product</h5>
-          <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {productData?.slice(0, 6).map((product, index) => (
-              <ProductCard product={product} key={index} />
-            ))}
+        {filteredProduct.length > 0 && (
+          <div className="flex flex-col gap-3 border-t pt-4">
+            <h5 className="text-lg font-semibold">Similar Product</h5>
+            <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+              {filteredProduct.map((product, index) => (
+                <ProductCard product={product} key={index} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Recommendation Product Section */}
         <div className="flex flex-col gap-3 ">
           <h5 className="text-lg font-semibold">Recommendation Product</h5>
           <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {recommendationProductData?.slice(0, 6).map((product, index) => (
-              <ProductCard product={product} key={index} />
-            ))}
+            {recommendationProductData
+              ?.filter((product) => product.id !== Number(productId))
+              .slice(0, 6)
+              .map((product, index) => (
+                <ProductCard product={product} key={index} />
+              ))}
           </div>
         </div>
       </div>
