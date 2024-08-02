@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -13,6 +13,7 @@ export const SidebarFilter = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const filterTimeoutRef = useRef(null);
 
   const [showAll, setShowAll] = useState(false);
   const [queryFormat, setQueryFormat] = useState("");
@@ -20,6 +21,7 @@ export const SidebarFilter = () => {
   const categoryData = useSelector(
     (state) => state.categories?.categories?.categories,
   );
+  const loadingProduct = useSelector((state) => state.products?.loading);
 
   const queryParams = new URLSearchParams(location.search);
 
@@ -56,10 +58,16 @@ export const SidebarFilter = () => {
       params.append(type, filter);
     }
 
+    if (filterTimeoutRef.current) {
+      clearTimeout(filterTimeoutRef.current);
+    }
+
     const queryString = params.toString();
     setQueryFormat(queryString);
-    await dispatch(getAllProductsAction(`?${queryString}`));
-    navigate(`/product${queryString ? `?${queryString}` : ""}`);
+    filterTimeoutRef.current = setTimeout(async () => {
+      await dispatch(getAllProductsAction(`?${queryString}`));
+      navigate(`/product${queryString ? `?${queryString}` : ""}`);
+    }, 500);
   };
 
   return (
@@ -71,9 +79,10 @@ export const SidebarFilter = () => {
             <input
               type="checkbox"
               id="newest"
-              className="relative w-[20px] cursor-pointer"
+              className="h-5 w-5 cursor-pointer"
               checked={queryFormat.includes(`f=newest`)}
               onChange={() => handleFilter("f", "newest")}
+              disabled={loadingProduct}
             />
             <label htmlFor="newest" className="cursor-pointer font-medium">
               Newest
@@ -83,9 +92,10 @@ export const SidebarFilter = () => {
             <input
               type="checkbox"
               id="popular"
-              className="relative w-[20px] cursor-pointer"
+              className="h-5 w-5 cursor-pointer"
               checked={queryFormat.includes(`f=popular`)}
               onChange={() => handleFilter("f", "popular")}
+              disabled={loadingProduct}
             />
             <label htmlFor="popular" className="cursor-pointer font-medium">
               Popular
@@ -95,9 +105,10 @@ export const SidebarFilter = () => {
             <input
               type="checkbox"
               id="promo"
-              className="relative w-[20px] cursor-pointer"
+              className="h-5 w-5 cursor-pointer"
               checked={queryFormat.includes(`f=promo`)}
               onChange={() => handleFilter("f", "promo")}
+              disabled={loadingProduct}
             />
             <label htmlFor="promo" className="cursor-pointer font-medium">
               Promo
@@ -107,26 +118,27 @@ export const SidebarFilter = () => {
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-xl font-bold">Categories</h2>
-        <div className="flex flex-col gap-4 px-3">
+        <div className="flex w-full flex-col gap-4 px-3">
           {categoryData
             ?.slice(0, showAll ? categoryData.length : 5)
             ?.map((category, index) => (
               <div
-                className="flex w-full cursor-pointer flex-wrap gap-2"
+                className="flex w-full cursor-pointer flex-nowrap items-center justify-between"
                 key={index}
               >
                 <input
                   type="checkbox"
                   id={category.categoryName}
-                  className="relative w-[20px] cursor-pointer"
+                  className="h-5 min-h-[20px] w-5 min-w-[20px] cursor-pointer"
                   checked={queryParams
                     .getAll("c")
                     .includes(category.categoryName)}
                   onChange={() => handleFilter("c", category.categoryName)}
+                  disabled={loadingProduct}
                 />
                 <label
                   htmlFor={category.categoryName}
-                  className="cursor-pointer font-medium"
+                  className="w-full cursor-pointer break-all pl-2 font-medium"
                 >
                   {category.categoryName}
                 </label>

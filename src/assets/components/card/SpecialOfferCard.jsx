@@ -9,6 +9,9 @@ import {
   postCreateCartByProductIdAction,
 } from "../../../redux/action/carts/CartsAction";
 
+// Components
+import { SpecialOfferCardSkeleton } from "../skeleton/SpecialOfferCardSkeleton";
+
 // Icons
 import { FaStar } from "react-icons/fa";
 
@@ -42,6 +45,7 @@ export const SpecialOfferCard = () => {
   const specialOfferData = useSelector(
     (state) => state.products?.specialOfferProduct,
   );
+  const loadingProduct = useSelector((state) => state.products?.loading);
 
   const soldPercentage = Math.round(
     (specialOfferData.soldCount /
@@ -169,150 +173,156 @@ export const SpecialOfferCard = () => {
           SPECIAL OFFER
         </h1>
         <div className="flex flex-col justify-between gap-4 rounded-md border border-neutral-4 bg-slate-100 p-4 md:flex-row md:gap-0">
-          <img
-            src={specialOfferData?.image[0]?.image}
-            alt="Product"
-            className="w-full rounded-md object-contain md:w-[40%]"
-          />
-          <div className="flex w-full flex-col gap-2 md:w-[58%]">
-            {specialOfferData?.review?.length > 0 && (
-              <div className="flex items-center gap-1">
-                <FaStar size={20} className="text-alert-yellow" />
-                <p className="text-sm font-semibold text-neutral-2">
-                  {averageRating(specialOfferData?.review).toFixed(1)}
+          {loadingProduct ? (
+            <SpecialOfferCardSkeleton />
+          ) : (
+            <>
+              <img
+                src={specialOfferData?.image[0]?.image}
+                alt="Product"
+                className="w-full rounded-md object-contain md:w-[40%]"
+              />
+              <div className="flex w-full flex-col gap-2 md:w-[58%]">
+                {specialOfferData?.review?.length > 0 && (
+                  <div className="flex items-center gap-1">
+                    <FaStar size={20} className="text-alert-yellow" />
+                    <p className="text-sm font-semibold text-neutral-2">
+                      {averageRating(specialOfferData?.review).toFixed(1)}
+                    </p>
+                    <p className="text-sm font-light text-neutral-3 opacity-80">
+                      ({specialOfferData?.review.length})
+                    </p>
+                  </div>
+                )}
+                <h5 className="text-base font-bold ">
+                  {specialOfferData?.productName}
+                </h5>
+                <p className="text-sm text-neutral-3">
+                  {specialOfferData?.description}
                 </p>
-                <p className="text-sm font-light text-neutral-3 opacity-80">
-                  ({specialOfferData?.review.length})
-                </p>
-              </div>
-            )}
-            <h5 className="text-base font-bold ">
-              {specialOfferData?.productName}
-            </h5>
-            <p className="text-sm text-neutral-3">
-              {specialOfferData?.description}
-            </p>
-            <div className="flex gap-3">
-              <h4 className="text-lg font-bold text-neutral-1">
-                IDR {(specialOfferData?.price).toLocaleString()}
-              </h4>
-              {specialOfferData?.promotion && (
-                <div className="flex items-center gap-1 text-base">
-                  <h4 className="font-normal text-neutral-3 line-through">
-                    IDR{" "}
-                    {Math.floor(
-                      specialOfferData?.price /
-                        (1 - specialOfferData?.promotion?.discount),
-                    ).toLocaleString()}
+                <div className="flex gap-3">
+                  <h4 className="text-lg font-bold text-neutral-1">
+                    IDR {(specialOfferData?.price).toLocaleString()}
                   </h4>
-                  <p className="font-semibold text-alert-red">
-                    {specialOfferData?.promotion?.discount * 100}%
+                  {specialOfferData?.promotion && (
+                    <div className="flex items-center gap-1 text-base">
+                      <h4 className="font-normal text-neutral-3 line-through">
+                        IDR{" "}
+                        {Math.floor(
+                          specialOfferData?.price /
+                            (1 - specialOfferData?.promotion?.discount),
+                        ).toLocaleString()}
+                      </h4>
+                      <p className="font-semibold text-alert-red">
+                        {specialOfferData?.promotion?.discount * 100}%
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-4 pb-2">
+                  <div className="flex flex-col gap-2 md:border-r-2 md:border-neutral-4 md:pr-4">
+                    <h5 className="text-sm font-semibold">
+                      Choose Size:{" "}
+                      <span className="text-slate-400">
+                        {selectedSize?.toUpperCase()}
+                      </span>
+                    </h5>
+                    <div className="flex flex-wrap gap-2">
+                      {specialOfferData?.size?.map((size, index) => (
+                        <p
+                          className={`${
+                            inputCart.sizeId === size.id
+                              ? "border-2 border-neutral-1 font-semibold text-neutral-1"
+                              : "border border-neutral-3 font-medium text-neutral-3"
+                          } cursor-pointer rounded-full p-2 text-xs`}
+                          key={index}
+                          onClick={() => handleInputCart("sizeId", size.id)}
+                        >
+                          {size?.sizeName.toUpperCase()}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h5 className="text-sm font-semibold">
+                      Choose Color:{" "}
+                      <span className="text-slate-400">{selectedColor}</span>
+                    </h5>
+                    <div className="flex flex-wrap gap-2">
+                      {specialOfferData?.color?.map((color, index) => (
+                        <p
+                          className={`${
+                            inputCart.colorId === color.id
+                              ? "border-2 border-neutral-1 font-semibold text-neutral-1"
+                              : "border border-neutral-3 font-medium text-neutral-3"
+                          } cursor-pointer rounded-full p-2 text-xs`}
+                          key={index}
+                          onClick={() => handleInputCart("colorId", color.id)}
+                        >
+                          {color.colorName}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  className="w-fit rounded-lg bg-neutral-1 px-3 py-2 text-neutral-5 hover:bg-opacity-80"
+                  onClick={() => handleAddProductToCart()}
+                >
+                  ADD TO CART
+                </button>
+                <div className="flex justify-between">
+                  <p className="text-sm text-neutral-2">
+                    ALREADY SOLD:
+                    <span className="font-semibold text-neutral-1">
+                      {" "}
+                      {specialOfferData?.soldCount}
+                    </span>
+                  </p>
+                  <p className="text-sm text-neutral-2">
+                    AVAILABLE:
+                    <span className="font-semibold text-neutral-1">
+                      {" "}
+                      {specialOfferData?.stock}
+                    </span>
                   </p>
                 </div>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-4 pb-2">
-              <div className="flex flex-col gap-2 md:border-r-2 md:border-neutral-4 md:pr-4">
-                <h5 className="text-sm font-semibold">
-                  Choose Size:{" "}
-                  <span className="text-slate-400">
-                    {selectedSize?.toUpperCase()}
-                  </span>
-                </h5>
-                <div className="flex flex-wrap gap-2">
-                  {specialOfferData?.size?.map((size, index) => (
-                    <p
-                      className={`${
-                        inputCart.sizeId === size.id
-                          ? "border-2 border-neutral-1 font-semibold text-neutral-1"
-                          : "border border-neutral-3 font-medium text-neutral-3"
-                      } cursor-pointer rounded-full p-2 text-xs`}
-                      key={index}
-                      onClick={() => handleInputCart("sizeId", size.id)}
-                    >
-                      {size?.sizeName.toUpperCase()}
-                    </p>
-                  ))}
+                <div className="w-full overflow-hidden rounded-full bg-neutral-4 px-[2px] py-[2px]">
+                  <div
+                    className={`h-full rounded-full border border-neutral-5 bg-neutral-1 py-1`}
+                    style={{ width: `${soldPercentage}%` }}
+                  ></div>
+                </div>
+                <p className="text-sm font-medium">HURRY UP! OFFER ENDS IN:</p>
+                <div className="flex flex-nowrap justify-start gap-1 sm:gap-4">
+                  <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
+                    <h5 className="text-sm font-medium tracking-wider sm:text-lg">
+                      {countdown.days}
+                    </h5>
+                    <p className="text-xs text-neutral-2">Days</p>
+                  </div>
+                  <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
+                    <h5 className="text-sm font-medium tracking-wider sm:text-lg">
+                      {countdown.hours}
+                    </h5>
+                    <p className="text-xs text-neutral-2">Hours</p>
+                  </div>
+                  <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
+                    <h5 className="text-sm font-medium tracking-wider sm:text-lg">
+                      {countdown.minutes}
+                    </h5>
+                    <p className="text-xs text-neutral-2">Min</p>
+                  </div>
+                  <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
+                    <h5 className="text-sm font-medium tracking-wider sm:text-lg">
+                      {countdown.seconds}
+                    </h5>
+                    <p className="text-xs text-neutral-2">Sec</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <h5 className="text-sm font-semibold">
-                  Choose Color:{" "}
-                  <span className="text-slate-400">{selectedColor}</span>
-                </h5>
-                <div className="flex flex-wrap gap-2">
-                  {specialOfferData?.color?.map((color, index) => (
-                    <p
-                      className={`${
-                        inputCart.colorId === color.id
-                          ? "border-2 border-neutral-1 font-semibold text-neutral-1"
-                          : "border border-neutral-3 font-medium text-neutral-3"
-                      } cursor-pointer rounded-full p-2 text-xs`}
-                      key={index}
-                      onClick={() => handleInputCart("colorId", color.id)}
-                    >
-                      {color.colorName}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <button
-              className="w-fit rounded-lg bg-neutral-1 px-3 py-2 text-neutral-5 hover:bg-opacity-80"
-              onClick={() => handleAddProductToCart()}
-            >
-              ADD TO CART
-            </button>
-            <div className="flex justify-between">
-              <p className="text-sm text-neutral-2">
-                ALREADY SOLD:
-                <span className="font-semibold text-neutral-1">
-                  {" "}
-                  {specialOfferData?.soldCount}
-                </span>
-              </p>
-              <p className="text-sm text-neutral-2">
-                AVAILABLE:
-                <span className="font-semibold text-neutral-1">
-                  {" "}
-                  {specialOfferData?.stock}
-                </span>
-              </p>
-            </div>
-            <div className="w-full overflow-hidden rounded-full bg-neutral-4 px-[2px] py-[2px]">
-              <div
-                className={`h-full rounded-full border border-neutral-5 bg-neutral-1 py-1`}
-                style={{ width: `${soldPercentage}%` }}
-              ></div>
-            </div>
-            <p className="text-sm font-medium">HURRY UP! OFFER ENDS IN:</p>
-            <div className="flex flex-nowrap justify-start gap-1 sm:gap-4">
-              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
-                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
-                  {countdown.days}
-                </h5>
-                <p className="text-xs text-neutral-2">Days</p>
-              </div>
-              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
-                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
-                  {countdown.hours}
-                </h5>
-                <p className="text-xs text-neutral-2">Hours</p>
-              </div>
-              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
-                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
-                  {countdown.minutes}
-                </h5>
-                <p className="text-xs text-neutral-2">Min</p>
-              </div>
-              <div className="flex flex-col rounded-lg bg-slate-200 px-2 py-1 text-center sm:px-3 sm:py-2">
-                <h5 className="text-sm font-medium tracking-wider sm:text-lg">
-                  {countdown.seconds}
-                </h5>
-                <p className="text-xs text-neutral-2">Sec</p>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
     </>

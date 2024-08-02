@@ -81,20 +81,20 @@ export const Footer = () => {
               <li className="flex items-start justify-between text-neutral-3">
                 <IoLocationOutline size={25} className="w-[6%]" />
                 <p className="w-[92%]">
-                  Jalan Kalisari Raya No.03, RT.4/RW.11, Kalisari, Ps. Rebo
-                  District, East Jakarta City, Special Capital Region of Jakarta
-                  13790
+                  Jalan Kebon Bawang IX No.32, RT.008 / RW.012, Kebon Bawang,
+                  Kecamatan Tanjung Priok, Jakarta Utara, Daerah Khusus Ibukota
+                  Jakarta 14320
                 </p>
               </li>
               <li className="flex items-center justify-between text-neutral-3">
                 <LuPhone size={25} className="w-[6%]" />
                 <p className="w-[92%]">
-                  <span className="text-neutral-4">(+62)</span> 812-8645-4930
+                  <span className="text-neutral-4">(+62)</span> 822-9891-1144
                 </p>
               </li>
               <li className="flex items-center justify-between text-neutral-3">
                 <MdOutlineEmail size={25} className="w-[6%]" />
-                <p className="w-[92%] break-all">onlinekekebusana@gmail.com</p>
+                <p className="w-[92%] break-all">nasutionwithaqsha@gmail.com</p>
               </li>
             </ul>
           </div>
