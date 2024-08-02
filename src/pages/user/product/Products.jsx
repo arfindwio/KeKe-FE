@@ -30,6 +30,7 @@ export const Products = () => {
   );
 
   const minWidth = useMediaQuery({ minDeviceWidth: 720 });
+  const minWidth320 = useMediaQuery({ minDeviceWidth: 320 });
 
   openBottom
     ? (document.body.style.overflow = "hidden")
@@ -113,7 +114,11 @@ export const Products = () => {
             <SidebarFilter />
           </div>
           <div className="w-full md:w-[63%]">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+            <div
+              className={`${
+                minWidth320 ? "grid-cols-2" : "grid-cols-1"
+              } grid gap-3 sm:grid-cols-3 xl:grid-cols-4`}
+            >
               {productData?.length > 0 ? (
                 productData?.map((product, index) => (
                   <ProductCard product={product} key={index} />

@@ -53,7 +53,7 @@ export const DetailProduct = () => {
   const textareaRefReview = useRef(null);
   const textareaRefDiscussion = useRef(null);
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [inputDiscussion, setInputDiscussion] = useState({
     userMessage: "",
   });
@@ -95,7 +95,7 @@ export const DetailProduct = () => {
     const fetchData = async () => {
       const detailProduct = await dispatch(getProductByIdAction(productId));
       if (!detailProduct) navigate("/");
-      if (detailProduct.stock < 1) navigate("/product");
+      if (detailProduct?.stock < 1) navigate("/product");
       await dispatch(
         getAllProductsAction(`?c=${detailProductData?.category?.categoryName}`),
       );
@@ -107,7 +107,7 @@ export const DetailProduct = () => {
         await dispatch(getRecommendationProductsAction());
       }
 
-      if (Number(detailProduct.id) === Number(productId)) setIsLoading(false);
+      // if (Number(detailProduct.id) === Number(productId)) setIsLoading(false);
     };
 
     fetchData();
@@ -205,9 +205,9 @@ export const DetailProduct = () => {
   const handleQueryDiscussion = (formatLink) =>
     dispatch(getDiscussionsByProductIdAction(productId, formatLink));
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
+  // if (isLoading) {
+  //   return <LoadingSpinner />;
+  // }
 
   return (
     <>
@@ -222,7 +222,7 @@ export const DetailProduct = () => {
           <div className="grid w-full grid-cols-2 gap-2">
             <div className="col-span-2 flex w-full items-center gap-4 rounded-md border border-neutral-2 p-2 shadow-sm md:p-4">
               <FcRating size={40} className="hidden md:block" />
-              <p className="text-sm md:text-base">
+              <p className="text-xs sm:text-sm md:text-base">
                 How was your experience with this product? Leave your review now
               </p>
               <button
@@ -334,9 +334,9 @@ export const DetailProduct = () => {
         <div className="flex flex-col gap-3">
           <h5 className="text-lg font-semibold">Discussion</h5>
           <div className="flex w-full flex-col items-center gap-2">
-            <div className="col-span-2 flex w-full items-center gap-4 rounded-md border border-neutral-2 p-4 shadow-sm">
+            <div className="col-span-2 flex w-full items-center gap-4 rounded-md border border-neutral-2 p-2 shadow-sm md:p-4">
               <IoMdChatbubbles size={40} className="hidden md:block" />
-              <p className="text-sm md:text-base">
+              <p className="text-xs sm:text-sm md:text-base">
                 Have questions? Discuss with the seller
               </p>
               <button

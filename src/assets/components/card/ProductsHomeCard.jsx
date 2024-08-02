@@ -2,6 +2,9 @@ import React from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
+// Components
+import { ProductHomeCardSkeleton } from "../skeleton/ProductCardSkeleton";
+
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, Keyboard } from "swiper/modules";
@@ -23,6 +26,7 @@ export const ProductsHomeCard = () => {
   const productData = useSelector(
     (state) => state.products?.products?.products,
   );
+  const loadingProduct = useSelector((state) => state.products?.loading);
   const categoryData = useSelector(
     (state) => state.categories?.categories?.categories,
   );
@@ -83,8 +87,12 @@ export const ProductsHomeCard = () => {
       </Swiper>
       <Swiper
         spaceBetween={10}
-        slidesPerView={2}
+        slidesPerView={1}
         breakpoints={{
+          320: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
           400: {
             slidesPerView: 3,
             spaceBetween: 10,
@@ -111,73 +119,77 @@ export const ProductsHomeCard = () => {
               className="h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md"
               key={index}
             >
-              <Link to={`/product/${product.id}`}>
-                <img
-                  src={product?.image[0]?.image}
-                  alt="Product"
-                  className="h-[55%] w-full object-contain"
-                />
-                <div
-                  className={`${
-                    product.review.length === 0 &&
-                    product.soldCount === 0 &&
-                    "pb-8"
-                  } flex h-fit w-full flex-col gap-1 p-3`}
-                >
-                  <p className="truncate text-sm font-semibold text-primary-1">
-                    {product.category?.categoryName}
-                  </p>
-                  <p className="truncate text-sm text-neutral-3">
-                    {product.productName}
-                  </p>
-                  <div
-                    className={`flex flex-col break-all text-base font-bold`}
-                  >
-                    <p className={`${product.promotion && "text-neutral-1"}`}>
-                      IDR {product.price.toLocaleString()}
-                    </p>
-                    {product.promotion && (
-                      <p className="break-all text-sm font-semibold text-alert-red">
-                        <span className="mr-1 text-xs font-normal text-neutral-3 line-through">
-                          IDR{" "}
-                          {Math.floor(
-                            product.price / (1 - product.promotion.discount),
-                          ).toLocaleString()}
-                        </span>
-                        {product.promotion.discount * 100}%
-                      </p>
-                    )}
-                  </div>
+              {loadingProduct ? (
+                <ProductHomeCardSkeleton />
+              ) : (
+                <Link to={`/product/${product.id}`}>
+                  <img
+                    src={product?.image[0]?.image}
+                    alt="Product"
+                    className="h-[55%] w-full object-contain"
+                  />
                   <div
                     className={`${
-                      !product.promotion &&
-                      (product.review || !product.soldCount === 0) &&
-                      "pb-5"
-                    } flex flex-wrap items-center gap-2`}
+                      product.review.length === 0 &&
+                      product.soldCount === 0 &&
+                      "pb-8"
+                    } flex h-fit w-full flex-col gap-1 p-3`}
                   >
-                    {product.review.length > 0 && (
-                      <>
-                        <FaStar size={18} className="text-alert-yellow" />
-                        <p className="text-sm font-light text-neutral-2">
-                          {averageRating(product.review).toFixed(1)}
-                        </p>
-                        <p className="text-sm font-light text-neutral-3 opacity-80">
-                          ({product.review.length})
-                        </p>
-                      </>
-                    )}
-                    {product.soldCount > 0 && (
-                      <p
-                        className={`${
-                          product.review.length > 0 && "border-l-2 pl-2"
-                        } text-sm font-light text-neutral-2`}
-                      >
-                        {product.soldCount} Sold
+                    <p className="truncate text-sm font-semibold text-primary-1">
+                      {product.category?.categoryName}
+                    </p>
+                    <p className="truncate text-sm text-neutral-3">
+                      {product.productName}
+                    </p>
+                    <div
+                      className={`flex flex-col break-all text-base font-bold`}
+                    >
+                      <p className={`${product.promotion && "text-neutral-1"}`}>
+                        IDR {product.price.toLocaleString()}
                       </p>
-                    )}
+                      {product.promotion && (
+                        <p className="break-all text-sm font-semibold text-alert-red">
+                          <span className="mr-1 text-xs font-normal text-neutral-3 line-through">
+                            IDR{" "}
+                            {Math.floor(
+                              product.price / (1 - product.promotion.discount),
+                            ).toLocaleString()}
+                          </span>
+                          {product.promotion.discount * 100}%
+                        </p>
+                      )}
+                    </div>
+                    <div
+                      className={`${
+                        !product.promotion &&
+                        (product.review || !product.soldCount === 0) &&
+                        "pb-5"
+                      } flex flex-wrap items-center gap-2`}
+                    >
+                      {product.review.length > 0 && (
+                        <>
+                          <FaStar size={18} className="text-alert-yellow" />
+                          <p className="text-sm font-light text-neutral-2">
+                            {averageRating(product.review).toFixed(1)}
+                          </p>
+                          <p className="text-sm font-light text-neutral-3 opacity-80">
+                            ({product.review.length})
+                          </p>
+                        </>
+                      )}
+                      {product.soldCount > 0 && (
+                        <p
+                          className={`${
+                            product.review.length > 0 && "border-l-2 pl-2"
+                          } text-sm font-light text-neutral-2`}
+                        >
+                          {product.soldCount} Sold
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              )}
             </SwiperSlide>
           ))
         ) : (
