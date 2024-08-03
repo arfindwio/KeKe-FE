@@ -11,7 +11,7 @@ import {
 
 // Redux Reducer
 import {
-  setProducts,
+  // setProducts,
   setFilterProduct,
 } from "../../../redux/reducer/products/ProductsSlice";
 
@@ -38,10 +38,10 @@ export const AdminManageSize = ({
     productId: submitProduct?.id,
   });
 
-  const productData = useSelector((state) => state.products.products.products);
-  const paginationProduct = useSelector(
-    (state) => state.products.products.pagination,
-  );
+  // const productData = useSelector((state) => state.products.products.products);
+  // const paginationProduct = useSelector(
+  //   (state) => state.products.products.pagination,
+  // );
   const filterProduct = useSelector((state) => state.products.filterProduct);
 
   useEffect(() => {
@@ -56,13 +56,13 @@ export const AdminManageSize = ({
     const handleCreate = async () => {
       if (!inputSize.sizeName) return;
 
-      const loadingToastId = showLoadingToast("Loading...");
+      // const loadingToastId = showLoadingToast("Loading...");
 
       const createSize = await dispatch(
         postCreateSizeAction({ ...inputSize, productId: submitProduct?.id }),
       );
 
-      toast.dismiss(loadingToastId);
+      // toast.dismiss(loadingToastId);
 
       if (!createSize) {
         showErrorToast("Create Size Failed");
@@ -92,7 +92,7 @@ export const AdminManageSize = ({
     const handleEdit = async () => {
       if (!inputSize.sizeName) return;
 
-      const loadingToastId = showLoadingToast("Loading...");
+      // const loadingToastId = showLoadingToast("Loading...");
 
       const editSize = await dispatch(
         putEditSizeByIdAction(
@@ -101,7 +101,7 @@ export const AdminManageSize = ({
         ),
       );
 
-      toast.dismiss(loadingToastId);
+      // toast.dismiss(loadingToastId);
 
       if (!editSize) {
         showErrorToast("Edit Size Failed");
@@ -129,11 +129,11 @@ export const AdminManageSize = ({
   const handleDelete = async () => {
     if (!size.id) return;
 
-    const loadingToastId = showLoadingToast("Loading...");
+    // const loadingToastId = showLoadingToast("Loading...");
 
     const deleteSize = await dispatch(deleteSizeByIdAction(size?.id));
 
-    toast.dismiss(loadingToastId);
+    // toast.dismiss(loadingToastId);
 
     if (!deleteSize) showErrorToast("Delete Size Failed");
 

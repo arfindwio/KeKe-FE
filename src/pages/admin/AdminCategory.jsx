@@ -126,12 +126,13 @@ export const AdminCategory = () => {
 
       if (createCategory) {
         showSuccessToast("Create Category Successful");
-        dispatch(
-          setCategories({
-            pagination: paginationCategory,
-            categories: [...categoryData, createCategory],
-          }),
-        );
+        await dispatch(getAllCategoriesAction(""));
+        // dispatch(
+        //   setCategories({
+        //     pagination: paginationCategory,
+        //     categories: [...categoryData, createCategory],
+        //   }),
+        // );
         setAfterSubmit({
           ...afterSubmit,
           categoryId: createCategory.id,
@@ -156,6 +157,7 @@ export const AdminCategory = () => {
 
       if (editCategory) {
         showSuccessToast("Edit Category Successful");
+        await dispatch(getAllCategoriesAction(""));
         setAfterSubmit({ ...afterSubmit, categoryId: editCategory.id });
       }
     }
@@ -185,10 +187,12 @@ export const AdminCategory = () => {
       productId: completeSubmit,
     });
     if (type === "create") {
+      await dispatch(getAllCategoriesAction(""));
       setOpenCreate(false);
       setOpenEdit(false);
     }
     if (type === "edit") {
+      await dispatch(getAllCategoriesAction(""));
       setOpenEdit(false);
     }
   };
