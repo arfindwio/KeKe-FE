@@ -4,7 +4,6 @@ import { useMediaQuery } from "react-responsive";
 
 // Redux Actions
 import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
-import { getAllCategoriesAction } from "../../../redux/action/categories/CategoriesAction";
 
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
@@ -16,6 +15,9 @@ import { Footer } from "../../../assets/components/footer/Footer";
 
 // Material Tailwind
 import { Drawer } from "@material-tailwind/react";
+
+// Icons
+import { IoMdClose } from "react-icons/io";
 
 export const Products = () => {
   const dispatch = useDispatch();
@@ -35,15 +37,6 @@ export const Products = () => {
   openBottom
     ? (document.body.style.overflow = "hidden")
     : (document.body.style.overflow = "auto");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(getAllProductsAction(""));
-      await dispatch(getAllCategoriesAction("?limit=9999"));
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     window.scrollTo({
@@ -75,44 +68,34 @@ export const Products = () => {
           >
             Filter
           </button>
-          <Drawer
-            placement="bottom"
-            open={openBottom}
-            onClose={() => setOpenBottom(false)}
-            className={`${
-              openBottom && "min-h-[70vh]"
-            } overflow-auto p-4 md:hidden`}
-          >
-            <div className="relative">
-              <button
-                className="absolute right-0 top-0"
-                onClick={() => setOpenBottom(false)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="flex flex-col gap-6">
-              <SidebarFilter />
-            </div>
-          </Drawer>
+          {!minWidth && (
+            <Drawer
+              placement="bottom"
+              open={openBottom}
+              onClose={() => setOpenBottom(false)}
+              className={`${
+                openBottom && "min-h-[70vh]"
+              } overflow-auto p-4 md:hidden`}
+            >
+              <div className="relative">
+                <IoMdClose
+                  size={30}
+                  className="absolute right-0 top-0 cursor-pointer"
+                  onClick={() => setOpenBottom(false)}
+                />
+              </div>
+              <div className="flex flex-col gap-6">
+                <SidebarFilter />
+              </div>
+            </Drawer>
+          )}
         </div>
         <div className="flex flex-col md:flex-row md:justify-between">
-          <div className="hidden h-fit w-full flex-col gap-6 rounded-lg bg-neutral-5 p-6 md:flex md:w-[35%]">
-            <SidebarFilter />
-          </div>
+          {minWidth && (
+            <div className="hidden h-fit w-full flex-col gap-6 rounded-lg bg-neutral-5 p-6 md:flex md:w-[35%]">
+              <SidebarFilter />
+            </div>
+          )}
           <div className="w-full md:w-[63%]">
             <div
               className={`${

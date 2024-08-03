@@ -4,7 +4,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 // Components
-import { LoadingSpinner } from "../../../assets/components/loading/LoadingSpinner";
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { DetailProductSection } from "../../../assets/components/detailProduct/DetailProductSection";
 import { ReviewCard } from "../../../assets/components/card/ReviewCard";
@@ -53,7 +52,6 @@ export const DetailProduct = () => {
   const textareaRefReview = useRef(null);
   const textareaRefDiscussion = useRef(null);
 
-  // const [isLoading, setIsLoading] = useState(true);
   const [inputDiscussion, setInputDiscussion] = useState({
     userMessage: "",
   });
@@ -94,8 +92,14 @@ export const DetailProduct = () => {
   useEffect(() => {
     const fetchData = async () => {
       const detailProduct = await dispatch(getProductByIdAction(productId));
-      if (!detailProduct) navigate("/");
-      if (detailProduct?.stock < 1) navigate("/product");
+      if (!detailProduct) {
+        navigate("/");
+        return;
+      }
+      if (detailProduct?.stock < 1) {
+        navigate("/product");
+        return;
+      }
       await dispatch(
         getAllProductsAction(`?c=${detailProductData?.category?.categoryName}`),
       );
@@ -106,8 +110,6 @@ export const DetailProduct = () => {
       } else {
         await dispatch(getRecommendationProductsAction());
       }
-
-      // if (Number(detailProduct.id) === Number(productId)) setIsLoading(false);
     };
 
     fetchData();
@@ -204,10 +206,6 @@ export const DetailProduct = () => {
 
   const handleQueryDiscussion = (formatLink) =>
     dispatch(getDiscussionsByProductIdAction(productId, formatLink));
-
-  // if (isLoading) {
-  //   return <LoadingSpinner />;
-  // }
 
   return (
     <>

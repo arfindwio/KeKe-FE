@@ -10,9 +10,9 @@ import {
 } from "../../../redux/action/images/ImagesAction";
 
 // Redux Reducer
-import { setCategories } from "../../../redux/reducer/categories/CategoriesSlice";
+// import { setCategories } from "../../../redux/reducer/categories/CategoriesSlice";
 import {
-  setProducts,
+  // setProducts,
   setFilterProduct,
 } from "../../../redux/reducer/products/ProductsSlice";
 import { setImage } from "../../../redux/reducer/images/ImagesSlice";
@@ -46,16 +46,16 @@ export const AdminManageImage = ({
     productId: afterSubmit?.productId,
   });
 
-  const categoryData = useSelector(
-    (state) => state.categories.categories.categories,
-  );
-  const paginationCategory = useSelector(
-    (state) => state.categories.categories.pagination,
-  );
-  const productData = useSelector((state) => state.products.products.products);
-  const paginationProduct = useSelector(
-    (state) => state.products.products.pagination,
-  );
+  // const categoryData = useSelector(
+  //   (state) => state.categories.categories.categories,
+  // );
+  // const paginationCategory = useSelector(
+  //   (state) => state.categories.categories.pagination,
+  // );
+  // const productData = useSelector((state) => state.products.products.products);
+  // const paginationProduct = useSelector(
+  //   (state) => state.products.products.pagination,
+  // );
   const filterProduct = useSelector((state) => state.products.filterProduct);
 
   useEffect(() => {
@@ -85,40 +85,40 @@ export const AdminManageImage = ({
         showErrorToast("Create Image Failed");
       } else {
         if (afterSubmit.categoryId) {
-          const addedImage = categoryData.map((category) => {
-            if (category.id === afterSubmit.categoryId) {
-              return {
-                ...category,
-                image: {
-                  id: createImage.id,
-                  image: createImage.image,
-                },
-              };
-            }
-            return category;
-          });
-          dispatch(
-            setCategories({
-              pagination: paginationCategory,
-              categories: addedImage,
-            }),
-          );
+          // const addedImage = categoryData.map((category) => {
+          //   if (category.id === afterSubmit.categoryId) {
+          //     return {
+          //       ...category,
+          //       image: {
+          //         id: createImage.id,
+          //         image: createImage.image,
+          //       },
+          //     };
+          //   }
+          //   return category;
+          // });
+          // dispatch(
+          //   setCategories({
+          //     pagination: paginationCategory,
+          //     categories: addedImage,
+          //   }),
+          // );
         } else if (afterSubmit.productId) {
-          const addedImage = productData.map((product) => {
-            if (product.id === afterSubmit.productId) {
-              const updatedImages = product.image ? [...product.image] : [];
-              updatedImages.push({
-                id: createImage.id,
-                image: createImage.image,
-              });
+          // const addedImage = productData.map((product) => {
+          //   if (product.id === afterSubmit.productId) {
+          //     const updatedImages = product.image ? [...product.image] : [];
+          //     updatedImages.push({
+          //       id: createImage.id,
+          //       image: createImage.image,
+          //     });
 
-              return {
-                ...product,
-                image: updatedImages,
-              };
-            }
-            return product;
-          });
+          //     return {
+          //       ...product,
+          //       image: updatedImages,
+          //     };
+          //   }
+          //   return product;
+          // });
           const addImage = {
             ...filterProduct,
             image: [
@@ -130,12 +130,12 @@ export const AdminManageImage = ({
             ],
           };
           dispatch(setFilterProduct(addImage));
-          dispatch(
-            setProducts({
-              pagination: paginationProduct,
-              products: addedImage,
-            }),
-          );
+          // dispatch(
+          //   setProducts({
+          //     pagination: paginationProduct,
+          //     products: addedImage,
+          //   }),
+          // );
         }
         completeSubmit(null, "create");
       }
@@ -192,41 +192,41 @@ export const AdminManageImage = ({
     if (deleteImage) {
       showSuccessToast("Delete Image Successful");
       if (image.categoryId) {
-        const updatedCategories = categoryData.map((category) => {
-          if (category.image && category.image.id === image?.id) {
-            return {
-              ...category,
-              image: null,
-            };
-          }
-          return category;
-        });
+        // const updatedCategories = categoryData.map((category) => {
+        //   if (category.image && category.image.id === image?.id) {
+        //     return {
+        //       ...category,
+        //       image: null,
+        //     };
+        //   }
+        //   return category;
+        // });
         setEditDataImage(null);
         dispatch(setImage(null));
-        dispatch(
-          setCategories({
-            pagination: paginationCategory,
-            categories: updatedCategories,
-          }),
-        );
+        // dispatch(
+        //   setCategories({
+        //     pagination: paginationCategory,
+        //     categories: updatedCategories,
+        //   }),
+        // );
       } else if (image.productId) {
-        const updatedProducts = productData.map((product) => {
-          return {
-            ...product,
-            image: product.image.filter((img) => img.id !== image?.id),
-          };
-        });
+        // const updatedProducts = productData.map((product) => {
+        //   return {
+        //     ...product,
+        //     image: product.image.filter((img) => img.id !== image?.id),
+        //   };
+        // });
         const filteredProduct = {
           ...filterProduct,
           image: filterProduct.image.filter((item) => item.id !== image?.id),
         };
         dispatch(setFilterProduct(filteredProduct));
-        dispatch(
-          setProducts({
-            pagination: paginationProduct,
-            products: updatedProducts,
-          }),
-        );
+        // dispatch(
+        //   setProducts({
+        //     pagination: paginationProduct,
+        //     products: updatedProducts,
+        //   }),
+        // );
       }
       completeSubmit(null, "delete");
     }

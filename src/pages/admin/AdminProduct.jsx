@@ -192,7 +192,7 @@ export const AdminProduct = () => {
 
     if (deleteProduct) {
       showSuccessToast("Delete Product Successful");
-      // await dispatch(getAllProductsAction(""));
+      await dispatch(getAllProductsAction(""));
       setOpenDelete(false);
     }
   };
@@ -204,6 +204,7 @@ export const AdminProduct = () => {
       setOpenCreate(false);
     }
     if (type === "edit") {
+      await dispatch(getAllProductsAction(""));
       setOpenEdit(false);
     }
   };

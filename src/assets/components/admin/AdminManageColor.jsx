@@ -54,13 +54,13 @@ export const AdminManageColor = ({
 
   useEffect(() => {
     const handleCreate = async () => {
-      const loadingToastId = showLoadingToast("Loading...");
+      // const loadingToastId = showLoadingToast("Loading...");
 
       const createColor = await dispatch(
         postCreateColorAction({ ...inputColor, productId: submitProduct?.id }),
       );
 
-      toast.dismiss(loadingToastId);
+      // toast.dismiss(loadingToastId);
 
       if (!createColor) {
         showErrorToast("Create Color Failed");
@@ -85,7 +85,7 @@ export const AdminManageColor = ({
     };
 
     const handleEdit = async () => {
-      const loadingToastId = showLoadingToast("Loading...");
+      // const loadingToastId = showLoadingToast("Loading...");
 
       const editColor = await dispatch(
         putEditColorByIdAction(
@@ -94,7 +94,7 @@ export const AdminManageColor = ({
         ),
       );
 
-      toast.dismiss(loadingToastId);
+      // toast.dismiss(loadingToastId);
 
       if (!editColor) {
         showErrorToast("Edit Color Failed");
@@ -120,11 +120,11 @@ export const AdminManageColor = ({
   };
 
   const handleDelete = async () => {
-    const loadingToastId = showLoadingToast("Loading...");
+    // const loadingToastId = showLoadingToast("Loading...");
 
     const deleteColor = await dispatch(deleteColorByIdAction(color?.id));
 
-    toast.dismiss(loadingToastId);
+    // toast.dismiss(loadingToastId);
 
     if (!deleteColor) showErrorToast("Delete Color Failed");
 

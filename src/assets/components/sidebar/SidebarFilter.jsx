@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // Redux Actions
 import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
+import { getAllCategoriesAction } from "../../../redux/action/categories/CategoriesAction";
 
 // Icons
 import { IoIosArrowUp } from "react-icons/io";
@@ -26,9 +27,18 @@ export const SidebarFilter = () => {
   const queryParams = new URLSearchParams(location.search);
 
   useEffect(() => {
-    setQueryFormat(location.search);
-    dispatch(getAllProductsAction(location.search));
-  }, [location.search, dispatch]);
+    const fetchData = async () => {
+      if (location.search) {
+        setQueryFormat(location.search);
+        dispatch(getAllProductsAction(location.search));
+      } else {
+        dispatch(getAllProductsAction(""));
+        dispatch(getAllCategoriesAction("?limit=9999"));
+      }
+    };
+
+    fetchData();
+  }, [location.search]);
 
   const handleFilter = async (type, filter) => {
     const params = new URLSearchParams(queryFormat);
@@ -65,9 +75,8 @@ export const SidebarFilter = () => {
     const queryString = params.toString();
     setQueryFormat(queryString);
     filterTimeoutRef.current = setTimeout(async () => {
-      await dispatch(getAllProductsAction(`?${queryString}`));
       navigate(`/product${queryString ? `?${queryString}` : ""}`);
-    }, 500);
+    }, 200);
   };
 
   return (
