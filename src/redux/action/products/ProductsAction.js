@@ -106,6 +106,7 @@ export const getRecommendationProductsActionUser = () => async (dispatch) => {
     dispatch(setRecommendationProducts(result.data.data.products));
     return true;
   } catch (err) {
+    dispatch(getRecommendationProductsAction());
     console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());

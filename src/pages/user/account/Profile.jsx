@@ -38,7 +38,7 @@ export const Profile = () => {
 
   const userData = useSelector((state) => state.users.userAuthenticate);
 
-  const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
+  const isMobile = useMediaQuery({ maxDeviceWidth: 719 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,9 +126,9 @@ export const Profile = () => {
                 <SidebarAccount />
               </div>
             )}
-            <div className="w-full sm:w-[55%]">
+            <div className="w-full md:w-[55%]">
               <form
-                className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]"
+                className="mx-auto flex w-[90%] flex-col gap-5 md:w-[70%]"
                 onKeyDown={handleUserProfile}
               >
                 <div className="mx-auto w-fit">

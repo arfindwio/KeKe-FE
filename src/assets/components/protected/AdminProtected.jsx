@@ -3,10 +3,7 @@ import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 // Redux Actions
-import {
-  getUserAuthenticateAction,
-  logoutUserAction,
-} from "../../../redux/action/users/UsersAction";
+import { getUserAuthenticateAction } from "../../../redux/action/users/UsersAction";
 
 // Components
 import { LoadingSpinner } from "../loading/LoadingSpinner";
@@ -27,7 +24,6 @@ export const AdminProtected = ({ element }) => {
       if (token) {
         const user = await dispatch(getUserAuthenticateAction());
         if (!user) {
-          await dispatch(logoutUserAction());
           setAuthenticated(false);
         } else {
           setAuthenticated(true);

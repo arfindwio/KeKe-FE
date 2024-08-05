@@ -6,10 +6,7 @@ import { useDispatch } from "react-redux";
 import { LoadingSpinner } from "../loading/LoadingSpinner";
 
 // Redux Actions
-import {
-  getUserAuthenticateAction,
-  logoutUserAction,
-} from "../../../redux/action/users/UsersAction";
+import { getUserAuthenticateAction } from "../../../redux/action/users/UsersAction";
 
 // Cookies
 import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
@@ -26,7 +23,6 @@ export const TokenProtected = ({ element }) => {
       if (token) {
         const user = await dispatch(getUserAuthenticateAction());
         if (!user) {
-          await dispatch(logoutUserAction());
           setAuthenticated(false);
         } else {
           setAuthenticated(true);

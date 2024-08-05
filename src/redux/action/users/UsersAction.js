@@ -124,6 +124,7 @@ export const getUserAuthenticateAction = () => async (dispatch) => {
     dispatch(setUserAuthenticate(result.data.data.user));
     return true;
   } catch (err) {
+    dispatch(logoutUserAction());
     console.error("Error without response:", err);
   } finally {
     dispatch(endLoading());

@@ -40,7 +40,7 @@ export const Setting = () => {
     newPasswordConfirmation: "",
   });
 
-  const isMobile = useMediaQuery({ maxDeviceWidth: 539 });
+  const isMobile = useMediaQuery({ maxDeviceWidth: 719 });
 
   const handleInputChange = (e, field) => {
     const value = e.target.value;
@@ -144,9 +144,9 @@ export const Setting = () => {
                 <SidebarAccount />
               </div>
             )}
-            <div className="w-full sm:w-[55%]">
+            <div className="w-full md:w-[55%]">
               <form
-                className="mx-auto flex w-[90%] flex-col gap-5 sm:w-[70%]"
+                className="mx-auto flex w-[90%] flex-col gap-5 md:w-[70%]"
                 onKeyDown={handleChangePassword}
               >
                 <h4 className="w-full text-center text-xl font-bold sm:mb-3 sm:text-2xl">

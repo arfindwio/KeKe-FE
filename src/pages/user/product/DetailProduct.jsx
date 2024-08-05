@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 import toast from "react-hot-toast";
 
 // Components
@@ -17,7 +18,6 @@ import { Footer } from "../../../assets/components/footer/Footer";
 import {
   getProductByIdAction,
   getAllProductsAction,
-  getRecommendationProductsAction,
   getRecommendationProductsActionUser,
 } from "../../../redux/action/products/ProductsAction";
 import {
@@ -77,6 +77,8 @@ export const DetailProduct = () => {
   );
   const userData = useSelector((state) => state.users.userAuthenticate);
 
+  const minWidth320 = useMediaQuery({ minDeviceWidth: 320 });
+
   const token = CookieStorage.get(CookiesKeys.AuthToken);
   const filteredProduct = productData
     .filter((product) => product.id === productId)
@@ -105,11 +107,7 @@ export const DetailProduct = () => {
       );
       await dispatch(getReviewsByProductIdAction(productId, ""));
       await dispatch(getDiscussionsByProductIdAction(productId, ""));
-      if (token) {
-        await dispatch(getRecommendationProductsActionUser());
-      } else {
-        await dispatch(getRecommendationProductsAction());
-      }
+      if (token) return await dispatch(getRecommendationProductsActionUser());
     };
 
     fetchData();
@@ -428,7 +426,11 @@ export const DetailProduct = () => {
         {filteredProduct.length > 0 && (
           <div className="flex flex-col gap-3 border-t pt-4">
             <h5 className="text-lg font-semibold">Similar Product</h5>
-            <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            <div
+              className={`${
+                minWidth320 ? "grid-cols-2" : "grid-cols-1"
+              } grid h-fit w-full gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}
+            >
               {filteredProduct.map((product, index) => (
                 <ProductCard product={product} key={index} />
               ))}
@@ -439,7 +441,11 @@ export const DetailProduct = () => {
         {/* Recommendation Product Section */}
         <div className="flex flex-col gap-3 ">
           <h5 className="text-lg font-semibold">Recommendation Product</h5>
-          <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+          <div
+            className={`${
+              minWidth320 ? "grid-cols-2" : "grid-cols-1"
+            } grid h-fit w-full gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}
+          >
             {recommendationProductData
               ?.filter((product) => product.id !== Number(productId))
               .slice(0, 6)

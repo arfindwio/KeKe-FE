@@ -5,10 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 // Redux Actions
-import {
-  getUserAuthenticateAction,
-  logoutUserAction,
-} from "../../../redux/action/users/UsersAction";
+import { getUserAuthenticateAction } from "../../../redux/action/users/UsersAction";
 import { getAllNotificationsAction } from "../../../redux/action/notifications/NotificationsAction";
 
 // Image
@@ -37,9 +34,12 @@ export const Navbar = () => {
     const fetchData = async () => {
       if (token) {
         await dispatch(getAllNotificationsAction());
-        const user = await dispatch(getUserAuthenticateAction());
-        if (!user) {
-          await dispatch(logoutUserAction());
+        if (
+          location.pathname === "/" ||
+          location.pathname === "/product" ||
+          location.pathname.startsWith("/product/")
+        ) {
+          await dispatch(getUserAuthenticateAction());
         }
       }
     };
