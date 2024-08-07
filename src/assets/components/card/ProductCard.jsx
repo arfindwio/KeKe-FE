@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getProductByIdAction,
   getAllProductsAction,
-  getRecommendationProductsAction,
   getRecommendationProductsActionUser,
 } from "../../../redux/action/products/ProductsAction";
 import { getReviewsByProductIdAction } from "../../../redux/action/reviews/ReviewsAction";
@@ -48,11 +47,7 @@ export const ProductCard = ({ product }) => {
       );
       await dispatch(getReviewsByProductIdAction(product.id, ""));
       await dispatch(getDiscussionsByProductIdAction(product.id, ""));
-      if (token) {
-        await dispatch(getRecommendationProductsActionUser());
-      } else {
-        await dispatch(getRecommendationProductsAction());
-      }
+      if (token) return await dispatch(getRecommendationProductsActionUser());
     }
   };
 

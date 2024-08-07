@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 
 // Redux Actions
 import {
@@ -24,8 +25,11 @@ export const CartCard = ({ cart }) => {
     quantity: cart.quantity,
     note: cart.note || "",
   });
+  const filterTimeoutRef = useRef(null);
 
   const loadingCart = useSelector((state) => state.carts.loading);
+
+  const minWidth370 = useMediaQuery({ minDeviceWidth: 370 });
 
   useEffect(() => {
     if (
@@ -46,11 +50,13 @@ export const CartCard = ({ cart }) => {
           await dispatch(getAllCartsByAuthAction());
         }
       };
-      handleSave();
-      prevQuantityRef.current = inputCart.quantity;
-      prevCartIdRef.current = cart.id;
+      filterTimeoutRef.current = setTimeout(async () => {
+        handleSave();
+        prevQuantityRef.current = inputCart.quantity;
+        prevCartIdRef.current = cart.id;
+      }, 2000);
     }
-  }, [inputCart.quantity, cart.id, dispatch]);
+  }, [inputCart.quantity, cart.id]);
 
   const handleSaveNote = async () => {
     const editCart = await dispatch(putEditCartByIdAction(inputCart, cart.id));
@@ -123,7 +129,7 @@ export const CartCard = ({ cart }) => {
         <CartCardSkeleton />
       ) : (
         <>
-          <div className="flex w-full justify-between">
+          <div className={`${!minWidth370 && "pr-[30%]"} flex w-full`}>
             <div className="flex h-20 min-h-[5rem] w-20 min-w-[5rem] rounded-md border border-neutral-4 shadow-sm sm:h-24 sm:min-h-[6rem] sm:w-24 sm:min-w-[6rem]">
               <img
                 src={cart.product?.image[0]?.image}
@@ -131,10 +137,14 @@ export const CartCard = ({ cart }) => {
                 className="h-full w-full object-contain"
               />
             </div>
-            <div className="flex w-full flex-col gap-1 pl-2 sm:gap-0 lg:flex-row">
+            <div
+              className={`${
+                !minWidth370 && "pr-3"
+              } flex w-full flex-col gap-1 pl-2 sm:gap-0 lg:flex-row`}
+            >
               <div className="flex w-full flex-col lg:w-[65%] xl:w-[75%]">
                 <h5 className="lg:text-md truncate text-sm font-semibold sm:text-xl xl:text-xl">
-                  {cart.product.productName}
+                  {cart.product.productName}aaaaaaaaaaaa aaaaaaaa
                 </h5>
                 <div className="flex flex-col md:block lg:hidden ">
                   <h5 className="text-sm font-bold sm:text-lg">
@@ -150,7 +160,7 @@ export const CartCard = ({ cart }) => {
                     </h5>
                   )}
                 </div>
-                <div className="flex gap-1">
+                <div className="flex flex-wrap gap-1">
                   <p className="w-fit rounded-sm bg-neutral-4 px-1 text-xs font-light text-neutral-5">
                     {cart.color?.colorName}
                   </p>
