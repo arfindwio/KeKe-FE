@@ -49,6 +49,7 @@ export const Payment = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [isProcessing, setIsProcessing] = useState(false);
   const [qrCode, setQrCode] = useState(null);
   const [virtualAccount, setVirtualAccount] = useState(null);
   const [billPayment, setBillPayment] = useState({
@@ -171,6 +172,9 @@ export const Payment = () => {
   };
 
   const handlePay = async () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     const loadingToastId = showLoadingToast("Loading...");
 
     if (paymentInput.methodPayment === "Credit Card") {
@@ -280,6 +284,7 @@ export const Payment = () => {
         });
       }
     }
+    setIsProcessing(false);
   };
 
   const renderBankTransfer = () => {
@@ -461,11 +466,11 @@ export const Payment = () => {
   return (
     <>
       <Navbar />
-      <div className="flex w-full flex-col gap-2 border-b bg-neutral-5 pb-4 shadow-md sm:gap-4 sm:px-10 sm:pt-24 lg:px-20">
-        <div className="flex items-center gap-2 bg-primary-1 py-1 sm:bg-neutral-5 sm:py-0">
+      <div className="flex w-full flex-col gap-2 border-b bg-neutral-5 pb-4 pt-20 shadow-md sm:gap-4 sm:px-10 sm:pt-24 lg:px-20">
+        <div className="flex items-center gap-2 py-1 sm:bg-neutral-5 sm:py-0">
           <IoArrowBack
             size={25}
-            className="w-fit cursor-pointer pl-6 text-neutral-5 sm:hidden"
+            className="w-fit cursor-pointer pl-6 text-neutral-1 sm:hidden"
             onClick={() => navigate.back()}
           />
           <h2 className="hidden text-xl font-bold text-neutral-1 sm:block">
@@ -475,9 +480,7 @@ export const Payment = () => {
             size={20}
             className="hidden text-neutral-3 sm:block"
           />
-          <h2 className="text-xl font-bold text-neutral-5 sm:px-0 sm:text-neutral-1">
-            Payment
-          </h2>
+          <h2 className="text-xl font-bold text-neutral-1 sm:px-0">Payment</h2>
           <TbArrowBadgeRightFilled
             size={20}
             className="hidden text-neutral-3 sm:block"
@@ -604,6 +607,7 @@ export const Payment = () => {
                 <button
                   className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
                   onClick={() => handlePay()}
+                  disabled={isProcessing}
                 >
                   Pay
                 </button>
@@ -645,6 +649,7 @@ export const Payment = () => {
                 <button
                   className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
                   onClick={() => handlePay()}
+                  disabled={isProcessing}
                 >
                   Pay
                 </button>
@@ -724,6 +729,7 @@ export const Payment = () => {
                 <button
                   className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
                   onClick={() => handlePay()}
+                  disabled={isProcessing}
                 >
                   Pay
                 </button>
@@ -765,6 +771,7 @@ export const Payment = () => {
                 <button
                   className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
                   onClick={() => handlePay()}
+                  disabled={isProcessing}
                 >
                   Pay
                 </button>
@@ -806,6 +813,7 @@ export const Payment = () => {
                 <button
                   className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
                   onClick={() => handlePay()}
+                  disabled={isProcessing}
                 >
                   Pay
                 </button>
@@ -882,6 +890,7 @@ export const Payment = () => {
                 <button
                   className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
                   onClick={() => handlePay()}
+                  disabled={isProcessing}
                 >
                   Pay
                 </button>
@@ -923,6 +932,7 @@ export const Payment = () => {
                 <button
                   className="mt-6 w-[90%] rounded-xl bg-primary-1 py-4 text-center text-neutral-5 hover:bg-primary-hover"
                   onClick={() => handlePay()}
+                  disabled={isProcessing}
                 >
                   Pay
                 </button>
@@ -940,12 +950,12 @@ export const Payment = () => {
       {/* Modal QRCODE */}
       {qrCode && (
         <div className="fixed top-0 z-50 flex h-screen w-screen items-center justify-center bg-neutral-1 bg-opacity-50">
-          <div className="flex w-[90%] flex-col gap-3 rounded-md bg-neutral-5 px-6 py-4 shadow-sm shadow-neutral-5 sm:w-[60%] lg:w-[30%]">
+          <div className="flex max-h-[90vh] w-[90%] flex-col gap-3 overflow-auto rounded-md bg-neutral-5 px-6 py-4 shadow-sm shadow-neutral-5 sm:w-[70%] lg:w-[30%]">
             <h1 className="text-center text-xl font-bold">Gopay</h1>
             <img
               src={qrCode}
               alt="QR CODE"
-              className="mx-auto w-full border object-contain shadow-md md:w-[80%] lg:w-[70%] xl:w-[60%]"
+              className="mx-auto w-[60%] border object-contain shadow-md lg:w-[70%] xl:w-[60%]"
             />
             <div className="flex flex-col">
               <h5 className="flex items-center gap-1 text-base font-semibold text-blue-500">
@@ -1064,7 +1074,7 @@ export const Payment = () => {
       {/* Modal Counter */}
       {paymentCounter.paymentCode && (
         <div className="fixed top-0 z-50 flex h-screen w-screen items-center justify-center bg-neutral-1 bg-opacity-50">
-          <div className="flex h-full w-[90%] flex-col gap-3 overflow-auto rounded-md bg-neutral-5 px-6 py-4 shadow-sm shadow-neutral-5 sm:w-[90%] md:h-auto lg:w-[70%] xl:w-[60%]">
+          <div className="gap-3overflow-auto flex max-h-[90vh] w-[70%] flex-col rounded-md bg-neutral-5 px-6 py-4 shadow-sm shadow-neutral-5 md:h-auto lg:w-[50%] xl:w-[40%]">
             <h1 className="text-center text-xl font-bold">Counter</h1>
             <div className="border border-neutral-3 p-2 text-center">
               <h5 className="text-sm font-semibold">Payment Code</h5>
