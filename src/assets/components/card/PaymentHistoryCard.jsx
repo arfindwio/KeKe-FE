@@ -37,10 +37,12 @@ export const PaymentHistoryCard = ({ payment }) => {
             </div>
             <p className="text-sm font-medium">{payment?.createdAt}</p>
             <p
-              className={`${
+              className={` ${
                 payment?.paymentStatus === "Paid"
                   ? "bg-alert-green"
-                  : "bg-alert-red"
+                  : payment?.paymentStatus === "Unpaid"
+                    ? "bg-alert-red"
+                    : "bg-slate-400"
               } rounded-sm px-2 py-[2px] text-xs text-neutral-5`}
             >
               {payment?.paymentStatus}
