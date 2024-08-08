@@ -10,7 +10,6 @@ import { Dialog, DialogBody } from "@material-tailwind/react";
 
 // Icons
 import { LuHome } from "react-icons/lu";
-import { MdOutlineAirplaneTicket } from "react-icons/md";
 import { LiaClipboardListSolid } from "react-icons/lia";
 import { FiBell } from "react-icons/fi";
 import { PiUserCircle } from "react-icons/pi";

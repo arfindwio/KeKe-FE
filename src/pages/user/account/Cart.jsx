@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 // Redux Actions
 import { getAllCartsByAuthAction } from "../../../redux/action/carts/CartsAction";
@@ -23,13 +24,15 @@ export const Cart = () => {
     (state) => state.products.recommendationProducts,
   );
 
+  const minWidth320 = useMediaQuery({ minDeviceWidth: 320 });
+
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(getAllCartsByAuthAction());
     };
 
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
@@ -71,7 +74,11 @@ export const Cart = () => {
           <h1 className="text-xl font-semibold text-neutral-1">
             Recommended For You
           </h1>
-          <div className="grid h-fit w-full grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+          <div
+            className={`
+          ${minWidth320 ? "grid-cols-2" : "grid-cols-1"}
+          grid h-fit w-full gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}
+          >
             {recommendationProductData.slice(0, 6).map((product, index) => (
               <ProductCard product={product} key={index} />
             ))}
