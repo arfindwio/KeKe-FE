@@ -29,7 +29,8 @@ export const CartCard = ({ cart }) => {
 
   const loadingCart = useSelector((state) => state.carts.loading);
 
-  const minWidth370 = useMediaQuery({ minDeviceWidth: 370 });
+  const minWidth370 = useMediaQuery({ minDeviceWidth: 719 });
+  const maxWidth1090 = useMediaQuery({ maxDeviceWidth: 1090 });
 
   useEffect(() => {
     if (
@@ -129,22 +130,26 @@ export const CartCard = ({ cart }) => {
         <CartCardSkeleton />
       ) : (
         <>
-          <div className={`${!minWidth370 && "pr-[30%]"} flex w-full`}>
-            <div className="flex h-20 min-h-[5rem] w-20 min-w-[5rem] rounded-md border border-neutral-4 shadow-sm sm:h-24 sm:min-h-[6rem] sm:w-24 sm:min-w-[6rem]">
-              <img
-                src={cart.product?.image[0]?.image}
-                alt="Product"
-                className="h-full w-full object-contain"
-              />
-            </div>
+          {/* <div className={`${!minWidth370 && "pr-[30%]"} flex w-full`}> */}
+          <div className={`flex w-full`}>
+            {/* <div className="flex h-20 min-h-[5rem] w-20 min-w-[5rem] rounded-md border border-neutral-4 shadow-sm sm:h-24 sm:min-h-[6rem] sm:w-24 sm:min-w-[6rem]"> */}
+            <img
+              src={cart.product?.image[0]?.image}
+              alt="Product"
+              className="aspect-square h-fit w-[30%] border border-neutral-4 object-contain sm:w-[20%] lg:w-[15%]"
+            />
+            {/* </div> */}
+            {/* <div
+              className={`${!minWidth370 && "pr-3"} ${
+                maxWidth1090 && "lg:pr-[20%] xl:pr-0"
+              }  flex w-full flex-col gap-1 pl-2 sm:gap-0 lg:flex-row`}
+            > */}
             <div
-              className={`${
-                !minWidth370 && "pr-3"
-              } flex w-full flex-col gap-1 pl-2 sm:gap-0 lg:flex-row`}
+              className={`flex w-[70%] flex-col gap-1 pl-2 sm:w-[80%] sm:gap-0 lg:w-[85%] lg:flex-row`}
             >
               <div className="flex w-full flex-col lg:w-[65%] xl:w-[75%]">
                 <h5 className="lg:text-md truncate text-sm font-semibold sm:text-xl xl:text-xl">
-                  {cart.product.productName}aaaaaaaaaaaa aaaaaaaa
+                  {cart.product.productName} aaaaaaaaaaaaaaaa aaaaaaaaaaaaa
                 </h5>
                 <div className="flex flex-col md:block lg:hidden ">
                   <h5 className="text-sm font-bold sm:text-lg">
