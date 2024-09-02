@@ -173,7 +173,7 @@ export const SpecialOfferCard = () => {
           SPECIAL OFFER
         </h1>
         <div className="flex flex-col justify-between gap-4 rounded-md border border-neutral-4 bg-slate-100 p-4 md:flex-row md:gap-0">
-          {loadingProduct ? (
+          {!specialOfferData && loadingProduct ? (
             <SpecialOfferCardSkeleton />
           ) : (
             <>

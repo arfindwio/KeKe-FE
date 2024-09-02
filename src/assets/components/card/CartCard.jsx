@@ -149,7 +149,7 @@ export const CartCard = ({ cart }) => {
             >
               <div className="flex w-full flex-col lg:w-[65%] xl:w-[75%]">
                 <h5 className="lg:text-md truncate text-sm font-semibold sm:text-xl xl:text-xl">
-                  {cart.product.productName} aaaaaaaaaaaaaaaa aaaaaaaaaaaaa
+                  {cart.product.productName}
                 </h5>
                 <div className="flex flex-col md:block lg:hidden ">
                   <h5 className="text-sm font-bold sm:text-lg">

@@ -33,6 +33,9 @@ export const reduxPutChangePassword = (input) => {
 export const reduxGetAllUsers = async () => {
   return await http.get(`${API_ENDPOINT.USERS}`);
 };
+export const reduxPutChangeRoleUser = async (input, userId) => {
+  return await http.put(`${API_ENDPOINT.USERS}/role/${userId}`, input);
+};
 
 export const reduxPutUpdatePassword = async (input, token) => {
   return await http.put(`${API_ENDPOINT.USERS}?token=${token}`, input);

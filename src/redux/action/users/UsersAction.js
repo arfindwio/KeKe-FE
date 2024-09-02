@@ -8,6 +8,7 @@ import {
   reduxPutChangePassword,
   reduxGetAllUsers,
   reduxGetUserByAuth,
+  reduxPutChangeRoleUser,
 } from "../../../services/users/Users";
 import {
   setUsers,
@@ -37,6 +38,7 @@ export const postLoginUserAction = (input) => async (dispatch) => {
   try {
     dispatch(startLoading());
     const result = await reduxPostLoginUser(input);
+
     CookieStorage.set(CookiesKeys.AuthToken, result.data.data.token);
     return true;
   } catch (err) {
@@ -136,6 +138,19 @@ export const getAllUsersAction = () => async (dispatch) => {
     dispatch(startLoading());
     const result = await reduxGetAllUsers();
     dispatch(setUsers(result.data.data.users));
+    return true;
+  } catch (err) {
+    console.error("Error without response:", err);
+  } finally {
+    dispatch(endLoading());
+  }
+};
+
+export const putChangeRoleUserAction = (input, userId) => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+    await reduxPutChangeRoleUser(input, userId);
+
     return true;
   } catch (err) {
     console.error("Error without response:", err);

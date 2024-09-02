@@ -75,7 +75,7 @@ export const ReplyCard = ({ reply, productId }) => {
       <div
         onMouseEnter={() => setIsButtonOpen(true)}
         onMouseLeave={() => setIsButtonOpen(false)}
-        className="relative flex w-full items-start justify-between pl-4"
+        className="relative mt-2 flex w-full items-start justify-between pl-4"
       >
         <div className="flex w-fit flex-col gap-1">
           <div className="flex flex-wrap items-center md:gap-2">
@@ -83,7 +83,11 @@ export const ReplyCard = ({ reply, productId }) => {
               {reply.user.userProfile.fullName}
               <span
                 className={`${
-                  reply.user.role === "Admin" ? "bg-blue-400" : "bg-slate-400"
+                  reply.user.role === "Owner"
+                    ? "bg-yellow-700"
+                    : reply.user.role === "Admin"
+                      ? "bg-blue-400"
+                      : "bg-slate-400"
                 }  ms-1 rounded-sm px-2 py-[2px] text-[10px] font-normal text-neutral-5`}
               >
                 {reply.user.role}
@@ -161,7 +165,9 @@ export const ReplyCard = ({ reply, productId }) => {
               {reply.replyMessage}
             </p>
           </div>
-          {(userData.id === reply.user.id || userData.role === "Admin") &&
+          {(userData.id === reply.user.id ||
+            userData.role === "Owner" ||
+            userData.role === "Admin") &&
             (isButtonOpen || isMenuOpen) && (
               <button
                 data-ripple-light="true"

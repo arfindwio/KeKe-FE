@@ -7,6 +7,7 @@ import {
   getProductByIdAction,
   getAllProductsAction,
   getRecommendationProductsActionUser,
+  getRecommendationProductsAction,
 } from "../../../redux/action/products/ProductsAction";
 import { getReviewsByProductIdAction } from "../../../redux/action/reviews/ReviewsAction";
 import { getDiscussionsByProductIdAction } from "../../../redux/action/discussions/DiscussionsAction";
@@ -48,89 +49,86 @@ export const ProductCard = ({ product }) => {
       await dispatch(getReviewsByProductIdAction(product.id, ""));
       await dispatch(getDiscussionsByProductIdAction(product.id, ""));
       if (token) return await dispatch(getRecommendationProductsActionUser());
+      await dispatch(getRecommendationProductsAction());
     }
   };
 
   return (
     <>
-      {loadingProduct ? (
-        <ProductCardSkeleton />
-      ) : (
-        <Link
-          to={product.stock > 0 && `/product/${product.id}`}
-          className={`h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md`}
-          onClick={handleClick}
+      <Link
+        to={product.stock > 0 && `/product/${product.id}`}
+        className={`h-fit w-full overflow-hidden rounded-xl border border-neutral-4 bg-neutral-5 shadow-md`}
+        onClick={handleClick}
+      >
+        <div className="relative h-[55%] w-full ">
+          <img
+            src={product?.image[0]?.image}
+            alt="Product"
+            className="h-full w-full object-cover"
+          />
+          {product.stock < 1 && (
+            <p className="absolute bottom-0 left-0 right-0 top-0 flex flex-wrap items-center justify-center bg-neutral-1 bg-opacity-[.85] text-xl capitalize text-neutral-5">
+              Sold Out
+            </p>
+          )}
+        </div>
+        <div
+          className={`${
+            product.review.length === 0 && product.soldCount === 0 && "pb-8"
+          } flex h-fit w-full flex-col gap-1 p-3`}
         >
-          <div className="relative h-[55%] w-full ">
-            <img
-              src={product?.image[0]?.image}
-              alt="Product"
-              className="h-full w-full object-cover"
-            />
-            {product.stock < 1 && (
-              <p className="absolute bottom-0 left-0 right-0 top-0 flex flex-wrap items-center justify-center bg-neutral-1 bg-opacity-[.85] text-xl capitalize text-neutral-5">
-                Sold Out
+          <p className="truncate text-sm font-semibold text-primary-1">
+            {product.category?.categoryName}
+          </p>
+          <p className="truncate break-all text-sm text-neutral-3">
+            {product.productName}
+          </p>
+          <div className={`flex flex-col break-all text-base font-bold`}>
+            <p className={`${product.promotion && "text-neutral-1"}`}>
+              IDR {product.price.toLocaleString()}
+            </p>
+            {product.promotion && (
+              <p className="break-all text-sm font-semibold text-alert-red">
+                <span className="mr-1 text-xs font-normal text-neutral-3 line-through">
+                  IDR{" "}
+                  {Math.floor(
+                    product.price / (1 - product.promotion.discount),
+                  ).toLocaleString()}
+                </span>
+                {product.promotion.discount * 100}%
               </p>
             )}
           </div>
           <div
             className={`${
-              product.review.length === 0 && product.soldCount === 0 && "pb-8"
-            } flex h-fit w-full flex-col gap-1 p-3`}
+              !product.promotion &&
+              (product.review || !product.soldCount === 0) &&
+              "pb-5"
+            } flex items-center gap-2`}
           >
-            <p className="truncate text-sm font-semibold text-primary-1">
-              {product.category?.categoryName}
-            </p>
-            <p className="truncate break-all text-sm text-neutral-3">
-              {product.productName}
-            </p>
-            <div className={`flex flex-col break-all text-base font-bold`}>
-              <p className={`${product.promotion && "text-neutral-1"}`}>
-                IDR {product.price.toLocaleString()}
+            {product.review.length > 0 && (
+              <>
+                <FaStar size={18} className="text-alert-yellow" />
+                <p className="text-sm font-light text-neutral-2">
+                  {averageRating(product.review).toFixed(1)}
+                </p>
+                <p className="text-sm font-light text-neutral-3 opacity-80">
+                  ({product.review.length})
+                </p>
+              </>
+            )}
+            {product.soldCount > 0 && (
+              <p
+                className={`${
+                  product.review.length > 0 && "border-l-2 pl-2"
+                }  text-sm font-light text-neutral-2`}
+              >
+                {product.soldCount} Sold
               </p>
-              {product.promotion && (
-                <p className="break-all text-sm font-semibold text-alert-red">
-                  <span className="mr-1 text-xs font-normal text-neutral-3 line-through">
-                    IDR{" "}
-                    {Math.floor(
-                      product.price / (1 - product.promotion.discount),
-                    ).toLocaleString()}
-                  </span>
-                  {product.promotion.discount * 100}%
-                </p>
-              )}
-            </div>
-            <div
-              className={`${
-                !product.promotion &&
-                (product.review || !product.soldCount === 0) &&
-                "pb-5"
-              } flex items-center gap-2`}
-            >
-              {product.review.length > 0 && (
-                <>
-                  <FaStar size={18} className="text-alert-yellow" />
-                  <p className="text-sm font-light text-neutral-2">
-                    {averageRating(product.review).toFixed(1)}
-                  </p>
-                  <p className="text-sm font-light text-neutral-3 opacity-80">
-                    ({product.review.length})
-                  </p>
-                </>
-              )}
-              {product.soldCount > 0 && (
-                <p
-                  className={`${
-                    product.review.length > 0 && "border-l-2 pl-2"
-                  }  text-sm font-light text-neutral-2`}
-                >
-                  {product.soldCount} Sold
-                </p>
-              )}
-            </div>
+            )}
           </div>
-        </Link>
-      )}
+        </div>
+      </Link>
     </>
   );
 };

@@ -165,6 +165,7 @@ export const DiscussionCard = ({ discussion, productId }) => {
             </div>
 
             {(userData.id === discussion.user.id ||
+              userData.role === "Owner" ||
               userData.role === "Admin") &&
               (isButtonOpen || isMenuOpen) && (
                 <button
@@ -291,7 +292,7 @@ export const DiscussionCard = ({ discussion, productId }) => {
             </DialogHeader>
             <DialogBody className="mx-auto flex w-[80%] flex-col items-center justify-center gap-4 text-center text-lg">
               <RiDeleteBin5Line size={100} className="text-red-800" />
-              <p>Are you sure you want to delete this Reply?</p>
+              <p>Are you sure you want to delete this Discussion?</p>
             </DialogBody>
             <DialogFooter className="flex items-center justify-center gap-2">
               <button

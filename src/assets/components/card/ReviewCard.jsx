@@ -21,7 +21,7 @@ export const ReviewCard = ({ review, index, totalReviews }) => {
           : "col-span-2 md:col-span-1"
       } flex w-full items-start gap-2 rounded-md border p-4 shadow-sm lg:gap-4`}
     >
-      {!loadingReview ? (
+      {loadingReview ? (
         <ReviewCardSkeleton />
       ) : (
         <>

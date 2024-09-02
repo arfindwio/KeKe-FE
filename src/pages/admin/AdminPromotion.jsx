@@ -15,6 +15,7 @@ import { AdminSidebar } from "../../assets/components/admin/AdminSidebar";
 import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
 import { AdminCard } from "../../assets/components/admin/AdminCard";
 import { Pagination } from "../../assets/components/pagination/Pagination";
+import { AdminDataSkeleton } from "../../assets/components/skeleton/admin/AdminDataSkeleton";
 
 // Helper
 import {
@@ -51,6 +52,7 @@ export const AdminPromotion = () => {
   });
   const [promotionId, setPromotionId] = useState(null);
 
+  const loadingData = useSelector((state) => state.promotions?.loading);
   const promotionData = useSelector(
     (state) => state.promotions?.promotions?.promotions,
   );
@@ -239,7 +241,13 @@ export const AdminPromotion = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {promotionData?.length > 0 ? (
+                  {loadingData ? (
+                    Array.from({ length: 5 }).map((_, index) => (
+                      <tr key={index} className="animate-pulse">
+                        <AdminDataSkeleton tdCount={5} />
+                      </tr>
+                    ))
+                  ) : promotionData?.length > 0 ? (
                     promotionData?.map((promotion, index) => (
                       <tr
                         key={index}

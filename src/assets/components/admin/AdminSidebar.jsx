@@ -35,6 +35,16 @@ export const AdminSidebar = () => {
             Dashboard
           </Link>
           <Link
+            to={"/admin/user"}
+            className={`${
+              location.pathname === "/admin/user"
+                ? "bg-neutral-5 bg-opacity-50 font-semibold"
+                : "hover:bg-neutral-5 hover:bg-opacity-20"
+            } px-6 py-3 text-lg`}
+          >
+            User
+          </Link>
+          <Link
             to={"/admin/promotion"}
             className={`${
               location.pathname === "/admin/promotion"

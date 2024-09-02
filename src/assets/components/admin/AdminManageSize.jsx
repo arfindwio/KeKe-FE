@@ -65,7 +65,7 @@ export const AdminManageSize = ({
       // toast.dismiss(loadingToastId);
 
       if (!createSize) {
-        showErrorToast("Create Size Failed");
+        // showErrorToast("Create Size Failed");
       } else {
         // const addedSize = productData.map((product) => {
         //   if (product.id === submitProduct.productId) {
@@ -104,7 +104,7 @@ export const AdminManageSize = ({
       // toast.dismiss(loadingToastId);
 
       if (!editSize) {
-        showErrorToast("Edit Size Failed");
+        // showErrorToast("Edit Size Failed");
       } else {
         completeSubmit(null, "edit");
       }
@@ -135,7 +135,9 @@ export const AdminManageSize = ({
 
     // toast.dismiss(loadingToastId);
 
-    if (!deleteSize) showErrorToast("Delete Size Failed");
+    if (!deleteSize) {
+      // showErrorToast("Delete Size Failed");
+    }
 
     if (deleteSize) {
       const filteredProduct = {

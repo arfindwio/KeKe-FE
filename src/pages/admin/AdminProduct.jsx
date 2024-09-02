@@ -25,6 +25,7 @@ import { AdminManageImage } from "../../assets/components/admin/AdminManageImage
 import { AdminManageSize } from "../../assets/components/admin/AdminManageSize";
 import { AdminManageColor } from "../../assets/components/admin/AdminManageColor";
 import { Pagination } from "../../assets/components/pagination/Pagination";
+import { AdminDataSkeleton } from "../../assets/components/skeleton/admin/AdminDataSkeleton";
 
 // Material Tailwind
 import {
@@ -69,6 +70,7 @@ export const AdminProduct = () => {
   });
   const [submitProduct, setSubmitProduct] = useState(null);
 
+  const loadingData = useSelector((state) => state.products.loading);
   const productData = useSelector((state) => state.products.products.products);
   const filterProduct = useSelector((state) => state.products.filterProduct);
   const paginationProduct = useSelector(
@@ -85,7 +87,7 @@ export const AdminProduct = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getAllProductsAction(""));
+      await dispatch(getAllProductsAction("?f=newest&limit=10"));
       await dispatch(getAllPromotionsAdminAction());
     };
 
@@ -192,7 +194,7 @@ export const AdminProduct = () => {
 
     if (deleteProduct) {
       showSuccessToast("Delete Product Successful");
-      await dispatch(getAllProductsAction(""));
+      await dispatch(getAllProductsAction("?f=newest&limit=10"));
       setOpenDelete(false);
     }
   };
@@ -200,11 +202,11 @@ export const AdminProduct = () => {
   const handleSubmitProduct = async (completeSubmit, type) => {
     setSubmitProduct(completeSubmit);
     if (type === "create") {
-      await dispatch(getAllProductsAction(""));
+      await dispatch(getAllProductsAction("?f=newest&limit=10"));
       setOpenCreate(false);
     }
     if (type === "edit") {
-      await dispatch(getAllProductsAction(""));
+      await dispatch(getAllProductsAction("?f=newest&limit=10"));
       setOpenEdit(false);
     }
   };
@@ -275,7 +277,13 @@ export const AdminProduct = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {productData?.length > 0 ? (
+                  {loadingData ? (
+                    Array.from({ length: 5 }).map((_, index) => (
+                      <tr key={index} className="animate-pulse">
+                        <AdminDataSkeleton tdCount={12} />
+                      </tr>
+                    ))
+                  ) : productData?.length > 0 ? (
                     productData?.map((product, index) => (
                       <tr
                         key={index}
@@ -405,7 +413,7 @@ export const AdminProduct = () => {
         open={openCreate}
         size={"xl"}
         handler={() => setOpenCreate(!openCreate)}
-        className="h-full overflow-auto"
+        className="max-h-[80vh] overflow-auto"
       >
         <DialogHeader className="flex items-center justify-between">
           <h5 className="text-xl font-bold">Create Product</h5>
@@ -417,10 +425,10 @@ export const AdminProduct = () => {
         </DialogHeader>
         <DialogBody className="flex flex-col gap-4">
           <form
-            className="flex items-start justify-between"
+            className="flex flex-col items-start sm:flex-row sm:justify-between"
             onKeyDown={handleCreate}
           >
-            <div className="flex w-[49%] flex-col gap-4">
+            <div className="flex w-full flex-col gap-4 sm:w-[49%]">
               <div className="flex w-full flex-col">
                 <p className="text-neutral-1">Product Image</p>
                 <div className="flex flex-wrap gap-2">
@@ -483,7 +491,7 @@ export const AdminProduct = () => {
                 />
               </div>
             </div>
-            <div className="flex w-[49%] flex-col gap-4">
+            <div className="flex w-full flex-col gap-4 sm:w-[49%]">
               <div className="flex w-full flex-col">
                 <label htmlFor="stock" className="text-neutral-1">
                   Stock
@@ -527,7 +535,7 @@ export const AdminProduct = () => {
                   name="promotionId"
                   value={inputProduct.promotionId}
                   onChange={handleInputChange}
-                  className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none"
+                  className="border-1 rounded-2xl border px-4 py-3 text-neutral-2 outline-none "
                 >
                   <option selected hidden>
                     {promotionData?.length > 0 ? "Choose Promotion" : "null"}
@@ -545,7 +553,7 @@ export const AdminProduct = () => {
 
           <div className="flex flex-col gap-3 pt-4">
             <h5 className="text-xl font-bold text-neutral-1">Create Size</h5>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {Array.from({ length: count.size }).map((_, index) => (
                 <AdminManageSize
                   type={"create"}
@@ -573,7 +581,7 @@ export const AdminProduct = () => {
 
           <div className="flex flex-col gap-3 pt-4">
             <h5 className="text-xl font-bold text-neutral-1">Create Color</h5>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {Array.from({ length: count.color }).map((_, index) => (
                 <AdminManageColor
                   type={"create"}
@@ -622,7 +630,7 @@ export const AdminProduct = () => {
         open={openEdit}
         size={"xl"}
         handler={() => setOpenEdit(!openEdit)}
-        className="h-full overflow-auto"
+        className="max-h-[80vh] overflow-auto"
       >
         <DialogHeader className="flex items-center justify-between">
           <h5 className="text-xl font-bold">Edit Category</h5>
@@ -634,10 +642,10 @@ export const AdminProduct = () => {
         </DialogHeader>
         <DialogBody>
           <form
-            className="flex items-start justify-between"
+            className="flex flex-col items-start sm:flex-row sm:justify-between"
             onKeyDown={handleEdit}
           >
-            <div className="flex w-[49%] flex-col gap-4">
+            <div className="flex w-full flex-col gap-4 sm:w-[49%]">
               <div className="flex w-full flex-col">
                 <p className="text-neutral-1">Product Image</p>
                 <div className="flex flex-wrap gap-2">
@@ -660,7 +668,7 @@ export const AdminProduct = () => {
                   {Array.from({ length: 4 - filterProduct?.image?.length }).map(
                     (_, index) => (
                       <AdminManageImage
-                        key={index}
+                        key={index + filterProduct?.image?.length}
                         type={"create"}
                         image={[]}
                         afterSubmit={{
@@ -718,7 +726,7 @@ export const AdminProduct = () => {
                 />
               </div>
             </div>
-            <div className="flex w-[49%] flex-col gap-4">
+            <div className="flex w-full flex-col gap-4 sm:w-[49%]">
               <div className="flex w-full flex-col">
                 <label htmlFor="stock" className="text-neutral-1">
                   Stock
@@ -780,7 +788,7 @@ export const AdminProduct = () => {
 
           <div className="flex flex-col gap-3 pt-4">
             <h5 className="text-xl font-bold text-neutral-1">Edit Size</h5>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {filterProduct &&
                 filterProduct?.size &&
                 filterProduct?.size?.map((size, index) => (
@@ -819,7 +827,7 @@ export const AdminProduct = () => {
 
           <div className="flex flex-col gap-3 pt-4">
             <h5 className="text-xl font-bold text-neutral-1">Edit Color</h5>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {filterProduct &&
                 filterProduct?.color &&
                 filterProduct?.color?.map((color, index) => (
