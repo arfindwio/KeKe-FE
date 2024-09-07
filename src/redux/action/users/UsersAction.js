@@ -133,11 +133,11 @@ export const getUserAuthenticateAction = () => async (dispatch) => {
   }
 };
 
-export const getAllUsersAction = () => async (dispatch) => {
+export const getAllUsersAction = (query) => async (dispatch) => {
   try {
     dispatch(startLoading());
-    const result = await reduxGetAllUsers();
-    dispatch(setUsers(result.data.data.users));
+    const result = await reduxGetAllUsers(query);
+    dispatch(setUsers(result.data.data));
     return true;
   } catch (err) {
     console.error("Error without response:", err);

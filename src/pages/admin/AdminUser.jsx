@@ -22,18 +22,14 @@ import {
   showSuccessToast,
 } from "../../helper/ToastHelper";
 
-// Icons
-import { MdEdit } from "react-icons/md";
-import { RiDeleteBin5Line } from "react-icons/ri";
-import { IoMdClose } from "react-icons/io";
-
 export const AdminUser = () => {
   const dispatch = useDispatch();
 
   const [openNavbar, setOpenNavbar] = useState(false);
 
   const loadingData = useSelector((state) => state.users.loading);
-  const userData = useSelector((state) => state.users.users);
+  const paginationUser = useSelector((state) => state.users.users.pagination);
+  const userData = useSelector((state) => state.users.users.users);
 
   openNavbar
     ? (document.body.style.overflow = "hidden")
@@ -52,7 +48,9 @@ export const AdminUser = () => {
     }
     const loadingToastId = showLoadingToast("Loading...");
 
-    const editPayment = await dispatch(putChangeRoleUserAction(value, userId));
+    const editPayment = await dispatch(
+      putChangeRoleUserAction({ role: value }, userId),
+    );
 
     toast.dismiss(loadingToastId);
 
@@ -60,7 +58,25 @@ export const AdminUser = () => {
 
     if (editPayment) {
       showSuccessToast("Edit User Successful");
-      await dispatch(getAllUsersAction());
+      await dispatch(getAllUsersAction(""));
+    }
+  };
+
+  const handleQuery = (formatLink) => {
+    dispatch(getAllUsersAction(formatLink));
+  };
+
+  const getPageValue = () => {
+    if (paginationUser?.links?.next) {
+      const url = paginationUser?.links?.next;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page") - 2);
+    } else if (paginationUser?.links?.prev) {
+      const url = paginationUser?.links?.prev;
+      const urlObj = new URL(url);
+      return Number(urlObj.searchParams.get("page"));
+    } else {
+      return 0;
     }
   };
 
@@ -106,12 +122,11 @@ export const AdminUser = () => {
                           index % 2 === 0 ? "bg-opacity-20" : "bg-opacity-60"
                         } border-b-2 bg-slate-200`}
                       >
-                        {/* <td className="px-2 py-1 text-sm">
+                        <td className="px-2 py-1 text-sm">
                           {getPageValue() > 0
                             ? `${getPageValue()}${index + 1}`
                             : `${index + 1}`}
-                        </td> */}
-                        <td className="px-2 py-1 text-sm">{index + 1}</td>
+                        </td>
                         <td className="px-2 py-1 text-sm lg:min-w-0">
                           {user?.userProfile?.fullName}
                         </td>
@@ -161,6 +176,9 @@ export const AdminUser = () => {
                             onChange={(e) => handleEdit(e, user.id)}
                             disabled={user?.role === "Owner"}
                           >
+                            <option value={user?.role} hidden selected>
+                              {user?.role}
+                            </option>
                             <option value="Admin">Admin</option>
                             <option value="User">User</option>
                           </select>
@@ -170,9 +188,9 @@ export const AdminUser = () => {
                   ) : (
                     <td
                       className="h-full border-b-2 bg-slate-200 bg-opacity-20 text-center italic text-neutral-4"
-                      colSpan={4}
+                      colSpan={8}
                     >
-                      No Category Found
+                      No User Found
                     </td>
                   )}
                 </tbody>
@@ -180,15 +198,15 @@ export const AdminUser = () => {
             </div>
 
             {/* Pagination Section */}
-            {/* <div className="mx-auto">
+            <div className="mx-auto">
               <Pagination
                 onQuery={handleQuery}
-                type={"categories"}
-                nextLink={paginationCategory?.links?.next}
-                prevLink={paginationCategory?.links?.prev}
-                totalItems={paginationCategory?.total_items}
+                type={"users"}
+                nextLink={paginationUser?.links?.next}
+                prevLink={paginationUser?.links?.prev}
+                totalItems={paginationUser?.total_items}
               />
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
