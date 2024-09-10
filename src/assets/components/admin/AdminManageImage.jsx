@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
@@ -8,6 +8,8 @@ import {
   putEditImageByIdAction,
   deleteImageByIdAction,
 } from "../../../redux/action/images/ImagesAction";
+import { getAllCategoriesAction } from "../../../redux/action/categories/CategoriesAction";
+import { getAllProductsAction } from "../../../redux/action/products/ProductsAction";
 
 // Redux Reducer
 // import { setCategories } from "../../../redux/reducer/categories/CategoriesSlice";
@@ -37,6 +39,7 @@ export const AdminManageImage = ({
 }) => {
   const dispatch = useDispatch();
 
+  const isSubmitted = useRef(false); // Tambah useRef untuk melacak submit status
   const [openDeleteMenu, setOpenDeleteMenu] = useState(false);
   const [editDataImage, setEditDataImage] = useState(null);
   const [dataImage, setDataImage] = useState(null);
@@ -66,9 +69,10 @@ export const AdminManageImage = ({
 
   useEffect(() => {
     const handleCreate = async () => {
-      if (!inputImage.image) return;
+      if (!inputImage.image || isSubmitted.current) return; // Cek jika isSubmitted adalah true
+      isSubmitted.current = true; // Set isSubmitted jadi true
 
-      const loadingToastId = showLoadingToast("Loading...");
+      // const loadingToastId = showLoadingToast("Loading...");
 
       const createImage = await dispatch(
         postCreateImageAction({
@@ -78,11 +82,12 @@ export const AdminManageImage = ({
         }),
       );
 
-      toast.dismiss(loadingToastId);
+      // toast.dismiss(loadingToastId);
 
       if (!createImage) {
         completeSubmit(null, "create");
-        showErrorToast("Create Image Failed");
+        isSubmitted.current = false; // Reset isSubmitted
+        // showErrorToast("Create Image Failed");
       } else {
         if (afterSubmit.categoryId) {
           // const addedImage = categoryData.map((category) => {
@@ -136,13 +141,16 @@ export const AdminManageImage = ({
           //     products: addedImage,
           //   }),
           // );
+          isSubmitted.current = false; // Reset isSubmitted
         }
         completeSubmit(null, "create");
       }
     };
 
     const handleEdit = async () => {
-      const loadingToastId = showLoadingToast("Loading...");
+      if (isSubmitted.current) return; // Cek jika isSubmitted adalah true
+      isSubmitted.current = true; // Set isSubmitted jadi tru
+      // const loadingToastId = showLoadingToast("Loading...");
 
       const editImage = await dispatch(
         putEditImageByIdAction(
@@ -155,12 +163,14 @@ export const AdminManageImage = ({
         ),
       );
 
-      toast.dismiss(loadingToastId);
+      // toast.dismiss(loadingToastId);
 
       if (!editImage) {
+        isSubmitted.current = false; // Reset isSubmitted
         completeSubmit(null, "edit");
-        showErrorToast("Edit Image Failed");
+        // showErrorToast("Edit Image Failed");
       } else {
+        isSubmitted.current = false; // Reset isSubmitted
         completeSubmit(null, "edit");
       }
     };
@@ -178,15 +188,15 @@ export const AdminManageImage = ({
   }, [afterSubmit]);
 
   const handleDelete = async () => {
-    const loadingToastId = showLoadingToast("Loading...");
+    // const loadingToastId = showLoadingToast("Loading...");
 
     const deleteImage = await dispatch(deleteImageByIdAction(image?.id));
 
-    toast.dismiss(loadingToastId);
+    // toast.dismiss(loadingToastId);
 
     if (!deleteImage) {
       completeSubmit(null, "delete");
-      showErrorToast("Delete Image Failed");
+      // showErrorToast("Delete Image Failed");
     }
 
     if (deleteImage) {
@@ -209,6 +219,7 @@ export const AdminManageImage = ({
         //     categories: updatedCategories,
         //   }),
         // );
+        await dispatch(getAllCategoriesAction(""));
       } else if (image.productId) {
         // const updatedProducts = productData.map((product) => {
         //   return {
@@ -228,6 +239,7 @@ export const AdminManageImage = ({
         //   }),
         // );
       }
+      await dispatch(getAllProductsAction(""));
       completeSubmit(null, "delete");
     }
   };

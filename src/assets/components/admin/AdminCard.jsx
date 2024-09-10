@@ -21,7 +21,7 @@ export const AdminCard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getAllUsersAction());
+      await dispatch(getAllUsersAction(""));
       await dispatch(getAllCategoriesAdminAction());
     };
 

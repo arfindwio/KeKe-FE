@@ -63,7 +63,7 @@ export const AdminManageColor = ({
       // toast.dismiss(loadingToastId);
 
       if (!createColor) {
-        showErrorToast("Create Color Failed");
+        // showErrorToast("Create Color Failed");
       } else {
         // const addedColor = productData.map((product) => {
         //   if (product.id === submitProduct.productId) {
@@ -97,7 +97,7 @@ export const AdminManageColor = ({
       // toast.dismiss(loadingToastId);
 
       if (!editColor) {
-        showErrorToast("Edit Color Failed");
+        // showErrorToast("Edit Color Failed");
       } else {
         completeSubmit(null, "edit");
       }
@@ -126,7 +126,9 @@ export const AdminManageColor = ({
 
     // toast.dismiss(loadingToastId);
 
-    if (!deleteColor) showErrorToast("Delete Color Failed");
+    if (!deleteColor) {
+      // showErrorToast("Delete Color Failed");
+    }
 
     if (deleteColor) {
       const filteredProduct = {

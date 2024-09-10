@@ -22,7 +22,9 @@ import { Cart } from "../pages/user/account/Cart";
 import { Products } from "../pages/user/product/Products";
 import { DetailProduct } from "../pages/user/product/DetailProduct";
 import { Payment } from "../pages/user/payment/Payment";
+import { PaymentSuccess } from "../pages/user/payment/PaymentSuccess";
 import { AdminDashboard } from "../pages/admin/AdminDashboard";
+import { AdminUser } from "../pages/admin/AdminUser";
 import { AdminPromotion } from "../pages/admin/AdminPromotion";
 import { AdminCategory } from "../pages/admin/AdminCategory";
 import { AdminProduct } from "../pages/admin/AdminProduct";
@@ -70,12 +72,23 @@ export const RouteList = () => {
         <Route path="/product/:productId" element={<DetailProduct />} />
 
         {/* Payment */}
-        <Route path="/payment" element={<Payment />} />
+        <Route
+          path="/payment"
+          element={<TokenProtected element={<Payment />} />}
+        />
+        <Route
+          path="/payment/success"
+          element={<TokenProtected element={<PaymentSuccess />} />}
+        />
 
         {/* Admin */}
         <Route
           path="/admin/dashboard"
           element={<AdminProtected element={<AdminDashboard />} />}
+        />
+        <Route
+          path="/admin/user"
+          element={<AdminProtected element={<AdminUser />} />}
         />
         <Route
           path="/admin/promotion"

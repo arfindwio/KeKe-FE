@@ -20,6 +20,7 @@ import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
 import { AdminCard } from "../../assets/components/admin/AdminCard";
 import { AdminManageImage } from "../../assets/components/admin/AdminManageImage";
 import { Pagination } from "../../assets/components/pagination/Pagination";
+import { AdminDataSkeleton } from "../../assets/components/skeleton/admin/AdminDataSkeleton";
 
 // Helper
 import {
@@ -58,6 +59,7 @@ export const AdminCategory = () => {
     productId: null,
   });
 
+  const loadingData = useSelector((state) => state.categories.loading);
   const categoryData = useSelector(
     (state) => state.categories.categories.categories,
   );
@@ -249,7 +251,13 @@ export const AdminCategory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categoryData?.length > 0 ? (
+                  {loadingData ? (
+                    Array.from({ length: 5 }).map((_, index) => (
+                      <tr key={index} className="animate-pulse">
+                        <AdminDataSkeleton tdCount={4} />
+                      </tr>
+                    ))
+                  ) : categoryData?.length > 0 ? (
                     categoryData?.map((category, index) => (
                       <tr
                         key={index}

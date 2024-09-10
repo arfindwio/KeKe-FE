@@ -5,6 +5,10 @@ import { useMediaQuery } from "react-responsive";
 
 // Redux Actions
 import { getAllCartsByAuthAction } from "../../../redux/action/carts/CartsAction";
+import {
+  getRecommendationProductsActionUser,
+  getRecommendationProductsAction,
+} from "../../../redux/action/products/ProductsAction";
 
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
@@ -12,9 +16,13 @@ import { CartCard } from "../../../assets/components/card/CartCard";
 import { PriceDetailCard } from "../../../assets/components/card/PriceDetailCard";
 import { ProductCard } from "../../../assets/components/card/ProductCard";
 import { Footer } from "../../../assets/components/footer/Footer";
+import { CartCardSkeleton } from "../../../assets/components/skeleton/CartCardSkeleton";
 
 // Icons
 import { BsBasketFill } from "react-icons/bs";
+
+// Cookie
+import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -23,12 +31,17 @@ export const Cart = () => {
   const recommendationProductData = useSelector(
     (state) => state.products.recommendationProducts,
   );
+  const loadingCart = useSelector((state) => state.carts.loading);
 
   const minWidth320 = useMediaQuery({ minDeviceWidth: 320 });
+
+  const token = CookieStorage.get(CookiesKeys.AuthToken);
 
   useEffect(() => {
     const fetchData = async () => {
       await dispatch(getAllCartsByAuthAction());
+      if (token) return await dispatch(getRecommendationProductsActionUser());
+      await dispatch(getRecommendationProductsAction());
     };
 
     fetchData();
@@ -41,7 +54,11 @@ export const Cart = () => {
         <h1 className="text-2xl font-bold text-neutral-1">Shopping Cart</h1>
         <div className="mb-4 flex w-full flex-col justify-between lg:flex-row">
           <div className="flex h-fit w-full flex-col gap-3 rounded-md border border-neutral-4 bg-neutral-5 px-2 py-3 shadow-sm sm:px-6 lg:w-[68%]">
-            {cartData.length ? (
+            {!cartData && loadingCart ? (
+              Array.from({ length: 3 }).map((_, index) => (
+                <CartCardSkeleton key={index} />
+              ))
+            ) : cartData.length > 0 ? (
               cartData.map((cart) => <CartCard key={cart.id} cart={cart} />)
             ) : (
               <div className="flex flex-col items-center justify-center gap-2 py-5 lg:flex-row lg:gap-4">

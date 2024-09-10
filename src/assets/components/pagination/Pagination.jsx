@@ -68,7 +68,7 @@ export const Pagination = ({
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    const visiblePages = 3; // Adjust the number of visible pages as needed
+    const visiblePages = 3;
     const url = !nextLink ? prevLink : nextLink;
     const limit = parseInt(url.match(/limit=(\d+)/)[1], 10);
     const totalPage = Math.ceil(totalItems / limit);
@@ -146,29 +146,31 @@ export const Pagination = ({
   if (!nextLink && !prevLink) return null;
 
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-center">
+    <div className="mt-4 flex flex-wrap items-center justify-center gap-1 sm:gap-0">
       <div className="flex items-center">
         <button
           onClick={() => handlePageChange(prevLink)}
-          className={`flex cursor-pointer items-center rounded-full px-2 py-1 hover:bg-neutral-1 hover:bg-opacity-20 ${
+          className={`flex cursor-pointer items-center rounded-full px-2 py-1 text-sm hover:bg-neutral-1 hover:bg-opacity-20 sm:text-base ${
             prevLink ? "text-neutral-1" : "pointer-events-none text-gray-400"
           }`}
           disabled={!prevLink}
         >
           <GoArrowLeft size={20} className="mr-1" />
-          {isMobile ? "" : "Previous"}
+          {/* {isMobile ? "" : "Previous"} */}
+          Prev
         </button>
       </div>
       <div className="mx-2 flex">{renderPageNumbers()}</div>
       <div className="flex items-center ">
         <button
           onClick={() => handlePageChange(nextLink)}
-          className={`hover:bg-neu1text-neutral-1 flex cursor-pointer items-center rounded-full px-3 py-1 hover:bg-opacity-20 ${
+          className={`flex cursor-pointer items-center  rounded-full px-3 py-1 text-sm hover:bg-neutral-1 hover:bg-opacity-20 sm:text-base ${
             nextLink ? "text-neutral-1" : "pointer-events-none text-gray-400"
           }`}
           disabled={!nextLink}
         >
-          {isMobile ? "" : "Next"}
+          {/* {isMobile ? "" : "Next"} */}
+          Next
           <GoArrowRight size={20} className="ml-1" />
         </button>
       </div>

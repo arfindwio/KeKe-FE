@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllProductsAction,
   getRecommendationProductsActionUser,
+  getRecommendationProductsAction,
   getSpecialOfferProductAction,
 } from "../redux/action/products/ProductsAction";
 import { getAllCategoriesAction } from "../redux/action/categories/CategoriesAction";
@@ -37,6 +38,7 @@ export const Home = () => {
       await dispatch(getAllCategoriesAction(""));
       await dispatch(getSpecialOfferProductAction());
       if (token) return await dispatch(getRecommendationProductsActionUser());
+      await dispatch(getRecommendationProductsAction());
     };
 
     fetchData();

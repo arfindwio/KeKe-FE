@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 // Redux Actions
@@ -13,6 +13,8 @@ import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
 
 export const AdminProtected = ({ element }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
 
@@ -46,6 +48,12 @@ export const AdminProtected = ({ element }) => {
   }
   if (userData.role?.toLowerCase() === "user") {
     return <Navigate to="/" replace />;
+  }
+
+  if (location.pathname === "/admin/user") {
+    if (userData.role?.toLowerCase() === "admin") {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
   }
 
   return element;

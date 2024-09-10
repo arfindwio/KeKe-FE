@@ -143,9 +143,11 @@ export const AdminManageDiscussion = ({ discussion }) => {
                 {discussion.user.userProfile.fullName}
                 <span
                   className={`${
-                    discussion.user.role === "Admin"
-                      ? "bg-blue-400"
-                      : "bg-slate-400"
+                    discussion.user.role === "Owner"
+                      ? "bg-yellow-700"
+                      : discussion.user.role === "Admin"
+                        ? "bg-blue-400"
+                        : "bg-slate-400"
                   } ms-1 rounded-sm px-2 py-[2px] text-[10px] font-normal text-neutral-5`}
                 >
                   {discussion.user.role}
@@ -227,7 +229,11 @@ export const AdminManageDiscussion = ({ discussion }) => {
                 </h5>
                 <p
                   className={`${
-                    userData.role === "Admin" ? "bg-blue-400" : "bg-slate-400"
+                    userData.role === "Owner"
+                      ? "bg-yellow-700"
+                      : userData.role === "Admin"
+                        ? "bg-blue-400"
+                        : "bg-slate-400"
                   } rounded-sm px-2 py-[2px] text-[10px] font-normal text-neutral-5`}
                 >
                   {userData.role}

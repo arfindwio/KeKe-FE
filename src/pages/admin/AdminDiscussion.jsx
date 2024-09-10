@@ -12,6 +12,7 @@ import { AdminNavbar } from "../../assets/components/admin/AdminNavbar";
 import { AdminCard } from "../../assets/components/admin/AdminCard";
 import { Pagination } from "../../assets/components/pagination/Pagination";
 import { AdminManageDiscussion } from "../../assets/components/admin/AdminManageDiscussion";
+import { AdminDiscussionSkeleton } from "../../assets/components/skeleton/admin/AdminDiscussionSkeleton";
 
 // Helper
 import {
@@ -45,6 +46,7 @@ export const AdminDiscussion = () => {
   const discussionData = useSelector(
     (state) => state.discussions.discussionsAdmin.discussions,
   );
+  const loadingData = useSelector((state) => state.discussions.loading);
   const paginationDiscussion = useSelector(
     (state) => state.discussions.discussionsAdmin.pagination,
   );
@@ -115,8 +117,12 @@ export const AdminDiscussion = () => {
               <FaPlus size={20} />
               <p>Create Notification</p>
             </button>
-            <div className="grid gap-6 md:grid-cols-2">
-              {discussionData?.length > 0 ? (
+            <div className="mt-3 grid gap-6 md:grid-cols-2">
+              {loadingData ? (
+                Array.from({ length: 4 }).map((_, index) => (
+                  <AdminDiscussionSkeleton key={index} />
+                ))
+              ) : discussionData?.length > 0 ? (
                 discussionData?.map((discussion, index) => (
                   <AdminManageDiscussion discussion={discussion} key={index} />
                 ))
