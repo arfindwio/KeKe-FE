@@ -7,6 +7,7 @@ const showSuccessToast = (message) => {
     onHover: (persist, toast) => {
       persist();
     },
+    className: "z-[999999999999999]",
   });
 };
 
@@ -14,8 +15,8 @@ const showErrorToast = (message) => {
   return toast.error(message, {
     duration: 3000,
     position: "top-right",
-    onHover: (persist, toast) => {
-      persist();
+    style: {
+      zIndex: 99999999999999,
     },
   });
 };

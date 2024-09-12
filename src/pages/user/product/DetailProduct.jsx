@@ -13,12 +13,16 @@ import { ProductCard } from "../../../assets/components/card/ProductCard";
 import { Pagination } from "../../../assets/components/pagination/Pagination";
 import { ScrollButton } from "../../../assets/components/button/ScrollButton";
 import { Footer } from "../../../assets/components/footer/Footer";
+import { ProductCardSkeleton } from "../../../assets/components/skeleton/ProductCardSkeleton";
+import { DiscussionCardSkeleton } from "../../../assets/components/skeleton/DiscussionCardSkeleton";
+import { ReviewCardSkeleton } from "../../../assets/components/skeleton/ReviewCardSkeleton";
 
 // Redux Actions
 import {
   getProductByIdAction,
   getAllProductsAction,
   getRecommendationProductsActionUser,
+  getRecommendationProductsAction,
 } from "../../../redux/action/products/ProductsAction";
 import {
   getReviewsByProductIdAction,
@@ -60,28 +64,33 @@ export const DetailProduct = () => {
     userComment: "",
   });
 
-  const productData = useSelector((state) => state.products.products.products);
-  const detailProductData = useSelector((state) => state.products.product);
-  const recommendationProductData = useSelector(
-    (state) => state.products.recommendationProducts,
+  const productData = useSelector(
+    (state) => state.products?.products?.products,
   );
-  const reviewData = useSelector((state) => state.reviews.reviews.reviews);
+  const detailProductData = useSelector((state) => state.products?.product);
+  const recommendationProductData = useSelector(
+    (state) => state.products?.recommendationProducts,
+  );
+  const reviewData = useSelector((state) => state.reviews?.reviews?.reviews);
   const paginationReview = useSelector(
-    (state) => state.reviews.reviews.pagination,
+    (state) => state.reviews?.reviews?.pagination,
   );
   const discussionData = useSelector(
-    (state) => state.discussions.discussions.discussions,
+    (state) => state.discussions?.discussions?.discussions,
   );
   const paginationDiscussion = useSelector(
-    (state) => state.discussions.discussions.pagination,
+    (state) => state.discussions?.discussions?.pagination,
   );
-  const userData = useSelector((state) => state.users.userAuthenticate);
+  const userData = useSelector((state) => state.users?.userAuthenticate);
+  const loadingProduct = useSelector((state) => state.products?.loading);
+  const loadingDiscussion = useSelector((state) => state.discussions.loading);
+  const loadingReview = useSelector((state) => state.reviews.loading);
 
   const minWidth320 = useMediaQuery({ minDeviceWidth: 320 });
 
   const token = CookieStorage.get(CookiesKeys.AuthToken);
   const filteredProduct = productData
-    .filter((product) => product.id === productId)
+    ?.filter((product) => product.id === productId)
     .slice(0, 6);
 
   useEffect(() => {
@@ -105,9 +114,10 @@ export const DetailProduct = () => {
       await dispatch(
         getAllProductsAction(`?c=${detailProductData?.category?.categoryName}`),
       );
+      if (token) await dispatch(getRecommendationProductsActionUser());
+      if (!token) await dispatch(getRecommendationProductsAction());
       await dispatch(getReviewsByProductIdAction(productId, ""));
       await dispatch(getDiscussionsByProductIdAction(productId, ""));
-      if (token) return await dispatch(getRecommendationProductsActionUser());
     };
 
     fetchData();
@@ -228,14 +238,20 @@ export const DetailProduct = () => {
                 Add Your Review
               </button>
             </div>
-            {reviewData?.map((review, index) => (
-              <ReviewCard
-                review={review}
-                key={index}
-                index={index}
-                totalReviews={reviewData?.length}
-              />
-            ))}
+            {!reviewData && loadingReview
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <div className="col-span-2 flex w-full items-start gap-2 rounded-md border p-4 shadow-sm md:col-span-1 lg:gap-4">
+                    <ReviewCardSkeleton key={index} />
+                  </div>
+                ))
+              : reviewData?.map((review, index) => (
+                  <ReviewCard
+                    key={index}
+                    review={review}
+                    index={index}
+                    totalReviews={reviewData?.length}
+                  />
+                ))}
 
             {/* Pagination Section */}
             <div className="col-span-2 mx-auto mb-2">
@@ -343,13 +359,17 @@ export const DetailProduct = () => {
               </button>
             </div>
 
-            {discussionData?.map((discussion, index) => (
-              <DiscussionCard
-                discussion={discussion}
-                productId={detailProductData.id}
-                key={index}
-              />
-            ))}
+            {!discussionData && loadingDiscussion
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <DiscussionCardSkeleton key={index} />
+                ))
+              : discussionData?.map((discussion, index) => (
+                  <DiscussionCard
+                    discussion={discussion}
+                    productId={detailProductData.id}
+                    key={index}
+                  />
+                ))}
 
             {/* Pagination Section */}
             <div className="col-span-2 mx-auto mb-2">
@@ -423,7 +443,7 @@ export const DetailProduct = () => {
         </div>
 
         {/* Similar Product Section */}
-        {filteredProduct.length > 0 && (
+        {filteredProduct?.length > 0 && (
           <div className="flex flex-col gap-3 border-t pt-4">
             <h5 className="text-lg font-semibold">Similar Product</h5>
             <div
@@ -431,9 +451,13 @@ export const DetailProduct = () => {
                 minWidth320 ? "grid-cols-2" : "grid-cols-1"
               } grid h-fit w-full gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}
             >
-              {filteredProduct.map((product, index) => (
-                <ProductCard product={product} key={index} />
-              ))}
+              {!filteredProduct && loadingProduct
+                ? Array.from({ length: 6 }).map((_, index) => (
+                    <ProductCardSkeleton key={index} />
+                  ))
+                : filteredProduct.map((product, index) => (
+                    <ProductCard product={product} key={index} />
+                  ))}
             </div>
           </div>
         )}
@@ -446,12 +470,16 @@ export const DetailProduct = () => {
               minWidth320 ? "grid-cols-2" : "grid-cols-1"
             } grid h-fit w-full gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6`}
           >
-            {recommendationProductData
-              ?.filter((product) => product.id !== Number(productId))
-              .slice(0, 6)
-              .map((product, index) => (
-                <ProductCard product={product} key={index} />
-              ))}
+            {!recommendationProductData && loadingProduct
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))
+              : recommendationProductData
+                  ?.filter((product) => product.id !== Number(productId))
+                  .slice(0, 6)
+                  .map((product, index) => (
+                    <ProductCard product={product} key={index} />
+                  ))}
           </div>
         </div>
       </div>

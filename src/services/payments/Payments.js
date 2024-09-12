@@ -17,3 +17,7 @@ export const reduxPutEditPaymentById = async (input, paymentId) => {
 export const reduxGetPaymentsHistory = async (query) => {
   return await http.get(`${API_ENDPOINT.PAYMENTS}/history${query}`);
 };
+
+export const reduxGetStatusMidtrans = async (orderId) => {
+  return await http.get(`${API_ENDPOINT.PAYMENTS}/history/${orderId}`);
+};

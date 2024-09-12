@@ -43,40 +43,45 @@ export const CategoryHomeCard = () => {
           modules={[Mousewheel, Keyboard]}
           className="w-full cursor-grab pr-2 2xl:cursor-default"
         >
-          {categoryData?.slice(0, 5)?.map((category, index) => (
-            <SwiperSlide
-              className="flex w-full flex-row justify-between rounded-md border border-neutral-4 bg-neutral-5 p-4"
-              key={index}
-            >
-              {loadingCategory ? (
-                <PopularCategoryCardSkeleton />
-              ) : (
-                <>
-                  <img
-                    src={category?.image?.image}
-                    alt="Category"
-                    className="aspect-video h-full w-[40%] object-cover object-top"
-                  />
-                  <div className="flex w-[58%] flex-col">
-                    <div className="flex justify-between">
-                      <p className="truncate text-sm font-bold">
-                        {category?.categoryName}
-                      </p>
-                      <p className="text-xs font-medium text-neutral-3">
-                        ({category?.product?.length})
-                      </p>
+          {loadingCategory
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <SwiperSlide
+                  className="flex w-full flex-row justify-between rounded-md border border-neutral-4 bg-neutral-5 p-4"
+                  key={index}
+                >
+                  <PopularCategoryCardSkeleton />
+                </SwiperSlide>
+              ))
+            : categoryData?.slice(0, 5)?.map((category, index) => (
+                <SwiperSlide
+                  className="flex w-full flex-row justify-between rounded-md border border-neutral-4 bg-neutral-5 p-4"
+                  key={index}
+                >
+                  <>
+                    <img
+                      src={category?.image?.image}
+                      alt="Category"
+                      className="aspect-video h-full w-[40%] object-cover object-top"
+                    />
+                    <div className="flex w-[58%] flex-col">
+                      <div className="flex justify-between">
+                        <p className="truncate text-sm font-bold">
+                          {category?.categoryName}
+                        </p>
+                        <p className="text-xs font-medium text-neutral-3">
+                          ({category?.product?.length})
+                        </p>
+                      </div>
+                      <Link
+                        to={`/product?c=${category?.categoryName}`}
+                        className="mt-auto w-fit rounded-md bg-neutral-1 px-2 py-1 text-xs text-neutral-5 hover:bg-opacity-80"
+                      >
+                        Show All
+                      </Link>
                     </div>
-                    <Link
-                      to={`/product?c=${category?.categoryName}`}
-                      className="mt-auto w-fit rounded-md bg-neutral-1 px-2 py-1 text-xs text-neutral-5 hover:bg-opacity-80"
-                    >
-                      Show All
-                    </Link>
-                  </div>
-                </>
-              )}
-            </SwiperSlide>
-          ))}
+                  </>
+                </SwiperSlide>
+              ))}
         </Swiper>
       </div>
     </>

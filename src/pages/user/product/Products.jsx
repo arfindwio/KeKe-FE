@@ -12,6 +12,7 @@ import { ProductCard } from "../../../assets/components/card/ProductCard";
 import { Pagination } from "../../../assets/components/pagination/Pagination";
 import { ScrollButton } from "../../../assets/components/button/ScrollButton";
 import { Footer } from "../../../assets/components/footer/Footer";
+import { ProductCardSkeleton } from "../../../assets/components/skeleton/ProductCardSkeleton";
 
 // Material Tailwind
 import { Drawer } from "@material-tailwind/react";
@@ -24,6 +25,7 @@ export const Products = () => {
 
   const [openBottom, setOpenBottom] = useState(false);
 
+  const loadingProduct = useSelector((state) => state.products?.loading);
   const productData = useSelector(
     (state) => state.products?.products?.products,
   );
@@ -96,24 +98,37 @@ export const Products = () => {
               <SidebarFilter />
             </div>
           )}
-          <div className="w-full md:w-[63%]">
+          <div className="flex w-full flex-col md:w-[63%]">
             <div
               className={`${
                 minWidth320 ? "grid-cols-2" : "grid-cols-1"
               } grid gap-3 sm:grid-cols-3 xl:grid-cols-4`}
             >
-              {productData?.length > 0 ? (
+              {loadingProduct ? (
+                Array.from({ length: 12 }).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))
+              ) : productData?.length > 0 ? (
                 productData?.map((product, index) => (
                   <ProductCard product={product} key={index} />
                 ))
               ) : (
-                <p className="col-span-3 flex h-[50vh] items-center justify-center text-center text-2xl font-bold italic text-neutral-4 md:h-auto">
+                <p
+                  className={`${
+                    minWidth320 ? "col-span-2" : "col-span-1"
+                  } m-auto text-center text-2xl font-bold italic text-neutral-4 sm:col-span-3 xl:col-span-4`}
+                >
                   - No product found -
                 </p>
               )}
             </div>
+
             {/* Pagination Section */}
-            <div className="col-span-3 flex items-center justify-center">
+            <div
+              className={`${
+                minWidth320 ? "col-span-2" : "col-span-1"
+              } mt-auto sm:col-span-3 xl:col-span-4`}
+            >
               <Pagination
                 onQuery={handleQuery}
                 type={"products"}

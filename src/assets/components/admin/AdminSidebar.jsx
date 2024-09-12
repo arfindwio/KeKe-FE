@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Redux Actions
 import { logoutUserAction } from "../../../redux/action/users/UsersAction";
@@ -13,6 +13,8 @@ export const AdminSidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const userData = useSelector((state) => state.users.userAuthenticate);
 
   return (
     <>
@@ -34,6 +36,18 @@ export const AdminSidebar = () => {
           >
             Dashboard
           </Link>
+          {userData?.role === "Owner" && (
+            <Link
+              to={"/admin/user"}
+              className={`${
+                location.pathname === "/admin/user"
+                  ? "bg-neutral-5 bg-opacity-50 font-semibold"
+                  : "hover:bg-neutral-5 hover:bg-opacity-20"
+              } px-6 py-3 text-lg`}
+            >
+              User
+            </Link>
+          )}
           <Link
             to={"/admin/promotion"}
             className={`${

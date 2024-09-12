@@ -26,9 +26,6 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { IoArrowBack } from "react-icons/io5";
 import { IoMdInformationCircle } from "react-icons/io";
 
-// Cookies
-import { CookieStorage, CookiesKeys } from "../../../utils/cookie";
-
 // Images
 import MasterCard from "../../../assets/img/mastercard.webp";
 import Visa from "../../../assets/img/visa.webp";
@@ -88,12 +85,6 @@ export const Payment = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-  useEffect(() => {
-    const token = CookieStorage.get(CookiesKeys.AuthToken);
-
-    if (!token) return navigate("/");
-  }, [navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -195,6 +186,7 @@ export const Payment = () => {
         }, 1000);
       }
     }
+
     if (paymentInput.methodPayment === "Cardless Credit") {
       const payment = await dispatch(
         postCreatePaymentMidtransAction({
@@ -210,6 +202,7 @@ export const Payment = () => {
         }, 1000);
       }
     }
+
     if (paymentInput.methodPayment === "Gopay") {
       const payment = await dispatch(
         postCreatePaymentMidtransAction({
@@ -224,6 +217,7 @@ export const Payment = () => {
         setQrCode(payment.transaction.actions[0].url);
       }
     }
+
     if (
       paymentInput.methodPayment === "Bank Transfer" ||
       paymentInput.methodPayment === "Permata"
@@ -246,6 +240,7 @@ export const Payment = () => {
         }
       }
     }
+
     if (paymentInput.methodPayment === "Mandiri Bill") {
       const payment = await dispatch(
         postCreatePaymentMidtransAction({
@@ -263,6 +258,7 @@ export const Payment = () => {
         });
       }
     }
+
     if (paymentInput.methodPayment === "Counter") {
       const payment = await dispatch(
         postCreatePaymentMidtransAction({

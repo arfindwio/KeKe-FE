@@ -7,13 +7,17 @@ import { getPaymentsHistoryAction } from "../../../redux/action/payments/Payment
 // Components
 import { Navbar } from "../../../assets/components/navbar/Navbar";
 import { PaymentHistoryCard } from "../../../assets/components/card/PaymentHistoryCard";
+import { Pagination } from "../../../assets/components/pagination/Pagination";
 import { Footer } from "../../../assets/components/footer/Footer";
 
 export const History = () => {
   const dispatch = useDispatch();
 
   const paymentHistoryData = useSelector(
-    (state) => state.payments.paymentsHistory,
+    (state) => state.payments.paymentsHistory.payments,
+  );
+  const paginationPayment = useSelector(
+    (state) => state.payments.paymentsHistory.pagination,
   );
 
   useEffect(() => {
@@ -24,10 +28,14 @@ export const History = () => {
     fetchNotificationData();
   }, [dispatch]);
 
+  const handleQuery = (formatLink) => {
+    dispatch(getPaymentsHistoryAction(formatLink));
+  };
+
   return (
     <>
       <Navbar />
-      <div className="px-4 pb-20 pt-24 sm:px-10 md:pb-10 lg:px-20">
+      <div className="px-4 pb-8 pt-24 sm:px-10 md:pb-10 lg:px-20">
         <div className="flex min-h-[70vh] w-full flex-col overflow-hidden rounded-xl border-2 border-neutral-2 bg-slate-50 sm:min-h-[60vh]">
           <h3 className="w-full bg-neutral-1 py-3 text-center text-xl text-neutral-5">
             Payment History
@@ -43,6 +51,17 @@ export const History = () => {
               - No payment history found -
             </p>
           )}
+
+          {/* Pagination Section */}
+          <div className="mx-auto mt-auto pb-5">
+            <Pagination
+              onQuery={handleQuery}
+              type={"payments"}
+              nextLink={paginationPayment?.links?.next}
+              prevLink={paginationPayment?.links?.prev}
+              totalItems={paginationPayment?.total_items}
+            />
+          </div>
         </div>
       </div>
       <Footer />

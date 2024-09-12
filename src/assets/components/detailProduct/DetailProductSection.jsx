@@ -50,8 +50,10 @@ export const DetailProductSection = () => {
     colorId: null,
   });
 
-  const detailProductData = useSelector((state) => state.products.product);
+  const detailProductData = useSelector((state) => state.products?.product);
   const loadingProduct = useSelector((state) => state.products.loading);
+  const loadingDiscussion = useSelector((state) => state.discussions.loading);
+  const loadingReview = useSelector((state) => state.reviews.loading);
 
   const selectedColor = detailProductData?.color.find(
     (color) => color.id === inputCart.colorId,
@@ -66,8 +68,8 @@ export const DetailProductSection = () => {
     if (detailProductData) {
       setInputCart((prevState) => ({
         ...prevState,
-        sizeId: detailProductData?.size[0]?.id || "",
-        colorId: detailProductData?.color[0]?.id || "",
+        sizeId: detailProductData?.size[0]?.id,
+        colorId: detailProductData?.color[0]?.id,
       }));
     }
   }, [detailProductData]);
@@ -142,7 +144,7 @@ export const DetailProductSection = () => {
       </div>
       <div className="flex flex-col overflow-hidden rounded-md border shadow-md md:flex-row">
         <div className="relative min-h-full w-full border-r md:w-[40%]">
-          {loadingProduct ? (
+          {loadingProduct ||loadingDiscussion || loadingReview ? (
             <div className="h-72 w-full animate-pulse bg-slate-500 md:h-full">
               {" "}
             </div>
@@ -194,7 +196,7 @@ export const DetailProductSection = () => {
             </>
           )}
         </div>
-        {loadingProduct ? (
+        {loadingProduct ||loadingDiscussion || loadingReview ? (
           <DetailProductCardSkeleton />
         ) : (
           <div className="flex w-full flex-col gap-3 px-6 py-8 md:w-[60%]">
