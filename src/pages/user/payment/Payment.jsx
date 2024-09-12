@@ -263,6 +263,7 @@ export const Payment = () => {
       const payment = await dispatch(
         postCreatePaymentMidtransAction({
           methodPayment: paymentInput.methodPayment,
+          store: paymentInput.store,
           message: paymentInput.message,
         }),
       );
