@@ -144,7 +144,7 @@ export const DetailProductSection = () => {
       </div>
       <div className="flex flex-col overflow-hidden rounded-md border shadow-md md:flex-row">
         <div className="relative min-h-full w-full border-r md:w-[40%]">
-          {loadingProduct ||loadingDiscussion || loadingReview ? (
+          {loadingProduct || loadingDiscussion || loadingReview ? (
             <div className="h-72 w-full animate-pulse bg-slate-500 md:h-full">
               {" "}
             </div>
@@ -196,7 +196,7 @@ export const DetailProductSection = () => {
             </>
           )}
         </div>
-        {loadingProduct ||loadingDiscussion || loadingReview ? (
+        {loadingProduct ? (
           <DetailProductCardSkeleton />
         ) : (
           <div className="flex w-full flex-col gap-3 px-6 py-8 md:w-[60%]">
