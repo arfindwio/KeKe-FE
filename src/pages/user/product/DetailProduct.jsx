@@ -238,7 +238,7 @@ export const DetailProduct = () => {
                 Add Your Review
               </button>
             </div>
-            {!reviewData && loadingReview
+            {loadingReview
               ? Array.from({ length: 6 }).map((_, index) => (
                   <div className="col-span-2 flex w-full items-start gap-2 rounded-md border p-4 shadow-sm md:col-span-1 lg:gap-4">
                     <ReviewCardSkeleton key={index} />
@@ -359,7 +359,7 @@ export const DetailProduct = () => {
               </button>
             </div>
 
-            {!discussionData && loadingDiscussion
+            {loadingDiscussion
               ? Array.from({ length: 6 }).map((_, index) => (
                   <DiscussionCardSkeleton key={index} />
                 ))
