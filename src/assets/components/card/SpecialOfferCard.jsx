@@ -219,8 +219,8 @@ export const SpecialOfferCard = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-4 pb-2">
-                  <div className="flex flex-col gap-2 md:border-r-2 md:border-neutral-4 md:pr-4">
+                <div className="grid grid-cols-2 gap-4 pb-2">
+                  <div className="flex flex-col gap-2 border-r-2 border-neutral-4">
                     <h5 className="text-sm font-semibold">
                       Choose Size:{" "}
                       <span className="text-slate-400">
