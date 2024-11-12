@@ -65,7 +65,7 @@ export const SpecialOfferCard = () => {
   useEffect(() => {
     const calculateTimeLeft = () => {
       const currentDate = new Date();
-      const endDateString = specialOfferData?.promotion?.endDate;
+      const endDateString = specialOfferData.promotion.endDate;
 
       if (!endDateString) {
         return;

@@ -191,8 +191,8 @@ export const AdminDashboard = () => {
                   <div className="flex w-[49%] flex-col justify-center gap-1 text-center">
                     <p className="text-sm">Quantity</p>
                     <p className="border border-neutral-4 p-1">
-                      {reportData.paid.quantity
-                        ? reportData.paid.quantity
+                      {reportData?.paid?.quantity
+                        ? reportData?.paid?.quantity
                         : "0"}
                     </p>
                   </div>
@@ -200,8 +200,8 @@ export const AdminDashboard = () => {
                     <p className="text-sm">Total Price</p>
                     <p className="break-all border border-neutral-4 p-1">
                       IDR{" "}
-                      {reportData.paid.total
-                        ? reportData.paid.total.toLocaleString()
+                      {reportData?.paid?.total
+                        ? reportData?.paid?.total.toLocaleString()
                         : "0"}
                     </p>
                   </div>
@@ -215,8 +215,8 @@ export const AdminDashboard = () => {
                   <div className="flex w-[49%] flex-col justify-center gap-1 text-center">
                     <p className="text-sm">Quantity</p>
                     <p className="border border-neutral-4 p-1">
-                      {reportData.unpaid.quantity
-                        ? reportData.unpaid.quantity
+                      {reportData?.unpaid?.quantity
+                        ? reportData?.unpaid?.quantity
                         : "0"}
                     </p>
                   </div>
@@ -224,8 +224,8 @@ export const AdminDashboard = () => {
                     <p className="text-sm">Total Price</p>
                     <p className="border border-neutral-4 p-1">
                       IDR{" "}
-                      {reportData.unpaid.total
-                        ? reportData.unpaid.total.toLocaleString()
+                      {reportData?.unpaid?.total
+                        ? reportData?.unpaid?.total.toLocaleString()
                         : "0"}
                     </p>
                   </div>
@@ -240,8 +240,8 @@ export const AdminDashboard = () => {
                   <div className="flex w-[49%] flex-col justify-center gap-1 text-center">
                     <p className="text-sm">Quantity</p>
                     <p className="border border-neutral-4 p-1">
-                      {reportData.expired.quantity
-                        ? reportData.expired.quantity
+                      {reportData?.expired?.quantity
+                        ? reportData?.expired?.quantity
                         : "0"}
                     </p>
                   </div>
@@ -249,8 +249,8 @@ export const AdminDashboard = () => {
                     <p className="text-sm">Total Price</p>
                     <p className="border border-neutral-4 p-1">
                       IDR{" "}
-                      {reportData.expired.total
-                        ? reportData.expired.total.toLocaleString()
+                      {reportData?.expired?.total
+                        ? reportData?.expired?.total.toLocaleString()
                         : "0"}
                     </p>
                   </div>
